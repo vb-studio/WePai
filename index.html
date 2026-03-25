@@ -2,15 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WePai - Tu asistente de entrenamiento</title>
   <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;600;700;800&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet">
   <script>
     tailwind.config = {
+      darkMode: 'class',
       theme: {
         extend: {
           colors: {
@@ -30,8 +31,9 @@
             'inverse-surface': '#313030',
           },
           fontFamily: {
-            manrope: ['Manrope', 'sans-serif'],
-            inter: ['Inter', 'sans-serif'],
+            headline: ['Manrope', 'sans-serif'],
+            body: ['Inter', 'sans-serif'],
+            label: ['Inter', 'sans-serif'],
           },
         }
       }
@@ -57,11 +59,13 @@
 
     body {
       font-family: 'Inter', sans-serif;
-      background: var(--surface);
-      overflow-y: auto;
+      background-color: #fcf9f8;
+      min-height: max(884px, 100dvh);
     }
 
-    .font-manrope { font-family: 'Manrope', sans-serif; }
+    h1, h2, h3, .headline {
+      font-family: 'Manrope', sans-serif;
+    }
 
     .material-symbols-outlined {
       font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24;
@@ -71,54 +75,26 @@
       background: linear-gradient(135deg, #a04100 0%, #ff6b00 100%);
     }
 
-    .no-scrollbar::-webkit-scrollbar { display: none; }
-    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-
-    .card-lift {
-      background: var(--surface-container-lowest);
-      box-shadow: 0 4px 40px rgba(0,0,0,0.06);
+    .glass-nav {
+      backdrop-filter: blur(20px);
     }
 
-    .glassmorphism {
-      background: rgba(252, 249, 248, 0.9);
-      backdrop-filter: blur(24px);
-      -webkit-backdrop-filter: blur(24px);
+    .no-scrollbar::-webkit-scrollbar {
+      display: none;
     }
-
-    .screen { display: none; }
-    .screen.active { display: block; }
-
-    .nav-item.active span { color: #ff6b00; }
-    .nav-item.active .nav-label { color: #ff6b00; }
-
-    .card-press:active { transform: scale(0.98); }
-
-    .modal-overlay {
-      background: rgba(0,0,0,0.4);
-      opacity: 0;
-      visibility: hidden;
-      transition: opacity 0.3s, visibility 0.3s;
+    .no-scrollbar {
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+      scrollbar-color: transparent transparent;
     }
-    .modal-overlay.open { opacity: 1; visibility: visible; }
-    .modal-content {
-      transform: translateY(100%);
-      transition: transform 0.3s ease-out;
-    }
-    .modal-overlay.open .modal-content { transform: translateY(0); }
-
-    .progress-ring { transform: rotate(-90deg); }
-    .progress-ring-circle {
-      stroke-dasharray: 339.292;
-      stroke-dashoffset: 339.292;
-      transition: stroke-dashoffset 0.5s ease;
+    
+    #date-carousel::-webkit-scrollbar {
+      display: none !important;
     }
 
     input:focus, select:focus, textarea:focus {
       background: var(--surface-container-high) !important;
       outline: none;
-    }
-    input:focus + label, label.active {
-      color: var(--primary) !important;
     }
 
     .input-field {
@@ -130,1150 +106,170 @@
       background: var(--surface-container-high);
     }
 
-    @media (min-width: 768px) {
-      .mobile-navbar { display: none !important; }
+    .card-press:active {
+      transform: scale(0.98);
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-nav { display: none !important; }
+    }
+
+    .screen {
+      display: none;
+    }
+    .screen.active {
+      display: block;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* Dark Mode */
+    .dark {
+      --primary: #ff6b00;
+      --primary-container: #a04100;
+      --on-primary: #ffffff;
+      --surface: #1c1b1b;
+      --surface-container-low: #252525;
+      --surface-container: #2d2d2d;
+      --surface-container-high: #383838;
+      --surface-container-highest: #424242;
+      --surface-container-lowest: #1c1b1b;
+      --on-surface: #e6e1e5;
+      --on-surface-variant: #c7c5cb;
+      --outline: #938f99;
+      --outline-variant: #49454f;
+      --inverse-surface: #e6e1e5;
+    }
+
+    .dark body {
+      background-color: #1c1b1b;
+    }
+
+    .dark .bg-surface {
+      background-color: #1c1b1b;
+    }
+
+    .dark .bg-surface-container {
+      background-color: #2d2d2d;
+    }
+
+    .dark .bg-surface-container-low {
+      background-color: #252525;
+    }
+
+    .dark .bg-surface-container-lowest {
+      background-color: #1c1b1b;
+    }
+
+    .dark .text-on-surface {
+      color: #e6e1e5;
+    }
+
+    .dark .text-on-surface-variant {
+      color: #c7c5cb;
+    }
+
+    .dark .text-outline {
+      color: #938f99;
+    }
+
+    .dark .border-outline-variant {
+      border-color: #49454f;
+    }
+
+    .dark header {
+      background-color: rgba(28, 27, 27, 0.95) !important;
+      border-color: rgba(148, 143, 153, 0.15) !important;
+    }
+
+    .dark .bg-surface-container-high {
+      background-color: #383838;
+    }
+
+    .dark .input-field {
+      background-color: #2d2d2d;
+      border-color: #49454f;
+      color: #e6e1e5;
+    }
+
+    .dark .bg-red-50 {
+      background-color: rgba(255, 87, 34, 0.15);
+    }
+    
+    .mobile-nav .nav-item.nav-active {
+      color: #FF6B00 !important;
+    }
+
+    /* Page transitions */
+    #app > div {
+      animation: fadeIn 0.3s ease-out;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Loading state */
+    .page-loading {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      color: var(--on-surface-variant);
+    }
+
+    .page-error {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 50vh;
+      gap: 1rem;
+      color: var(--on-surface-variant);
+    }
+
+    .page-error button {
+      padding: 0.75rem 1.5rem;
+      background: var(--primary-container);
+      color: white;
+      border-radius: 9999px;
+      font-weight: 600;
     }
   </style>
 </head>
-<body class="min-h-screen bg-surface text-on-surface">
+  <body class="bg-surface text-on-surface font-body min-h-screen">
 
-  <!-- SCREEN: DASHBOARD -->
-  <div id="screen-dashboard" class="screen active">
-    <main class="pt-20 pb-28 px-5 max-w-lg mx-auto">
-      <header class="fixed top-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-lg border-b border-outline-variant/30">
-        <div class="max-w-lg mx-auto px-5 h-16 flex items-center justify-between">
-          <h1 class="font-manrope font-bold text-2xl">
-            <span class="text-primary">We</span><span class="text-primary-container">Pai</span>
-          </h1>
-          <button onclick="openSettingsModal()" class="p-2 rounded-full hover:bg-surface-container transition">
-            <span class="material-symbols-outlined text-on-surface-variant">settings</span>
-          </button>
-        </div>
-      </header>
-
-      <div class="space-y-6">
-        <div class="pt-4">
-          <h2 class="font-manrope font-bold text-3xl text-on-surface mb-1">Análisis WePai</h2>
-          <p class="text-on-surface-variant text-sm" id="dashboard-peso">
-            Peso actual: <span class="font-semibold">—</span>
-          </p>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <div class="flex items-center justify-between mb-4">
-            <h3 class="font-manrope font-semibold text-lg">Progresión de peso</h3>
-          </div>
-          <div id="chart-container" class="h-40 flex items-center justify-center">
-            <div class="text-center text-on-surface-variant">
-              <span class="material-symbols-outlined text-5xl mb-2 opacity-40">show_chart</span>
-              <p class="text-sm">Aún no hay registros.<br>Empieza tu primer entrenamiento.</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-manrope font-semibold text-lg">Racha de constancia</h3>
-            <span class="material-symbols-outlined text-primary-container">local_fire_department</span>
-          </div>
-          <p class="font-manrope font-bold text-4xl text-on-surface" id="streak-count">0</p>
-          <p class="text-on-surface-variant text-sm">días consecutivos</p>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <div class="flex items-center justify-between mb-3">
-            <h3 class="font-manrope font-semibold text-lg">Objetivos y metas</h3>
-            <button onclick="openGoalModal()" class="w-8 h-8 rounded-full signature-gradient flex items-center justify-center">
-              <span class="material-symbols-outlined text-white text-sm">add</span>
-            </button>
-          </div>
-          <div id="goals-container" class="space-y-3">
-            <div class="text-center py-6 text-on-surface-variant">
-              <span class="material-symbols-outlined text-4xl opacity-40 mb-2 block">flag</span>
-              <p class="text-sm">Añade metas para seguir tu progreso</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <h3 class="font-manrope font-semibold text-lg mb-4">Especialización muscular</h3>
-          <div id="muscle-bars" class="space-y-3">
-            <div class="flex items-center gap-3">
-              <span class="text-sm w-24 text-on-surface-variant">Tórax</span>
-              <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full bg-surface-container-high rounded-full" style="width: 0%"></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-sm w-24 text-on-surface-variant">Espalda</span>
-              <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full bg-surface-container-high rounded-full" style="width: 0%"></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-sm w-24 text-on-surface-variant">Piernas</span>
-              <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full bg-surface-container-high rounded-full" style="width: 0%"></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-sm w-24 text-on-surface-variant">Hombros</span>
-              <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full bg-surface-container-high rounded-full" style="width: 0%"></div>
-              </div>
-            </div>
-            <div class="flex items-center gap-3">
-              <span class="text-sm w-24 text-on-surface-variant">Brazos</span>
-              <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full bg-surface-container-high rounded-full" style="width: 0%"></div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <h3 class="font-manrope font-semibold text-lg mb-3">Récord reciente</h3>
-          <div id="recent-record" class="text-center py-6 text-on-surface-variant">
-            <span class="material-symbols-outlined text-4xl opacity-40 mb-2 block">emoji_events</span>
-            <p class="text-sm">Sin récords aún</p>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- SCREEN: REGISTRO DIARIO -->
-  <div id="screen-registro" class="screen">
-    <main class="pt-20 pb-28 px-5 max-w-lg mx-auto">
-      <header class="fixed top-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-lg border-b border-outline-variant/30">
-        <div class="max-w-lg mx-auto px-5 h-16 flex items-center justify-between">
-          <h1 class="font-manrope font-bold text-2xl">
-            <span class="text-primary">We</span><span class="text-primary-container">Pai</span>
-          </h1>
-          <div id="avatar-header" class="w-10 h-10 rounded-full signature-gradient flex items-center justify-center text-white font-semibold">
-            W
-          </div>
-        </div>
-      </header>
-
-      <div class="space-y-6">
-        <div class="pt-4">
-          <h2 class="font-manrope font-bold text-3xl text-on-surface mb-4">Registro diario</h2>
-          
-          <div id="date-carousel" class="flex gap-2 overflow-x-auto no-scrollbar pb-2 -mx-5 px-5">
-          </div>
-        </div>
-
-        <div class="grid grid-cols-2 gap-4">
-          <div class="card-lift rounded-2xl p-4">
-            <p class="text-sm text-on-surface-variant mb-1">Volumen Total</p>
-            <p class="font-manrope font-bold text-2xl" id="daily-volume">0 <span class="text-base font-medium">kg</span></p>
-          </div>
-          <div class="card-lift rounded-2xl p-4 flex flex-col justify-center">
-            <p class="text-sm text-on-surface-variant mb-1">Intensidad</p>
-            <div class="relative w-14 h-14 mx-auto">
-              <svg class="progress-ring w-14 h-14">
-                <circle class="text-surface-container-highest" stroke="currentColor" stroke-width="8" fill="none" r="27" cx="28" cy="28"/>
-                <circle id="intensity-ring" class="progress-ring-circle text-primary-container" stroke="currentColor" stroke-width="8" fill="none" r="27" cx="28" cy="28"/>
-              </svg>
-              <span class="absolute inset-0 flex items-center justify-center font-manrope font-bold text-sm" id="intensity-percent">0%</span>
-            </div>
-          </div>
-        </div>
-
-        <button onclick="openExerciseModal()" class="w-full py-4 rounded-2xl signature-gradient text-white font-semibold flex items-center justify-center gap-2 card-press transition-transform">
-          <span class="material-symbols-outlined">add</span>
-          Añadir ejercicio
-        </button>
-
-        <div id="exercises-list" class="space-y-3">
-        </div>
-
-        <button onclick="saveSession()" id="btn-save-session" class="w-full py-4 rounded-2xl bg-surface-container text-primary font-semibold hidden card-press transition-transform">
-          Guardar sesión
-        </button>
-      </div>
-    </main>
-  </div>
-
-  <!-- SCREEN: RUTINAS -->
-  <div id="screen-rutinas" class="screen">
-    <main class="pt-20 pb-28 px-5 max-w-lg mx-auto">
-      <header class="fixed top-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-lg border-b border-outline-variant/30">
-        <div class="max-w-lg mx-auto px-5 h-16 flex items-center justify-between">
-          <h1 class="font-manrope font-bold text-2xl">
-            <span class="text-primary">We</span><span class="text-primary-container">Pai</span>
-          </h1>
-        </div>
-      </header>
-
-      <div class="space-y-6">
-        <div class="pt-4 flex items-center justify-between">
-          <h2 class="font-manrope font-bold text-3xl text-on-surface">Rutinas</h2>
-          <button onclick="openRoutineModal()" class="px-4 py-2 rounded-xl signature-gradient text-white font-medium flex items-center gap-2 card-press">
-            <span class="material-symbols-outlined text-lg">add</span>
-            Nueva
-          </button>
-        </div>
-
-        <div id="routines-list" class="space-y-4">
-          <div class="card-lift rounded-2xl p-6 text-center">
-            <span class="material-symbols-outlined text-5xl text-outline mb-3">fitness_center</span>
-            <p class="text-on-surface-variant mb-4">Aún no tienes rutinas creadas</p>
-            <button onclick="openRoutineModal()" class="px-4 py-2 rounded-xl signature-gradient text-white font-medium">
-              Crea tu primera rutina
-            </button>
-          </div>
-        </div>
-      </div>
-    </main>
-  </div>
-
-  <!-- SCREEN: PERFIL -->
-  <div id="screen-perfil" class="screen">
-    <main class="pt-20 pb-28 px-5 max-w-lg mx-auto">
-      <header class="fixed top-0 left-0 right-0 z-40 bg-surface/95 backdrop-blur-lg border-b border-outline-variant/30">
-        <div class="max-w-lg mx-auto px-5 h-16 flex items-center justify-between">
-          <h1 class="font-manrope font-bold text-2xl">
-            <span class="text-primary">We</span><span class="text-primary-container">Pai</span>
-          </h1>
-        </div>
-      </header>
-
-      <div class="space-y-6">
-        <div class="pt-4">
-          <div class="flex items-center gap-4 mb-6">
-            <div id="avatar-perfil" class="w-20 h-20 rounded-full signature-gradient flex items-center justify-center text-white font-bold text-2xl">
-              W
-            </div>
-            <div>
-              <h2 class="font-manrope font-bold text-2xl text-on-surface" id="perfil-nombre-display">WePai User</h2>
-              <p class="text-on-surface-variant text-sm" id="perfil-objetivo-display">Sin objetivo</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <h3 class="font-manrope font-semibold text-lg mb-4">Datos personales</h3>
-          <form id="perfil-form" class="space-y-4" onsubmit="saveProfile(event)">
-            <div>
-              <label class="block text-sm text-on-surface-variant mb-2">Nombre</label>
-              <input type="text" id="input-nombre" class="input-field w-full px-4 py-3 text-on-surface" placeholder="Tu nombre" value="">
-            </div>
-            <div class="grid grid-cols-2 gap-4">
-              <div>
-                <label class="block text-sm text-on-surface-variant mb-2">Peso (kg)</label>
-                <input type="number" id="input-peso" class="input-field w-full px-4 py-3 text-on-surface" placeholder="70" step="0.1">
-              </div>
-              <div>
-                <label class="block text-sm text-on-surface-variant mb-2">Altura (cm)</label>
-                <input type="number" id="input-altura" class="input-field w-full px-4 py-3 text-on-surface" placeholder="175">
-              </div>
-            </div>
-            <div>
-              <label class="block text-sm text-on-surface-variant mb-2">Objetivo</label>
-              <select id="input-objetivo" class="input-field w-full px-4 py-3 text-on-surface">
-                <option value="">Selecciona tu objetivo</option>
-                <option value="Fuerza">Fuerza</option>
-                <option value="Hipertrofia">Hipertrofia</option>
-                <option value="Definición">Definición</option>
-                <option value="Resistencia">Resistencia</option>
-              </select>
-            </div>
-            <button type="submit" class="w-full py-3 rounded-xl signature-gradient text-white font-semibold card-press">
-              Guardar cambios
-            </button>
-          </form>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <h3 class="font-manrope font-semibold text-lg mb-4">Récords Personales</h3>
-          <div id="records-list" class="space-y-3">
-            <div class="text-center py-6 text-on-surface-variant">
-              <span class="material-symbols-outlined text-4xl opacity-40 mb-2 block">emoji_events</span>
-              <p class="text-sm">Aún no tienes récords. ¡Empieza a entrenar!</p>
-            </div>
-          </div>
-        </div>
-
-        <div class="card-lift rounded-2xl p-5">
-          <h3 class="font-manrope font-semibold text-lg mb-4">Estadísticas generales</h3>
-          <div class="grid grid-cols-2 gap-4">
-            <div class="bg-surface-container-low rounded-xl p-4">
-              <p class="text-sm text-on-surface-variant">Total de sesiones</p>
-              <p class="font-manrope font-bold text-2xl" id="stat-sessions">0</p>
-            </div>
-            <div class="bg-surface-container-low rounded-xl p-4">
-              <p class="text-sm text-on-surface-variant">Volumen histórico</p>
-              <p class="font-manrope font-bold text-2xl" id="stat-volume">0 <span class="text-base font-medium">kg</span></p>
-            </div>
-            <div class="bg-surface-container-low rounded-xl p-4">
-              <p class="text-sm text-on-surface-variant">Racha máxima</p>
-              <p class="font-manrope font-bold text-2xl" id="stat-max-streak">0</p>
-              <p class="text-xs text-on-surface-variant">días</p>
-            </div>
-            <div class="bg-surface-container-low rounded-xl p-4">
-              <p class="text-sm text-on-surface-variant">Ejercicios</p>
-              <p class="font-manrope font-bold text-2xl" id="stat-exercises">0</p>
-            </div>
-          </div>
-        </div>
-
-        <button onclick="showProToast()" class="w-full py-4 rounded-2xl bg-surface-container text-on-surface font-semibold flex items-center justify-center gap-2">
-          <span class="material-symbols-outlined">star</span>
-          Ver Insights Pro
-        </button>
-      </div>
-    </main>
-  </div>
-
-  <!-- BOTTOM NAVBAR -->
-  <nav class="mobile-navbar fixed bottom-0 left-0 right-0 z-50 glassmorphism border-t border-outline-variant/30">
-    <div class="max-w-lg mx-auto flex justify-around py-2">
-      <button onclick="navigate('registro')" class="nav-item flex flex-col items-center py-2 px-4 transition" data-screen="registro">
-        <span class="material-symbols-outlined text-2xl">edit_square</span>
-        <span class="nav-label text-xs mt-1 text-on-surface-variant">Registro</span>
+    <!-- Mobile Bottom Navigation -->
+    <nav class="mobile-nav fixed bottom-0 w-full z-50 rounded-t-[24px] bg-[#fcf9f8]/90 dark:bg-[#1c1b1b]/90 backdrop-blur-2xl border-t border-[#e2bfb0]/15 dark:border-[#49454f]/15 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] flex justify-around items-center px-8 pb-8 pt-4 md:hidden">
+      <button data-link href="/log" class="nav-item flex flex-col items-center justify-center text-[#1c1b1b]/60 dark:text-white/60 py-2 hover:text-[#FF6B00] transition-colors active:scale-90 duration-300">
+        <span class="material-symbols-outlined text-2xl">edit_note</span>
+        <span class="font-label text-[10px] mt-1">Registro</span>
       </button>
-      <button onclick="navigate('dashboard')" class="nav-item active flex flex-col items-center py-2 px-4 transition" data-screen="dashboard">
-        <span class="material-symbols-outlined text-2xl">home</span>
-        <span class="nav-label text-xs mt-1 text-on-surface-variant">Inicio</span>
+      <button data-link href="/" class="nav-item flex flex-col items-center justify-center text-[#1c1b1b]/60 dark:text-white/60 py-2 hover:text-[#FF6B00] transition-colors active:scale-90 duration-300">
+        <span class="material-symbols-outlined text-2xl">dashboard</span>
+        <span class="font-label text-[10px] mt-1">Dashboard</span>
       </button>
-      <button onclick="navigate('rutinas')" class="nav-item flex flex-col items-center py-2 px-4 transition" data-screen="rutinas">
+      <button data-link href="/routines" class="nav-item flex flex-col items-center justify-center text-[#1c1b1b]/60 dark:text-white/60 py-2 hover:text-[#FF6B00] transition-colors active:scale-90 duration-300">
         <span class="material-symbols-outlined text-2xl">fitness_center</span>
-        <span class="nav-label text-xs mt-1 text-on-surface-variant">Rutinas</span>
+        <span class="font-label text-[10px] mt-1">Rutinas</span>
       </button>
-      <button onclick="navigate('perfil')" class="nav-item flex flex-col items-center py-2 px-4 transition" data-screen="perfil">
-        <span class="material-symbols-outlined text-2xl">person</span>
-        <span class="nav-label text-xs mt-1 text-on-surface-variant">Perfil</span>
+      <button data-link href="/profile" class="nav-item flex flex-col items-center justify-center text-[#1c1b1b]/60 dark:text-white/60 py-2 hover:text-[#FF6B00] transition-colors active:scale-90 duration-300">
+        <span class="material-symbols-outlined text-2xl mb-1">person</span>
+        <span class="nav-label font-['Inter'] font-semibold text-[10px] tracking-widest uppercase">Perfil</span>
       </button>
-    </div>
-  </nav>
+    </nav>
 
-  <!-- MODAL: Exercise -->
-  <div id="modal-exercise" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center">
-    <div class="absolute inset-0" onclick="closeModal('exercise')"></div>
-    <div class="modal-content relative bg-surface-container-lowest w-full max-w-lg rounded-t-3xl p-6 pb-8 max-h-[85vh] overflow-y-auto">
-      <button onclick="closeModal('exercise')" class="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-container transition">
-        <span class="material-symbols-outlined text-on-surface-variant">close</span>
-      </button>
-      <h3 class="font-manrope font-bold text-xl mb-6">Añadir ejercicio</h3>
-      <form id="exercise-form" onsubmit="addExercise(event)" class="space-y-4">
-        <div>
-          <label class="block text-sm text-on-surface-variant mb-2">Nombre del ejercicio</label>
-          <input type="text" id="exercise-name" class="input-field w-full px-4 py-3 text-on-surface" placeholder="Ej: Press de banca" required>
-        </div>
-        <div class="grid grid-cols-3 gap-3">
-          <div>
-            <label class="block text-sm text-on-surface-variant mb-2">Series</label>
-            <input type="number" id="exercise-sets" class="input-field w-full px-4 py-3 text-on-surface text-center" min="1" value="3" required>
-          </div>
-          <div>
-            <label class="block text-sm text-on-surface-variant mb-2">Reps</label>
-            <input type="number" id="exercise-reps" class="input-field w-full px-4 py-3 text-on-surface text-center" min="1" value="10" required>
-          </div>
-          <div>
-            <label class="block text-sm text-on-surface-variant mb-2">Peso (kg)</label>
-            <input type="number" id="exercise-weight" class="input-field w-full px-4 py-3 text-on-surface text-center" min="0" step="0.5" value="20" required>
-          </div>
-        </div>
-        <button type="submit" class="w-full py-4 rounded-xl signature-gradient text-white font-semibold card-press">
-          Guardar
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: Routine -->
-  <div id="modal-routine" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center">
-    <div class="absolute inset-0" onclick="closeModal('routine')"></div>
-    <div class="modal-content relative bg-surface-container-lowest w-full max-w-lg rounded-t-3xl p-6 pb-8 max-h-[85vh] overflow-y-auto">
-      <button onclick="closeModal('routine')" class="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-container transition">
-        <span class="material-symbols-outlined text-on-surface-variant">close</span>
-      </button>
-      <h3 class="font-manrope font-bold text-xl mb-6" id="routine-modal-title">Nueva rutina</h3>
-      <form id="routine-form" onsubmit="saveRoutine(event)" class="space-y-4">
-        <input type="hidden" id="routine-edit-id">
-        <div>
-          <label class="block text-sm text-on-surface-variant mb-2">Nombre de la rutina</label>
-          <input type="text" id="routine-name" class="input-field w-full px-4 py-3 text-on-surface" placeholder="Ej: Día de pecho" required>
-        </div>
-        <div>
-          <label class="block text-sm text-on-surface-variant mb-2">Días de la semana</label>
-          <div class="flex flex-wrap gap-2" id="routine-days">
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Lunes" class="accent-primary">
-              <span class="text-sm">Lun</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Martes" class="accent-primary">
-              <span class="text-sm">Mar</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Miércoles" class="accent-primary">
-              <span class="text-sm">Mié</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Jueves" class="accent-primary">
-              <span class="text-sm">Jue</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Viernes" class="accent-primary">
-              <span class="text-sm">Vie</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Sábado" class="accent-primary">
-              <span class="text-sm">Sáb</span>
-            </label>
-            <label class="flex items-center gap-2 px-3 py-2 rounded-lg bg-surface-container-low cursor-pointer hover:bg-surface-container transition">
-              <input type="checkbox" name="days" value="Domingo" class="accent-primary">
-              <span class="text-sm">Dom</span>
-            </label>
-          </div>
-        </div>
-        <div>
-          <div class="flex items-center justify-between mb-2">
-            <label class="text-sm text-on-surface-variant">Ejercicios</label>
-            <button type="button" onclick="addRoutineExercise()" class="text-primary text-sm font-medium flex items-center gap-1">
-              <span class="material-symbols-outlined text-base">add</span>
-              Añadir
-            </button>
-          </div>
-          <div id="routine-exercises" class="space-y-2">
-          </div>
-        </div>
-        <button type="submit" class="w-full py-4 rounded-xl signature-gradient text-white font-semibold card-press">
-          Guardar rutina
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: Goal -->
-  <div id="modal-goal" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center">
-    <div class="absolute inset-0" onclick="closeModal('goal')"></div>
-    <div class="modal-content relative bg-surface-container-lowest w-full max-w-lg rounded-t-3xl p-6 pb-8">
-      <button onclick="closeModal('goal')" class="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-container transition">
-        <span class="material-symbols-outlined text-on-surface-variant">close</span>
-      </button>
-      <h3 class="font-manrope font-bold text-xl mb-6">Nueva meta</h3>
-      <form id="goal-form" onsubmit="addGoal(event)" class="space-y-4">
-        <div>
-          <label class="block text-sm text-on-surface-variant mb-2">Ejercicio</label>
-          <input type="text" id="goal-exercise" class="input-field w-full px-4 py-3 text-on-surface" placeholder="Ej: Peso muerto" required>
-        </div>
-        <div>
-          <label class="block text-sm text-on-surface-variant mb-2">Peso meta (kg)</label>
-          <input type="number" id="goal-weight" class="input-field w-full px-4 py-3 text-on-surface" placeholder="100" min="1" required>
-        </div>
-        <button type="submit" class="w-full py-4 rounded-xl signature-gradient text-white font-semibold card-press">
-          Añadir meta
-        </button>
-      </form>
-    </div>
-  </div>
-
-  <!-- MODAL: Settings -->
-  <div id="modal-settings" class="modal-overlay fixed inset-0 z-50 flex items-end justify-center">
-    <div class="absolute inset-0" onclick="closeModal('settings')"></div>
-    <div class="modal-content relative bg-surface-container-lowest w-full max-w-lg rounded-t-3xl p-6 pb-8">
-      <button onclick="closeModal('settings')" class="absolute top-4 right-4 p-2 rounded-full hover:bg-surface-container transition">
-        <span class="material-symbols-outlined text-on-surface-variant">close</span>
-      </button>
-      <h3 class="font-manrope font-bold text-xl mb-6">Configuración</h3>
-      <div class="space-y-4">
-        <button onclick="exportData()" class="w-full py-4 rounded-xl bg-surface-container text-on-surface font-semibold flex items-center justify-center gap-2 card-press">
-          <span class="material-symbols-outlined">download</span>
-          Exportar datos
-        </button>
-        <button onclick="importData()" class="w-full py-4 rounded-xl bg-surface-container text-on-surface font-semibold flex items-center justify-center gap-2 card-press">
-          <span class="material-symbols-outlined">upload</span>
-          Importar datos
-        </button>
-        <button onclick="resetData()" class="w-full py-4 rounded-xl bg-red-50 text-red-600 font-semibold flex items-center justify-center gap-2 card-press">
-          <span class="material-symbols-outlined">delete_forever</span>
-          Borrar todos los datos
-        </button>
+    <!-- App Container -->
+    <div id="app">
+      <div class="page-loading">
+        <span class="material-symbols-outlined text-4xl animate-spin">sync</span>
       </div>
     </div>
-  </div>
 
-  <!-- TOAST: Pro -->
-  <div id="toast-pro" class="fixed top-20 left-1/2 -translate-x-1/2 z-50 bg-inverse-surface text-white px-6 py-3 rounded-xl shadow-lg opacity-0 pointer-events-none transition-opacity">
-    <span class="material-symbols-outlined text-yellow-400 align-middle mr-2">star</span>
-    Función próximamente disponible
-  </div>
-
-  <input type="file" id="import-file" accept=".json" class="hidden" onchange="handleImport(event)">
-
-  <script>
-    const STATE = {
-      currentScreen: 'dashboard',
-      perfil: {
-        nombre: '',
-        peso: 0,
-        altura: 0,
-        objetivo: ''
-      },
-      registros: [],
-      rutinas: [],
-      records: {},
-      goals: [],
-      selectedDate: new Date().toISOString().split('T')[0],
-      currentDayExercises: []
-    };
-
-    function loadState() {
-      const saved = localStorage.getItem('wepai_state');
-      if (saved) {
-        const parsed = JSON.parse(saved);
-        Object.assign(STATE, parsed);
-        if (STATE.selectedDate) {
-          STATE.selectedDate = new Date().toISOString().split('T')[0];
-        }
-      }
-    }
-
-    function saveState() {
-      localStorage.setItem('wepai_state', JSON.stringify(STATE));
-    }
-
-    function navigate(screen) {
-      document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
-      document.getElementById(`screen-${screen}`).classList.add('active');
-      document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-      document.querySelector(`.nav-item[data-screen="${screen}"]`)?.classList.add('active');
-      STATE.currentScreen = screen;
-      
-      if (screen === 'registro') {
-        renderDateCarousel();
-        renderDayExercises();
-      } else if (screen === 'rutinas') {
-        renderRoutines();
-      } else if (screen === 'perfil') {
-        renderProfile();
-        renderRecords();
-        renderStats();
-      } else if (screen === 'dashboard') {
-        renderDashboard();
-      }
-    }
-
-    function renderDateCarousel() {
-      const container = document.getElementById('date-carousel');
-      const today = new Date();
-      const dates = [];
-      
-      for (let i = -14; i <= 0; i++) {
-        const date = new Date(today);
-        date.setDate(date.getDate() + i);
-        dates.push(date);
-      }
-      
-      container.innerHTML = dates.map(date => {
-        const dateStr = date.toISOString().split('T')[0];
-        const dayName = date.toLocaleDateString('es-ES', { weekday: 'short' }).slice(0, 3);
-        const dayNum = date.getDate();
-        const isToday = dateStr === STATE.selectedDate;
-        const isFuture = date > today;
-        
-        return `
-          <button onclick="selectDate('${dateStr}')" 
-            class="flex-shrink-0 flex flex-col items-center px-4 py-3 rounded-2xl transition ${isToday ? 'signature-gradient text-white' : 'bg-surface-container-low text-on-surface hover:bg-surface-container'}" 
-            ${isFuture ? 'disabled opacity-40' : ''}>
-            <span class="text-xs font-medium uppercase">${dayName}</span>
-            <span class="font-manrope font-bold text-lg">${dayNum}</span>
-          </button>
-        `;
-      }).join('');
-      
-      container.scrollLeft = container.scrollWidth;
-    }
-
-    function selectDate(dateStr) {
-      STATE.selectedDate = dateStr;
-      renderDateCarousel();
-      renderDayExercises();
-    }
-
-    function renderDayExercises() {
-      const container = document.getElementById('exercises-list');
-      const btnSave = document.getElementById('btn-save-session');
-      
-      if (STATE.currentDayExercises.length === 0) {
-        container.innerHTML = `
-          <div class="card-lift rounded-2xl p-6 text-center">
-            <span class="material-symbols-outlined text-5xl text-outline mb-3">fitness_center</span>
-            <p class="text-on-surface-variant">No hay ejercicios para este día</p>
-          </div>
-        `;
-        btnSave.classList.add('hidden');
-        updateVolume();
-        return;
-      }
-      
-      container.innerHTML = STATE.currentDayExercises.map((ex, idx) => `
-        <div class="card-lift rounded-2xl p-4 card-press">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="font-semibold text-on-surface">${ex.name}</h4>
-            <button onclick="removeExercise(${idx})" class="p-2 rounded-full hover:bg-surface-container transition">
-              <span class="material-symbols-outlined text-on-surface-variant">delete</span>
-            </button>
-          </div>
-          <div class="grid grid-cols-3 gap-3 mb-3">
-            <div class="text-center">
-              <p class="text-xs text-on-surface-variant mb-1">Series</p>
-              <input type="number" value="${ex.sets}" min="1" onchange="updateExercise(${idx}, 'sets', this.value)"
-                class="input-field w-full px-2 py-2 text-center text-sm">
-            </div>
-            <div class="text-center">
-              <p class="text-xs text-on-surface-variant mb-1">Reps</p>
-              <input type="number" value="${ex.reps}" min="1" onchange="updateExercise(${idx}, 'reps', this.value)"
-                class="input-field w-full px-2 py-2 text-center text-sm">
-            </div>
-            <div class="text-center">
-              <p class="text-xs text-on-surface-variant mb-1">Peso</p>
-              <input type="number" value="${ex.weight}" min="0" step="0.5" onchange="updateExercise(${idx}, 'weight', this.value)"
-                class="input-field w-full px-2 py-2 text-center text-sm">
-            </div>
-          </div>
-          <div class="flex gap-2">
-            ${ex.setsArr.map((done, i) => `
-              <button onclick="toggleSet(${idx}, ${i})" 
-                class="flex-1 py-2 rounded-lg text-xs font-medium transition ${done ? 'signature-gradient text-white' : 'bg-surface-container text-on-surface-variant'}">
-                ${i + 1}
-              </button>
-            `).join('')}
-          </div>
-        </div>
-      `).join('');
-      
-      btnSave.classList.remove('hidden');
-      updateVolume();
-    }
-
-    function updateExercise(idx, field, value) {
-      STATE.currentDayExercises[idx][field] = parseFloat(value) || 0;
-      if (field === 'sets') {
-        STATE.currentDayExercises[idx].setsArr = Array(Math.max(1, parseInt(value) || 0)).fill(false);
-      }
-      saveState();
-      updateVolume();
-    }
-
-    function toggleSet(exIdx, setIdx) {
-      STATE.currentDayExercises[exIdx].setsArr[setIdx] = !STATE.currentDayExercises[exIdx].setsArr[setIdx];
-      saveState();
-      renderDayExercises();
-    }
-
-    function removeExercise(idx) {
-      STATE.currentDayExercises.splice(idx, 1);
-      saveState();
-      renderDayExercises();
-    }
-
-    function updateVolume() {
-      const volume = STATE.currentDayExercises.reduce((sum, ex) => sum + (ex.sets * ex.reps * ex.weight), 0);
-      document.getElementById('daily-volume').innerHTML = `${volume.toLocaleString()} <span class="text-base font-medium">kg</span>`;
-      
-      const maxRecord = Object.values(STATE.records).reduce((max, r) => Math.max(max, r.weight), 0);
-      const percent = maxRecord > 0 ? Math.min(100, Math.round((volume / maxRecord) * 100)) : 0;
-      const ring = document.getElementById('intensity-ring');
-      const circumference = 2 * Math.PI * 27;
-      ring.style.strokeDashoffset = circumference - (percent / 100) * circumference;
-      document.getElementById('intensity-percent').textContent = percent + '%';
-    }
-
-    function openExerciseModal() {
-      document.getElementById('modal-exercise').classList.add('open');
-      document.getElementById('exercise-name').focus();
-    }
-
-    function addExercise(e) {
-      e.preventDefault();
-      const name = document.getElementById('exercise-name').value.trim();
-      const sets = parseInt(document.getElementById('exercise-sets').value) || 1;
-      const reps = parseInt(document.getElementById('exercise-reps').value) || 1;
-      const weight = parseFloat(document.getElementById('exercise-weight').value) || 0;
-      
-      STATE.currentDayExercises.push({
-        name, sets, reps, weight,
-        setsArr: Array(sets).fill(false)
-      });
-      
-      saveState();
-      renderDayExercises();
-      closeModal('exercise');
-      e.target.reset();
-      document.getElementById('exercise-sets').value = 3;
-      document.getElementById('exercise-reps').value = 10;
-      document.getElementById('exercise-weight').value = 20;
-    }
-
-    function saveSession() {
-      if (STATE.currentDayExercises.length === 0) return;
-      
-      const session = {
-        date: STATE.selectedDate,
-        datetime: new Date().toISOString(),
-        exercises: STATE.currentDayExercises.map(ex => ({
-          name: ex.name,
-          sets: ex.sets,
-          reps: ex.reps,
-          weight: ex.weight
-        }))
-      };
-      
-      STATE.registros.push(session);
-      
-      STATE.currentDayExercises.forEach(ex => {
-        const key = ex.name.toLowerCase();
-        if (!STATE.records[key] || ex.weight > STATE.records[key].weight) {
-          STATE.records[key] = { weight: ex.weight, date: session.datetime };
-        }
-      });
-      
-      saveState();
-      STATE.currentDayExercises = [];
-      saveState();
-      renderDayExercises();
-      renderDashboard();
-      
-      alert('Sesión guardada correctamente');
-    }
-
-    function openRoutineModal(editId = null) {
-      const modal = document.getElementById('modal-routine');
-      const title = document.getElementById('routine-modal-title');
-      
-      if (editId) {
-        const routine = STATE.rutinas.find(r => r.id === editId);
-        if (routine) {
-          title.textContent = 'Editar rutina';
-          document.getElementById('routine-edit-id').value = editId;
-          document.getElementById('routine-name').value = routine.name;
-          document.querySelectorAll('input[name="days"]').forEach(cb => {
-            cb.checked = routine.days.includes(cb.value);
-          });
-          STATE.tempRoutineExercises = [...routine.exercises];
-          renderRoutineExercises();
-        }
-      } else {
-        title.textContent = 'Nueva rutina';
-        document.getElementById('routine-form').reset();
-        document.getElementById('routine-edit-id').value = '';
-        STATE.tempRoutineExercises = [];
-        renderRoutineExercises();
-      }
-      
-      modal.classList.add('open');
-    }
-
-    function renderRoutineExercises() {
-      const container = document.getElementById('routine-exercises');
-      if (STATE.tempRoutineExercises.length === 0) {
-        container.innerHTML = '<p class="text-sm text-on-surface-variant text-center py-4">Añade ejercicios a tu rutina</p>';
-        return;
-      }
-      container.innerHTML = STATE.tempRoutineExercises.map((ex, idx) => `
-        <div class="flex items-center gap-2 bg-surface-container-low rounded-xl p-3">
-          <input type="text" value="${ex.name}" placeholder="Nombre" onchange="updateRoutineEx(${idx}, 'name', this.value)"
-            class="flex-1 px-3 py-2 bg-surface-container text-sm rounded-lg">
-          <input type="number" value="${ex.sets}" placeholder="Series" min="1" onchange="updateRoutineEx(${idx}, 'sets', this.value)"
-            class="w-16 px-2 py-2 bg-surface-container text-sm rounded-lg text-center">
-          <input type="number" value="${ex.reps}" placeholder="Reps" min="1" onchange="updateRoutineEx(${idx}, 'reps', this.value)"
-            class="w-16 px-2 py-2 bg-surface-container text-sm rounded-lg text-center">
-          <button type="button" onclick="removeRoutineEx(${idx})" class="p-1 text-on-surface-variant hover:text-red-500">
-            <span class="material-symbols-outlined text-lg">close</span>
-          </button>
-        </div>
-      `).join('');
-    }
-
-    function addRoutineExercise() {
-      STATE.tempRoutineExercises.push({ name: '', sets: 3, reps: 10 });
-      renderRoutineExercises();
-    }
-
-    function updateRoutineEx(idx, field, value) {
-      STATE.tempRoutineExercises[idx][field] = field === 'name' ? value : (parseInt(value) || 0);
-    }
-
-    function removeRoutineEx(idx) {
-      STATE.tempRoutineExercises.splice(idx, 1);
-      renderRoutineExercises();
-    }
-
-    function saveRoutine(e) {
-      e.preventDefault();
-      const name = document.getElementById('routine-name').value.trim();
-      const days = Array.from(document.querySelectorAll('input[name="days"]:checked')).map(cb => cb.value);
-      const exercises = STATE.tempRoutineExercises.filter(ex => ex.name.trim());
-      
-      if (!name) {
-        alert('Por favor, introduce un nombre para la rutina');
-        return;
-      }
-      
-      const editId = document.getElementById('routine-edit-id').value;
-      
-      if (editId) {
-        const idx = STATE.rutinas.findIndex(r => r.id === editId);
-        if (idx !== -1) {
-          STATE.rutinas[idx] = { id: editId, name, days, exercises };
-        }
-      } else {
-        STATE.rutinas.push({
-          id: Date.now().toString(),
-          name,
-          days,
-          exercises
-        });
-      }
-      
-      saveState();
-      closeModal('routine');
-      renderRoutines();
-    }
-
-    function renderRoutines() {
-      const container = document.getElementById('routines-list');
-      
-      if (STATE.rutinas.length === 0) {
-        container.innerHTML = `
-          <div class="card-lift rounded-2xl p-6 text-center">
-            <span class="material-symbols-outlined text-5xl text-outline mb-3">fitness_center</span>
-            <p class="text-on-surface-variant mb-4">Aún no tienes rutinas creadas</p>
-            <button onclick="openRoutineModal()" class="px-4 py-2 rounded-xl signature-gradient text-white font-medium">
-              Crea tu primera rutina
-            </button>
-          </div>
-        `;
-        return;
-      }
-      
-      container.innerHTML = STATE.rutinas.map(routine => `
-        <div class="card-lift rounded-2xl p-5">
-          <div class="flex items-center justify-between mb-3">
-            <h4 class="font-manrope font-semibold text-lg">${routine.name}</h4>
-            <div class="flex gap-1">
-              <button onclick="startRoutine('${routine.id}')" class="px-3 py-1.5 rounded-lg signature-gradient text-white text-sm font-medium">
-                Iniciar
-              </button>
-              <button onclick="openRoutineModal('${routine.id}')" class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition">
-                <span class="material-symbols-outlined text-base text-on-surface-variant">edit</span>
-              </button>
-              <button onclick="deleteRoutine('${routine.id}')" class="p-2 rounded-lg bg-surface-container hover:bg-red-50 transition">
-                <span class="material-symbols-outlined text-base text-on-surface-variant">delete</span>
-              </button>
-            </div>
-          </div>
-          <div class="flex flex-wrap gap-1 mb-3">
-            ${routine.days.map(d => `<span class="px-2 py-1 bg-surface-container rounded-lg text-xs text-on-surface-variant">${d}</span>`).join('')}
-          </div>
-          <div class="space-y-2">
-            ${routine.exercises.map(ex => `
-              <div class="flex items-center justify-between py-2 border-b border-outline-variant/30 last:border-0">
-                <span class="text-sm text-on-surface">${ex.name}</span>
-                <span class="text-sm text-on-surface-variant">${ex.sets} × ${ex.reps}</span>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function startRoutine(routineId) {
-      const routine = STATE.rutinas.find(r => r.id === routineId);
-      if (!routine) return;
-      
-      STATE.currentDayExercises = routine.exercises.map(ex => ({
-        name: ex.name,
-        sets: ex.sets,
-        reps: ex.reps,
-        weight: 0,
-        setsArr: Array(ex.sets).fill(false)
-      }));
-      
-      saveState();
-      navigate('registro');
-    }
-
-    function deleteRoutine(routineId) {
-      if (!confirm('¿Eliminar esta rutina?')) return;
-      STATE.rutinas = STATE.rutinas.filter(r => r.id !== routineId);
-      saveState();
-      renderRoutines();
-    }
-
-    function openGoalModal() {
-      document.getElementById('modal-goal').classList.add('open');
-      document.getElementById('goal-exercise').focus();
-    }
-
-    function addGoal(e) {
-      e.preventDefault();
-      const exercise = document.getElementById('goal-exercise').value.trim();
-      const weight = parseFloat(document.getElementById('goal-weight').value) || 0;
-      
-      if (!exercise || !weight) return;
-      
-      STATE.goals.push({ exercise: exercise.toLowerCase(), weight });
-      saveState();
-      closeModal('goal');
-      e.target.reset();
-      renderGoals();
-    }
-
-    function renderGoals() {
-      const container = document.getElementById('goals-container');
-      
-      if (STATE.goals.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-6 text-on-surface-variant">
-            <span class="material-symbols-outlined text-4xl opacity-40 mb-2 block">flag</span>
-            <p class="text-sm">Añade metas para seguir tu progreso</p>
-          </div>
-        `;
-        return;
-      }
-      
-      container.innerHTML = STATE.goals.map((goal, idx) => {
-        const record = STATE.records[goal.exercise];
-        const current = record ? record.weight : 0;
-        const percent = Math.min(100, Math.round((current / goal.weight) * 100));
-        
-        return `
-          <div class="bg-surface-container-low rounded-xl p-3">
-            <div class="flex items-center justify-between mb-2">
-              <span class="text-sm font-medium capitalize">${goal.exercise}</span>
-              <button onclick="removeGoal(${idx})" class="text-on-surface-variant hover:text-red-500">
-                <span class="material-symbols-outlined text-base">close</span>
-              </button>
-            </div>
-            <div class="flex items-center gap-3">
-              <div class="flex-1 h-2 bg-surface-container-highest rounded-full overflow-hidden">
-                <div class="h-full signature-gradient rounded-full" style="width: ${percent}%"></div>
-              </div>
-              <span class="text-xs text-on-surface-variant">${current}/${goal.weight} kg</span>
-            </div>
-          </div>
-        `;
-      }).join('');
-    }
-
-    function removeGoal(idx) {
-      STATE.goals.splice(idx, 1);
-      saveState();
-      renderGoals();
-    }
-
-    function openSettingsModal() {
-      document.getElementById('modal-settings').classList.add('open');
-    }
-
-    function exportData() {
-      const data = JSON.stringify(STATE, null, 2);
-      const blob = new Blob([data], { type: 'application/json' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = 'wepai_backup.json';
-      a.click();
-      URL.revokeObjectURL(url);
-    }
-
-    function importData() {
-      document.getElementById('import-file').click();
-    }
-
-    function handleImport(e) {
-      const file = e.target.files[0];
-      if (!file) return;
-      
-      const reader = new FileReader();
-      reader.onload = (event) => {
-        try {
-          const data = JSON.parse(event.target.result);
-          Object.assign(STATE, data);
-          saveState();
-          navigate('dashboard');
-          alert('Datos importados correctamente');
-        } catch (err) {
-          alert('Error al importar datos');
-        }
-      };
-      reader.readAsText(file);
-      e.target.value = '';
-    }
-
-    function resetData() {
-      if (!confirm('¿Estás seguro de que quieres borrar todos los datos? Esta acción no se puede deshacer.')) return;
-      localStorage.removeItem('wepai_state');
-      location.reload();
-    }
-
-    function closeModal(name) {
-      document.getElementById(`modal-${name}`).classList.remove('open');
-    }
-
-    function showProToast() {
-      const toast = document.getElementById('toast-pro');
-      toast.classList.remove('opacity-0', 'pointer-events-none');
-      toast.classList.add('opacity-100');
-      setTimeout(() => {
-        toast.classList.remove('opacity-100');
-        toast.classList.add('opacity-0', 'pointer-events-none');
-      }, 2500);
-    }
-
-    function renderDashboard() {
-      const pesoSpan = document.querySelector('#dashboard-peso span');
-      pesoSpan.textContent = STATE.perfil.peso ? `${STATE.perfil.peso} kg` : '—';
-      
-      const streak = calculateStreak();
-      document.getElementById('streak-count').textContent = streak;
-      
-      renderGoals();
-      renderRecentRecord();
-    }
-
-    function calculateStreak() {
-      if (STATE.registros.length === 0) return 0;
-      
-      const sortedDates = [...new Set(STATE.registros.map(r => r.date))].sort().reverse();
-      if (sortedDates.length === 0) return 0;
-      
-      let streak = 0;
-      const today = new Date();
-      today.setHours(0, 0, 0, 0);
-      
-      for (let i = 0; i < sortedDates.length; i++) {
-        const checkDate = new Date(today);
-        checkDate.setDate(checkDate.getDate() - i);
-        const checkDateStr = checkDate.toISOString().split('T')[0];
-        
-        if (sortedDates.includes(checkDateStr)) {
-          streak++;
-        } else {
-          break;
-        }
-      }
-      
-      return streak;
-    }
-
-    function renderRecentRecord() {
-      const container = document.getElementById('recent-record');
-      const entries = Object.entries(STATE.records).sort((a, b) => 
-        new Date(b[1].date) - new Date(a[1].date)
-      );
-      
-      if (entries.length === 0) {
-        container.innerHTML = `
-          <span class="material-symbols-outlined text-4xl opacity-40 mb-2 block">emoji_events</span>
-          <p class="text-sm">Sin récords aún</p>
-        `;
-        return;
-      }
-      
-      const [name, record] = entries[0];
-      container.innerHTML = `
-        <p class="font-manrope font-bold text-2xl capitalize mb-1">${name}</p>
-        <p class="font-manrope font-bold text-4xl signature-gradient bg-clip-text text-transparent">${record.weight} kg</p>
-      `;
-    }
-
-    function renderProfile() {
-      document.getElementById('input-nombre').value = STATE.perfil.nombre || '';
-      document.getElementById('input-peso').value = STATE.perfil.peso || '';
-      document.getElementById('input-altura').value = STATE.perfil.altura || '';
-      document.getElementById('input-objetivo').value = STATE.perfil.objetivo || '';
-      
-      const nombre = STATE.perfil.nombre || 'WePai';
-      const inicial = nombre.charAt(0).toUpperCase();
-      document.getElementById('avatar-perfil').textContent = inicial;
-      document.getElementById('avatar-header').textContent = inicial;
-      
-      document.getElementById('perfil-nombre-display').textContent = nombre;
-      document.getElementById('perfil-objetivo-display').textContent = STATE.perfil.objetivo || 'Sin objetivo';
-    }
-
-    function saveProfile(e) {
-      e.preventDefault();
-      STATE.perfil.nombre = document.getElementById('input-nombre').value.trim();
-      STATE.perfil.peso = parseFloat(document.getElementById('input-peso').value) || 0;
-      STATE.perfil.altura = parseFloat(document.getElementById('input-altura').value) || 0;
-      STATE.perfil.objetivo = document.getElementById('input-objetivo').value;
-      saveState();
-      renderProfile();
-      alert('Perfil guardado');
-    }
-
-    function renderRecords() {
-      const container = document.getElementById('records-list');
-      const entries = Object.entries(STATE.records);
-      
-      if (entries.length === 0) {
-        container.innerHTML = `
-          <div class="text-center py-6 text-on-surface-variant">
-            <span class="material-symbols-outlined text-4xl opacity-40 mb-2 block">emoji_events</span>
-            <p class="text-sm">Aún no tienes récords. ¡Empieza a entrenar!</p>
-          </div>
-        `;
-        return;
-      }
-      
-      container.innerHTML = entries.map(([name, record]) => `
-        <div class="flex items-center justify-between py-3 border-b border-outline-variant/30 last:border-0">
-          <span class="font-medium capitalize">${name}</span>
-          <span class="font-manrope font-bold text-primary-container">${record.weight} kg</span>
-        </div>
-      `).join('');
-    }
-
-    function renderStats() {
-      document.getElementById('stat-sessions').textContent = STATE.registros.length;
-      
-      const totalVolume = STATE.registros.reduce((sum, reg) => 
-        sum + reg.exercises.reduce((s, ex) => s + (ex.sets * ex.reps * ex.weight), 0)
-      , 0);
-      document.getElementById('stat-volume').innerHTML = `${totalVolume.toLocaleString()} <span class="text-base font-medium">kg</span>`;
-      
-      document.getElementById('stat-max-streak').textContent = calculateMaxStreak();
-      document.getElementById('stat-exercises').textContent = Object.keys(STATE.records).length;
-    }
-
-    function calculateMaxStreak() {
-      if (STATE.registros.length === 0) return 0;
-      
-      const dates = [...new Set(STATE.registros.map(r => r.date))].sort();
-      let maxStreak = 1;
-      let currentStreak = 1;
-      
-      for (let i = 1; i < dates.length; i++) {
-        const prev = new Date(dates[i - 1]);
-        const curr = new Date(dates[i]);
-        const diff = (curr - prev) / (1000 * 60 * 60 * 24);
-        
-        if (diff === 1) {
-          currentStreak++;
-          maxStreak = Math.max(maxStreak, currentStreak);
-        } else {
-          currentStreak = 1;
-        }
-      }
-      
-      return maxStreak;
-    }
-
-    document.addEventListener('DOMContentLoaded', () => {
-      loadState();
-      renderDateCarousel();
-      renderDayExercises();
-      renderDashboard();
-      navigate('dashboard');
-    });
-  </script>
-</body>
+    <script type="module">
+      import { init } from './src/app/init.js';
+      init();
+    </script>
+  </body>
 </html>
