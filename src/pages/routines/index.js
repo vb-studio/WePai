@@ -3,7 +3,7 @@
  * CRUD for workout routines
  */
 
-import { getState, saveState, addRoutine, updateRoutine, deleteRoutine } from '../../features/store.js';
+import { getState, saveState, addRoutine, updateRoutine, deleteRoutine, setRestDay, getRegistro } from '../../features/store.js';
 import {
   resetFlow,
   initEditFlow,
@@ -123,6 +123,19 @@ function renderRoutinesList() {
             }).join('')}
           </div>
         </section>
+
+        <!-- Mark Today as Rest -->
+        <section class="space-y-4">
+          <h3 class="text-xl font-headline font-bold">Hoy</h3>
+          <button type="button" onclick="window.markTodayAsRest()" class="w-full p-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 transition text-left">
+            <div class="flex items-center gap-4">
+              <span class="material-symbols-outlined text-3xl text-blue-500">bedtime</span>
+              <div>
+                <span class="font-headline font-bold text-lg text-on-surface">Marcar hoy como descanso</span>
+              </div>
+            </div>
+          </button>
+        </section>
       </main>
     </div>
   `;
@@ -145,6 +158,13 @@ function renderRoutinesList() {
 
   window.startRoutine = (id) => {
     window.location.href = '/log?routine=' + id;
+  };
+
+  window.markTodayAsRest = () => {
+    const today = new Date().toISOString().split('T')[0];
+    setRestDay(today);
+    window.showToast('Hoy marcado como descanso');
+    renderRoutinesList();
   };
 }
 

@@ -3,7 +3,7 @@
  * Workout logging with log-workout-flow conductor
  */
 
-import { getState, saveState, addRegistro, updateRecord, setRestDay, removeRestDay, isRestDay } from '../../features/store.js';
+import { getState, saveState, addRegistro, updateRecord } from '../../features/store.js';
 import { 
   getFlowState, 
   getCurrentStep, 
@@ -119,7 +119,55 @@ function centerCarouselOnToday() {
 }
 
 function renderSelectRoutine() {
+  const state = getState();
   const routines = getAvailableRoutines();
+  const todayStr = toISODate();
+  const todayDate = new Date();
+  const todayDayName = dayNames[todayDate.getDay()];
+  const registro = state.registros.find(r => r.date === todayStr);
+  const todayRoutine = state.rutinas.find(r => r.days.includes(todayDayName));
+  const isRest = registro && registro.isRest === true;
+  const hasWorkout = registro && registro.exercises && registro.exercises.length > 0;
+  
+  let todayStatus = '';
+  if (isRest) {
+    todayStatus = `
+      <div class="rounded-2xl p-6 bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 mb-4">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-4xl text-blue-500">bedtime</span>
+          <div>
+            <h3 class="font-headline font-bold text-xl text-on-surface">Día de Descanso</h3>
+            <p class="text-sm text-on-surface-variant">Recuperación activa</p>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (hasWorkout) {
+    const vol = registro.exercises.reduce((sum, ex) => sum + (ex.sets * ex.weight), 0);
+    todayStatus = `
+      <div class="rounded-2xl p-6 bg-green-50 dark:bg-green-900/30 border-2 border-green-200 dark:border-green-700 mb-4">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-4xl text-green-500">check_circle</span>
+          <div>
+            <h3 class="font-headline font-bold text-xl text-on-surface">Entrenamiento Completado</h3>
+            <p class="text-sm text-on-surface-variant">${registro.exercises.length} ejercicios • ${vol.toLocaleString()} kg</p>
+          </div>
+        </div>
+      </div>
+    `;
+  } else if (todayRoutine) {
+    todayStatus = `
+      <div class="rounded-2xl p-6 bg-orange-50 dark:bg-orange-900/30 border-2 border-orange-200 dark:border-orange-700 mb-4">
+        <div class="flex items-center gap-4">
+          <span class="material-symbols-outlined text-4xl text-orange-500">event_note</span>
+          <div>
+            <h3 class="font-headline font-bold text-xl text-on-surface">${todayRoutine.name}</h3>
+            <p class="text-sm text-on-surface-variant">${todayRoutine.exercises.length} ejercicios programados</p>
+          </div>
+        </div>
+      </div>
+    `;
+  }
   
   container.innerHTML = `
     <div id="screen-registro" class="screen active">
@@ -146,6 +194,8 @@ function renderSelectRoutine() {
           </div>
         </section>
 
+        ${todayStatus}
+
         <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
           <button onclick="window.selectRoutine(null)" class="p-6 rounded-2xl bg-surface-container-low border-2 border-primary-container hover:border-primary transition-colors text-left">
             <div class="flex items-center gap-4">
@@ -153,16 +203,6 @@ function renderSelectRoutine() {
               <div>
                 <h3 class="font-headline font-bold text-xl text-on-surface">Entrenamiento Libre</h3>
                 <p class="text-sm text-on-surface-variant">Sin rutina definida, crea tus ejercicios</p>
-              </div>
-            </div>
-          </button>
-
-          <button onclick="window.setAsRest()" class="p-6 rounded-2xl bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 transition-colors text-left">
-            <div class="flex items-center gap-4">
-              <span class="material-symbols-outlined text-4xl text-blue-500">bedtime</span>
-              <div>
-                <h3 class="font-headline font-bold text-xl text-on-surface">Día de Descanso</h3>
-                <p class="text-sm text-on-surface-variant">No entreno hoy</p>
               </div>
             </div>
           </button>
@@ -188,14 +228,6 @@ function renderSelectRoutine() {
   window.selectRoutine = (routineId) => {
     stepSelectRoutine(routineId);
     renderExercises();
-  };
-
-  window.setAsRest = () => {
-    const state = getState();
-    const dateStr = state.selectedDate || toISODate();
-    setRestDay(dateStr);
-    window.showToast('Día marcado como descanso');
-    renderSelectRoutine();
   };
 }
 
