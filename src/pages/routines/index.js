@@ -228,24 +228,34 @@ function renderRoutineForm() {
               </button>
             </div>
             
-            <div class="space-y-3" id="exercises-list">
+              <div class="space-y-3" id="exercises-list">
               ${flow.exercises.length === 0 ? `
                 <p class="text-center text-on-surface-variant py-8">No hay ejercicios. Añade el primero.</p>
               ` : flow.exercises.map((ex, idx) => `
-                <div class="flex items-center gap-3 bg-surface-container-low rounded-xl p-3">
-                  <input type="text" value="${ex.name}" placeholder="Nombre" 
-                    onchange="window.updateExName(${idx}, this.value)"
-                    class="flex-1 px-3 py-2 bg-surface-container text-sm rounded-lg">
-                  <input type="number" value="${ex.sets}" min="1" max="10" 
-                    onchange="window.updateExField(${idx}, 'sets', this.value)"
-                    class="w-16 px-2 py-2 bg-surface-container text-sm rounded-lg text-center">
-                  <span class="text-sm text-on-surface-variant">×</span>
-                  <input type="number" value="${ex.reps}" min="1" max="100" 
-                    onchange="window.updateExField(${idx}, 'reps', this.value)"
-                    class="w-16 px-2 py-2 bg-surface-container text-sm rounded-lg text-center">
-                  <button type="button" onclick="window.removeEx(${idx})" class="p-1 text-on-surface-variant hover:text-red-500">
-                    <span class="material-symbols-outlined text-lg">close</span>
-                  </button>
+                <div class="bg-surface-container-low rounded-xl p-3">
+                  <div class="flex items-center gap-2 mb-2">
+                    <input type="text" value="${ex.name}" placeholder="Nombre del ejercicio" 
+                      onchange="window.updateExName(${idx}, this.value)"
+                      class="flex-1 px-3 py-2 bg-surface-container text-sm rounded-lg">
+                    <button type="button" onclick="window.removeEx(${idx})" class="p-2 text-on-surface-variant hover:text-red-500">
+                      <span class="material-symbols-outlined text-lg">close</span>
+                    </button>
+                  </div>
+                  <div class="flex items-center gap-2">
+                    <div class="flex items-center gap-1">
+                      <span class="text-xs text-on-surface-variant">Series</span>
+                      <input type="number" value="${ex.sets}" min="1" max="10" 
+                        onchange="window.updateExField(${idx}, 'sets', this.value)"
+                        class="w-14 px-2 py-1 bg-surface-container text-sm rounded-lg text-center">
+                    </div>
+                    <span class="text-sm text-on-surface-variant">×</span>
+                    <div class="flex items-center gap-1">
+                      <span class="text-xs text-on-surface-variant">Reps</span>
+                      <input type="number" value="${ex.reps}" min="1" max="100" 
+                        onchange="window.updateExField(${idx}, 'reps', this.value)"
+                        class="w-14 px-2 py-1 bg-surface-container text-sm rounded-lg text-center">
+                    </div>
+                  </div>
                 </div>
               `).join('')}
             </div>

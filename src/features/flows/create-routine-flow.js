@@ -142,12 +142,10 @@ export function stepSetDays(days) {
  * @returns {{success: boolean}}
  */
 export function stepAddExercise(exercise) {
-  if (!exercise.name || exercise.name.trim().length === 0) {
-    return { success: false, error: 'Nombre del ejercicio es obligatorio' };
-  }
+  const name = exercise.name ? exercise.name.trim() : '';
   
   flowState.exercises.push({
-    name: exercise.name.trim(),
+    name: name,
     sets: Math.min(10, Math.max(1, exercise.sets || 3)),
     reps: Math.min(100, Math.max(1, exercise.reps || 10))
   });
