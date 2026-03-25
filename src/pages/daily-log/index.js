@@ -3,7 +3,7 @@
  * Workout logging with log-workout-flow conductor
  */
 
-import { getState, saveState, addRegistro, updateRecord } from '../../features/store.js';
+import { getState, saveState, addRegistro, updateRecord, setRestDay, removeRestDay, isRestDay } from '../../features/store.js';
 import { 
   getFlowState, 
   getCurrentStep, 
@@ -53,6 +53,9 @@ function renderDateCarousel() {
         const dateStr = toISODate(date);
         const isSelected = dateStr === selectedDate;
         const isTodayDate = isToday(date);
+        const registro = state.registros.find(r => r.date === dateStr);
+        const hasWorkout = registro && registro.exercises && registro.exercises.length > 0;
+        const isRest = registro && registro.isRest === true;
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const compareDate = new Date(date);
@@ -66,6 +69,10 @@ function renderDateCarousel() {
           dayStyle = 'signature-gradient text-white shadow-lg scale-105';
         } else if (isTodayDate) {
           dayStyle = 'bg-primary-container/20 border-2 border-primary';
+        } else if (isRest) {
+          dayStyle = 'bg-blue-100 border-2 border-blue-300 text-blue-700';
+        } else if (hasWorkout) {
+          dayStyle = 'bg-green-100 border-2 border-green-300 text-green-700';
         } else if (isFuture) {
           dayStyle = isWeekend ? 'bg-surface-container border-2 border-gray-400 text-on-surface hover:border-primary' : 'bg-surface-container text-on-surface hover:bg-primary-container/10';
         } else if (isPast) {
@@ -78,6 +85,8 @@ function renderDateCarousel() {
             class="date-btn flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 cursor-pointer ${dayStyle}" style="min-width: 60px;">
             <span class="font-label text-[8px] uppercase font-bold ${isSelected ? 'text-white' : ''}">${formatDate(date, { weekday: 'short' }).slice(0,3)}</span>
             <span class="font-headline text-xl font-bold ${isSelected ? 'text-white' : ''}">${date.getDate()}</span>
+            ${isRest ? '<span class="material-symbols-outlined text-xs">bedtime</span>' : ''}
+            ${hasWorkout && !isRest ? '<span class="material-symbols-outlined text-xs">fitness_center</span>' : ''}
             ${isSelected ? '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
           </div>
         `;
@@ -87,18 +96,20 @@ function renderDateCarousel() {
 }
 
 function centerCarouselOnToday() {
-  setTimeout(function() {
-    const todayStr = new Date().toISOString().split('T')[0];
-    const todayBtn = document.getElementById('date-btn-' + todayStr);
-    const carousel = document.getElementById('date-carousel');
-    if (todayBtn && carousel) {
-      const containerWidth = carousel.offsetWidth;
-      const buttonWidth = todayBtn.offsetWidth;
-      const buttonLeft = todayBtn.offsetLeft;
-      const scrollPosition = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
-      carousel.scrollLeft = scrollPosition;
-    }
-  }, 100);
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      const todayStr = new Date().toISOString().split('T')[0];
+      const todayBtn = document.getElementById('date-btn-' + todayStr);
+      const carousel = document.getElementById('date-carousel');
+      if (todayBtn && carousel) {
+        const containerWidth = carousel.offsetWidth;
+        const buttonWidth = todayBtn.offsetWidth;
+        const buttonLeft = todayBtn.offsetLeft;
+        const scrollPosition = buttonLeft - (containerWidth / 2) + (buttonWidth / 2);
+        carousel.scrollLeft = scrollPosition;
+      }
+    });
+  });
 }
 
 function renderSelectRoutine() {
@@ -151,6 +162,16 @@ function renderSelectRoutine() {
               </div>
             </button>
           `).join('')}
+
+          <button onclick="window.setAsRest()" class="p-6 rounded-2xl bg-blue-50 border-2 border-blue-200 hover:border-blue-400 transition-colors text-left">
+            <div class="flex items-center gap-4">
+              <span class="material-symbols-outlined text-4xl text-blue-500">bedtime</span>
+              <div>
+                <h3 class="font-headline font-bold text-xl text-on-surface">Día de Descanso</h3>
+                <p class="text-sm text-on-surface-variant">No entreno hoy</p>
+              </div>
+            </div>
+          </button>
         </div>
       </main>
     </div>
@@ -161,6 +182,14 @@ function renderSelectRoutine() {
   window.selectRoutine = (routineId) => {
     stepSelectRoutine(routineId);
     renderExercises();
+  };
+
+  window.setAsRest = () => {
+    const state = getState();
+    const dateStr = state.selectedDate || toISODate();
+    setRestDay(dateStr);
+    window.showToast('Día marcado como descanso');
+    renderSelectRoutine();
   };
 }
 

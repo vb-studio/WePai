@@ -336,6 +336,34 @@ export function updateRegistro(date, exercises) {
   saveState();
 }
 
+export function setRestDay(date) {
+  const idx = state.registros.findIndex(r => r.date === date);
+  if (idx >= 0) {
+    state.registros[idx].isRest = true;
+  } else {
+    state.registros.push({
+      date,
+      datetime: new Date().toISOString(),
+      isRest: true,
+      exercises: []
+    });
+  }
+  saveState();
+}
+
+export function removeRestDay(date) {
+  const idx = state.registros.findIndex(r => r.date === date);
+  if (idx >= 0) {
+    state.registros.splice(idx, 1);
+  }
+  saveState();
+}
+
+export function isRestDay(date) {
+  const reg = state.registros.find(r => r.date === date);
+  return reg && reg.isRest === true;
+}
+
 // Records operations
 export function updateRecord(exerciseName, weight) {
   const key = exerciseName.toLowerCase();
