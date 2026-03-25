@@ -151,6 +151,16 @@ function renderSelectRoutine() {
             </div>
           </button>
 
+          <button onclick="window.setAsRest()" class="p-6 rounded-2xl bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 transition-colors text-left">
+            <div class="flex items-center gap-4">
+              <span class="material-symbols-outlined text-4xl text-blue-500">bedtime</span>
+              <div>
+                <h3 class="font-headline font-bold text-xl text-on-surface">Día de Descanso</h3>
+                <p class="text-sm text-on-surface-variant">No entreno hoy</p>
+              </div>
+            </div>
+          </button>
+
           ${routines.map(routine => `
             <button onclick="window.selectRoutine('${routine.id}')" class="p-6 rounded-2xl bg-surface-container-low border-2 border-outline-variant hover:border-primary transition-colors text-left">
               <div class="flex items-center gap-4">
@@ -162,16 +172,6 @@ function renderSelectRoutine() {
               </div>
             </button>
           `).join('')}
-
-          <button onclick="window.setAsRest()" class="p-6 rounded-2xl bg-blue-50 border-2 border-blue-200 hover:border-blue-400 transition-colors text-left">
-            <div class="flex items-center gap-4">
-              <span class="material-symbols-outlined text-4xl text-blue-500">bedtime</span>
-              <div>
-                <h3 class="font-headline font-bold text-xl text-on-surface">Día de Descanso</h3>
-                <p class="text-sm text-on-surface-variant">No entreno hoy</p>
-              </div>
-            </div>
-          </button>
         </div>
       </main>
     </div>
