@@ -12,6 +12,11 @@ let deferredPrompt = null;
  * Initialize PWA install listener
  */
 function initPWAInstall() {
+  // Check if already installed
+  if (window.matchMedia('(display-mode: standalone)').matches) {
+    return;
+  }
+  
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -32,7 +37,10 @@ function initPWAInstall() {
   });
 
   window.installApp = async () => {
-    if (!deferredPrompt) return;
+    if (!deferredPrompt) {
+      alert('Esta función no está disponible en este navegador');
+      return;
+    }
     deferredPrompt.prompt();
     const { outcome } = await deferredPrompt.userChoice;
     if (outcome === 'accepted') {
