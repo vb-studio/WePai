@@ -65,9 +65,9 @@ function renderSettings() {
               <p class="text-sm text-on-surface-variant">Sistema métrico o imperial</p>
             </div>
           </div>
-          <select id="setting-unidades" onchange="window.updateSetting('unidades', this.value)" class="bg-surface-container px-4 py-2 rounded-xl text-on-surface border border-outline-variant">
-            <option value="metric" ${state.settings.unidades === 'metric' ? 'selected' : ''}>kg / cm</option>
-            <option value="imperial" ${state.settings.unidades === 'imperial' ? 'selected' : ''}>lb / ft</option>
+          <select id="setting-unidades" onchange="window.updateSetting('unidades', this.value)" class="bg-surface-container px-3 py-2 rounded-xl text-on-surface text-sm border border-outline-variant min-w-[100px]">
+            <option value="metric" ${state.settings.unidades === 'metric' ? 'selected' : ''}>kg/cm</option>
+            <option value="imperial" ${state.settings.unidades === 'imperial' ? 'selected' : ''}>lb/ft</option>
           </select>
         </div>
 
@@ -80,7 +80,7 @@ function renderSettings() {
               <p class="text-sm text-on-surface-variant">Qué mostrar al abrir la app</p>
             </div>
           </div>
-          <select id="setting-pantalla" onchange="window.updateSetting('pantallaInicio', this.value)" class="bg-surface-container px-4 py-2 rounded-xl text-on-surface border border-outline-variant">
+          <select id="setting-pantalla" onchange="window.updateSetting('pantallaInicio', this.value)" class="bg-surface-container px-3 py-2 rounded-xl text-on-surface text-sm border border-outline-variant min-w-[120px]">
             <option value="dashboard" ${state.settings.pantallaInicio === 'dashboard' ? 'selected' : ''}>Dashboard</option>
             <option value="log" ${state.settings.pantallaInicio === 'log' ? 'selected' : ''}>Registro</option>
             <option value="routines" ${state.settings.pantallaInicio === 'routines' ? 'selected' : ''}>Rutinas</option>
