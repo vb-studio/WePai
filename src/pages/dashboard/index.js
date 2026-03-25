@@ -60,17 +60,9 @@ export async function render(container) {
                 <p class="text-sm text-on-surface-variant font-medium">Registra tu primer entrenamiento</p>
               </div>
             </div>
-            <div id="chart-container" class="h-64 flex items-end justify-between gap-1 relative">
-              <div class="w-full h-3/4 bg-surface-container-highest rounded-t-sm opacity-30 flex items-end justify-center py-4">
-                <span class="material-symbols-outlined text-5xl text-outline opacity-30">show_chart</span>
-              </div>
-            </div>
-            <div class="flex justify-between mt-4 text-[10px] font-bold text-outline uppercase tracking-tighter" id="chart-labels" style="display: none;">
-              <span>Lun</span><span>Mar</span><span>Mié</span><span>Jue</span><span>Vie</span><span>Sáb</span><span>Hoy</span>
-            </div>
-            <div id="chart-empty" class="text-center py-8">
-              <span class="material-symbols-outlined text-5xl text-outline opacity-30 mb-2">show_chart</span>
-              <p class="text-sm text-on-surface-variant">Aún no hay registros.<br>Empieza tu primer entrenamiento.</p>
+            <div id="chart-empty" class="flex flex-col items-center justify-center py-12">
+              <span class="material-symbols-outlined text-6xl text-outline opacity-20 mb-4">show_chart</span>
+              <p class="text-sm text-on-surface-variant text-center">Aún no hay registros.<br>Empieza tu primer entrenamiento.</p>
             </div>
           </div>
 
