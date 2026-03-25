@@ -96,7 +96,7 @@ function renderProfile() {
                 </select>
               </div>
             </div>
-            <button type="submit" class="w-full py-3 rounded-xl signature-gradient text-white font-semibold">
+            <button type="submit" id="save-profile-btn" class="w-full py-3 rounded-xl signature-gradient text-white font-semibold disabled:opacity-50 disabled:cursor-not-allowed" disabled>
               Guardar cambios
             </button>
           </form>
@@ -156,6 +156,39 @@ function renderProfile() {
     </div>
   `;
 
+  // Track form changes
+  setTimeout(() => {
+    const nombre = document.getElementById('input-nombre');
+    const peso = document.getElementById('input-peso-perfil');
+    const altura = document.getElementById('input-altura');
+    const objetivo = document.getElementById('input-objetivo');
+    const saveBtn = document.getElementById('save-profile-btn');
+    
+    if (nombre && peso && altura && objetivo && saveBtn) {
+      const original = {
+        nombre: state.perfil.nombre || '',
+        peso: state.perfil.peso || 0,
+        altura: state.perfil.altura || 0,
+        objetivo: state.perfil.objetivo || ''
+      };
+      
+      const checkChanges = () => {
+        const hasChanges = 
+          nombre.value !== original.nombre ||
+          parseFloat(peso.value) !== original.peso ||
+          parseInt(altura.value) !== original.altura ||
+          objetivo.value !== original.objetivo;
+        
+        saveBtn.disabled = !hasChanges;
+      };
+      
+      nombre.addEventListener('input', checkChanges);
+      peso.addEventListener('input', checkChanges);
+      altura.addEventListener('input', checkChanges);
+      objetivo.addEventListener('change', checkChanges);
+    }
+  }, 100);
+
   window.saveProfile = (e) => {
     e.preventDefault();
     const perfil = {
@@ -165,7 +198,7 @@ function renderProfile() {
       objetivo: document.getElementById('input-objetivo').value
     };
     saveProfile(perfil);
-    window.showToast('Perfil guardado correctamente');
+    window.showToast('Cambios guardados');
     renderProfile();
   };
 
