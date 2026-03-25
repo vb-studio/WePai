@@ -86,7 +86,7 @@ function renderDateCarousel() {
           dayStyle = 'bg-surface-container-low opacity-50';
         }
         return `
-          <div role="button" tabindex="-1" data-date="${dateStr}" 
+          <div role="button" tabindex="-1" id="date-btn-${dateStr}" data-date="${dateStr}" 
             class="date-btn flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 cursor-pointer ${dayStyle}" style="min-width: 60px;">
             <span class="font-label text-[8px] uppercase font-bold ${isSelected ? 'text-white' : ''}">${formatDate(date, { weekday: 'short' }).slice(0,3)}</span>
             <span class="font-headline text-xl font-bold ${isSelected ? 'text-white' : ''}">${date.getDate()}</span>
