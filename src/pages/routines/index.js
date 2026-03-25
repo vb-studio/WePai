@@ -54,7 +54,7 @@ function renderRoutinesList() {
             <span class="text-label-sm font-label tracking-widest text-primary uppercase text-[10px] font-bold">Gestión de Entrenamiento</span>
             <h2 class="text-4xl font-headline font-extrabold tracking-tight">Mis Rutinas</h2>
           </div>
-          <button onclick="window.openNewRoutine()" class="signature-gradient text-on-primary px-6 py-3 rounded-full flex items-center gap-2 font-headline font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-transform">
+          <button type="button" onclick="window.openNewRoutine()" class="signature-gradient text-on-primary px-6 py-3 rounded-full flex items-center gap-2 font-headline font-bold text-sm shadow-lg shadow-primary/20 active:scale-95 transition-transform">
             <span class="material-symbols-outlined text-sm">add</span>
             Crear Nueva Rutina
           </button>
@@ -64,7 +64,7 @@ function renderRoutinesList() {
           <div class="rounded-2xl p-12 text-center bg-surface-container-low">
             <span class="material-symbols-outlined text-6xl text-outline mb-4">fitness_center</span>
             <p class="text-on-surface-variant mb-4">Aún no tienes rutinas creadas</p>
-            <button onclick="window.openNewRoutine()" class="px-6 py-3 rounded-full signature-gradient text-white font-medium">
+            <button type="button" onclick="window.openNewRoutine()" class="px-6 py-3 rounded-full signature-gradient text-white font-medium">
               Crea tu primera rutina
             </button>
           </div>
@@ -75,13 +75,13 @@ function renderRoutinesList() {
                 <div class="flex items-center justify-between mb-4">
                   <h3 class="font-headline font-bold text-xl">${routine.name}</h3>
                   <div class="flex gap-2">
-                    <button onclick="window.startRoutine('${routine.id}')" class="px-3 py-1.5 rounded-lg signature-gradient text-white text-sm font-medium">
+                    <button type="button" onclick="window.startRoutine('${routine.id}')" class="px-3 py-1.5 rounded-lg signature-gradient text-white text-sm font-medium">
                       Iniciar
                     </button>
-                    <button onclick="window.editRoutine('${routine.id}')" class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition">
+                    <button type="button" onclick="window.editRoutine('${routine.id}')" class="p-2 rounded-lg bg-surface-container hover:bg-surface-container-high transition">
                       <span class="material-symbols-outlined text-base text-on-surface-variant">edit</span>
                     </button>
-                    <button onclick="window.deleteRoutine('${routine.id}')" class="p-2 rounded-lg bg-surface-container hover:bg-red-50 transition">
+                    <button type="button" onclick="window.deleteRoutine('${routine.id}')" class="p-2 rounded-lg bg-surface-container hover:bg-red-50 transition">
                       <span class="material-symbols-outlined text-base text-on-surface-variant">delete</span>
                     </button>
                   </div>
@@ -157,7 +157,7 @@ function renderRoutineForm() {
       <header class="lg:hidden bg-[#fcf9f8]/80 dark:bg-[#1c1b1b]/80 backdrop-blur-xl fixed top-0 w-full z-50">
         <div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
           <div class="flex items-center gap-3">
-            <button onclick="window.cancelRoutine()" class="text-on-surface-variant">
+            <button type="button" onclick="window.cancelRoutine()" class="text-on-surface-variant">
               <span class="material-symbols-outlined text-2xl">arrow_back</span>
             </button>
             <span class="text-xl font-bold">${flow.editingId ? 'Editar' : 'Nueva'} Rutina</span>
@@ -187,7 +187,7 @@ function renderRoutineForm() {
               <label class="block text-sm text-on-surface-variant mb-2">Nombre de la rutina</label>
               <input type="text" id="routine-name" class="input-field w-full px-4 py-3 text-on-surface text-xl" placeholder="Ej: Día de pecho" value="${flow.routineName || ''}">
             </div>
-            <button onclick="window.submitName()" class="w-full py-4 rounded-xl signature-gradient text-white font-semibold">
+            <button type="button" onclick="window.submitName()" class="w-full py-4 rounded-xl signature-gradient text-white font-semibold">
               Continuar
             </button>
           </div>
@@ -207,10 +207,10 @@ function renderRoutineForm() {
               </div>
             </div>
             <div class="flex gap-3">
-              <button onclick="window.backStep()" class="flex-1 py-4 rounded-xl bg-surface-container text-on-surface font-semibold">
+              <button type="button" onclick="window.backStep()" class="flex-1 py-4 rounded-xl bg-surface-container text-on-surface font-semibold">
                 Atrás
               </button>
-              <button onclick="window.submitDays()" class="flex-1 py-4 rounded-xl signature-gradient text-white font-semibold">
+              <button type="button" onclick="window.submitDays()" class="flex-1 py-4 rounded-xl signature-gradient text-white font-semibold">
                 Continuar
               </button>
             </div>
@@ -222,7 +222,7 @@ function renderRoutineForm() {
           <div class="space-y-6">
             <div class="flex justify-between items-center">
               <h3 class="text-xl font-bold">Ejercicios</h3>
-              <button onclick="window.addExercise()" class="text-primary font-medium flex items-center gap-1">
+              <button type="button" onclick="window.addExercise()" class="text-primary font-medium flex items-center gap-1">
                 <span class="material-symbols-outlined text-base">add</span>
                 Añadir
               </button>
@@ -243,7 +243,7 @@ function renderRoutineForm() {
                   <input type="number" value="${ex.reps}" min="1" max="100" 
                     onchange="window.updateExField(${idx}, 'reps', this.value)"
                     class="w-16 px-2 py-2 bg-surface-container text-sm rounded-lg text-center">
-                  <button onclick="window.removeEx(${idx})" class="p-1 text-on-surface-variant hover:text-red-500">
+                  <button type="button" onclick="window.removeEx(${idx})" class="p-1 text-on-surface-variant hover:text-red-500">
                     <span class="material-symbols-outlined text-lg">close</span>
                   </button>
                 </div>
@@ -251,10 +251,10 @@ function renderRoutineForm() {
             </div>
 
             <div class="flex gap-3">
-              <button onclick="window.backStep()" class="flex-1 py-4 rounded-xl bg-surface-container text-on-surface font-semibold">
+              <button type="button" onclick="window.backStep()" class="flex-1 py-4 rounded-xl bg-surface-container text-on-surface font-semibold">
                 Atrás
               </button>
-              <button onclick="window.goToReview()" class="flex-1 py-4 rounded-xl signature-gradient text-white font-semibold">
+              <button type="button" onclick="window.goToReview()" class="flex-1 py-4 rounded-xl signature-gradient text-white font-semibold">
                 Revisar
               </button>
             </div>
@@ -287,10 +287,10 @@ function renderRoutineForm() {
             </div>
 
             <div class="flex gap-3">
-              <button onclick="window.backStep()" class="flex-1 py-4 rounded-xl bg-surface-container text-on-surface font-semibold">
+              <button type="button" onclick="window.backStep()" class="flex-1 py-4 rounded-xl bg-surface-container text-on-surface font-semibold">
                 Atrás
               </button>
-              <button onclick="window.saveRoutine()" class="flex-1 py-4 rounded-xl signature-gradient text-white font-semibold">
+              <button type="button" onclick="window.saveRoutine()" class="flex-1 py-4 rounded-xl signature-gradient text-white font-semibold">
                 Guardar Rutina
               </button>
             </div>
