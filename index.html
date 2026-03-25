@@ -75,6 +75,32 @@
       background: linear-gradient(135deg, #a04100 0%, #ff6b00 100%);
     }
 
+    /* Fix mobile tap highlight */
+    button {
+      -webkit-tap-highlight-color: transparent;
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+      touch-action: manipulation;
+    }
+
+    #date-carousel button {
+      -webkit-tap-highlight-color: transparent;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    
+    #date-carousel button:focus,
+    #date-carousel button:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+      border-color: transparent !important;
+    }
+    
+    #date-carousel button:active {
+      border-color: transparent !important;
+    }
+
     .glass-nav {
       backdrop-filter: blur(20px);
     }
@@ -275,6 +301,32 @@
     .dark .toast {
       background: rgba(48, 48, 48, 0.95);
     }
+
+    /* Modal */
+    #modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 9998;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+    }
+    #modal-overlay.show {
+      display: flex;
+    }
+    #modal-content {
+      background: var(--surface-container-low);
+      border-radius: 24px;
+      padding: 1.5rem;
+      width: 100%;
+      max-width: 400px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+    }
+    .dark #modal-content {
+      background: #252525;
+    }
   </style>
 </head>
   <body class="bg-surface text-on-surface font-body min-h-screen">
@@ -284,6 +336,19 @@
       <div id="toast" class="toast">
         <span class="material-symbols-outlined">check_circle</span>
         <span id="toast-message">Cambios guardados</span>
+      </div>
+    </div>
+
+    <!-- Modal for adding exercise -->
+    <div id="modal-overlay">
+      <div id="modal-content">
+        <h3 class="font-headline text-xl font-bold mb-4 text-on-surface">Nuevo Ejercicio</h3>
+        <input type="text" id="modal-input" placeholder="Nombre del ejercicio" 
+          class="w-full p-4 rounded-xl bg-surface-container text-on-surface border border-outline-variant mb-4 font-body text-lg">
+        <div class="flex gap-3">
+          <button id="modal-cancel" class="flex-1 py-3 rounded-xl bg-surface-container text-on-surface font-semibold">Cancelar</button>
+          <button id="modal-confirm" class="flex-1 py-3 rounded-xl signature-gradient text-white font-semibold">Añadir</button>
+        </div>
       </div>
     </div>
 

@@ -74,8 +74,8 @@ function renderDateCarousel() {
           dayStyle = 'bg-surface-container-low opacity-50';
         }
         return `
-          <button id="date-btn-${dateStr}" onclick="window.selectDate('${dateStr}')" 
-            class="flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 ${dayStyle}" style="min-width: 60px;">
+          <button type="button" data-date="${dateStr}" tabindex="-1"
+            class="date-btn flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 ${dayStyle}" style="min-width: 60px;">
             <span class="font-label text-[8px] uppercase font-bold ${isSelected ? 'text-white' : ''}">${formatDate(date, { weekday: 'short' }).slice(0,3)}</span>
             <span class="font-headline text-xl font-bold ${isSelected ? 'text-white' : ''}">${date.getDate()}</span>
             ${isSelected ? '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
@@ -294,13 +294,6 @@ function renderExercises() {
   
   centerCarouselOnToday();
   
-  window.selectDate = (dateStr) => {
-    const state = getState();
-    state.selectedDate = dateStr;
-    saveState();
-    renderExercises();
-  };
-  
   window.updateExercise = (idx, field, value) => {
     const updates = {};
     if (field === 'sets') updates.sets = parseInt(value) || 1;
@@ -322,24 +315,65 @@ function renderExercises() {
   };
   
   window.openAddExercise = () => {
-    const name = prompt('Nombre del ejercicio:');
-    if (!name) return;
+    const overlay = document.getElementById('modal-overlay');
+    const input = document.getElementById('modal-input');
+    const cancelBtn = document.getElementById('modal-cancel');
+    const confirmBtn = document.getElementById('modal-confirm');
     
-    stepAddExercise({
-      name,
-      sets: 3,
-      reps: 10,
-      weight: 0
-    });
-    renderExercises();
+    input.value = '';
+    overlay.classList.add('show');
+    input.focus();
+    
+    const closeModal = () => {
+      overlay.classList.remove('show');
+    };
+    
+    const handleConfirm = () => {
+      const name = input.value.trim();
+      if (!name) {
+        window.showToast('Escribe un nombre');
+        return;
+      }
+      stepAddExercise({
+        name,
+        sets: 3,
+        reps: 10,
+        weight: 0
+      });
+      closeModal();
+      renderExercises();
+    };
+    
+    cancelBtn.onclick = closeModal;
+    confirmBtn.onclick = handleConfirm;
+    input.onkeydown = (e) => {
+      if (e.key === 'Enter') handleConfirm();
+      if (e.key === 'Escape') closeModal();
+    };
+    overlay.onclick = (e) => {
+      if (e.target === overlay) closeModal();
+    };
   };
   
   window.selectDate = (dateStr) => {
     const state = getState();
     state.selectedDate = dateStr;
     saveState();
-    renderSelectRoutine();
+    if (window.location.hash.includes('log') || window.location.pathname.includes('log')) {
+      renderExercises();
+    } else {
+      renderSelectRoutine();
+    }
   };
+
+  setTimeout(() => {
+    document.querySelectorAll('.date-btn').forEach(btn => {
+      btn.onclick = (e) => {
+        btn.blur();
+        window.selectDate(btn.dataset.date);
+      };
+    });
+  }, 0);
 
   window.finishWorkout = () => {
     const result = finalizeWorkout();
