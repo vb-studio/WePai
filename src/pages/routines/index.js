@@ -200,7 +200,7 @@ function renderRoutineForm() {
               <label class="block text-sm text-on-surface-variant mb-4">Días de la semana</label>
               <div class="flex flex-wrap gap-3">
                 ${['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(day => `
-                  <div onclick="window.toggleDay('${day}')" class="day-toggle flex items-center justify-center px-4 py-3 rounded-xl cursor-pointer transition ${flow.selectedDays.includes(day) ? 'signature-gradient text-white' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}">
+                  <div data-day="${day}" onclick="window.toggleDay('${day}')" class="day-toggle flex items-center justify-center px-4 py-3 rounded-xl cursor-pointer transition ${flow.selectedDays.includes(day) ? 'signature-gradient text-white' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}">
                     <span class="text-sm font-medium">${day}</span>
                   </div>
                 `).join('')}
@@ -323,7 +323,16 @@ function renderRoutineForm() {
     } else {
       flow.selectedDays.push(day);
     }
-    renderRoutineForm();
+    document.querySelectorAll('.day-toggle').forEach(el => {
+      const d = el.dataset.day;
+      if (flow.selectedDays.includes(d)) {
+        el.classList.remove('bg-surface-container-low', 'text-on-surface-variant', 'hover:bg-surface-container');
+        el.classList.add('signature-gradient', 'text-white');
+      } else {
+        el.classList.remove('signature-gradient', 'text-white');
+        el.classList.add('bg-surface-container-low', 'text-on-surface-variant', 'hover:bg-surface-container');
+      }
+    });
   };
 
   window.submitDays = () => {
