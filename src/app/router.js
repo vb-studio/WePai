@@ -85,6 +85,11 @@ async function loadPage(path, push = true) {
     return;
   }
   
+  // Show loading state
+  if (routesElement) {
+    routesElement.innerHTML = '<div class="page-loading"><span class="material-symbols-outlined text-4xl animate-spin text-primary">sync</span></div>';
+  }
+  
   try {
     const module = await import(`../pages/${routeName}/index.js`);
     const page = module.default;

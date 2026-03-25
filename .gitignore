@@ -23,3 +23,5 @@ npm-debug.log*
 # API Keys
 API Key*
 mcp.json
+
+.vercel
