@@ -41,6 +41,8 @@ export async function render(cont) {
 }
 
 // ==================== DATE CAROUSEL HELPER ====================
+const dayNames = ['Domingo', 'Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado'];
+
 function renderDateCarousel() {
   const state = getState();
   const dates = getDateRange(7, 6);
@@ -56,14 +58,15 @@ function renderDateCarousel() {
         const registro = state.registros.find(r => r.date === dateStr);
         const hasWorkout = registro && registro.exercises && registro.exercises.length > 0;
         const isRest = registro && registro.isRest === true;
+        const dayOfWeek = dayNames[date.getDay()];
+        const hasRoutine = state.rutinas.some(r => r.days.includes(dayOfWeek));
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const compareDate = new Date(date);
         compareDate.setHours(0, 0, 0, 0);
         const isPast = compareDate < today;
         const isFuture = compareDate > today;
-        const dayOfWeek = date.getDay();
-        const isWeekend = dayOfWeek === 0 || dayOfWeek === 6;
+        const isWeekend = date.getDay() === 0 || date.getDay() === 6;
         let dayStyle = '';
         if (isSelected) {
           dayStyle = 'signature-gradient text-white shadow-lg scale-105';
@@ -73,6 +76,8 @@ function renderDateCarousel() {
           dayStyle = 'bg-blue-100 border-2 border-blue-300 text-blue-700';
         } else if (hasWorkout) {
           dayStyle = 'bg-green-100 border-2 border-green-300 text-green-700';
+        } else if (hasRoutine) {
+          dayStyle = 'bg-orange-100 dark:bg-orange-900/40 border-2 border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300';
         } else if (isFuture) {
           dayStyle = isWeekend ? 'bg-surface-container border-2 border-gray-400 text-on-surface hover:border-primary' : 'bg-surface-container text-on-surface hover:bg-primary-container/10';
         } else if (isPast) {
@@ -87,6 +92,7 @@ function renderDateCarousel() {
             <span class="font-headline text-xl font-bold ${isSelected ? 'text-white' : ''}">${date.getDate()}</span>
             ${isRest ? '<span class="material-symbols-outlined text-xs">bedtime</span>' : ''}
             ${hasWorkout && !isRest ? '<span class="material-symbols-outlined text-xs">fitness_center</span>' : ''}
+            ${hasRoutine && !hasWorkout && !isRest ? '<span class="material-symbols-outlined text-xs">event_note</span>' : ''}
             ${isSelected ? '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
           </div>
         `;
@@ -96,8 +102,8 @@ function renderDateCarousel() {
 }
 
 function centerCarouselOnToday() {
-  requestAnimationFrame(() => {
-    requestAnimationFrame(() => {
+  setTimeout(() => {
+    setTimeout(() => {
       const todayStr = new Date().toISOString().split('T')[0];
       const todayBtn = document.getElementById('date-btn-' + todayStr);
       const carousel = document.getElementById('date-carousel');
