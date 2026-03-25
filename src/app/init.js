@@ -6,6 +6,41 @@
 import { loadState, applyDarkMode, getState } from '../features/store.js';
 import { initRouter, navigate } from './router.js';
 
+let deferredPrompt = null;
+
+/**
+ * Initialize PWA install listener
+ */
+function initPWAInstall() {
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    const installBtn = document.getElementById('install-app-btn');
+    if (installBtn) {
+      installBtn.classList.remove('hidden');
+      installBtn.classList.add('flex');
+    }
+  });
+
+  window.addEventListener('appinstalled', () => {
+    deferredPrompt = null;
+    const installBtn = document.getElementById('install-app-btn');
+    if (installBtn) {
+      installBtn.classList.add('hidden');
+      installBtn.classList.remove('flex');
+    }
+  });
+
+  window.installApp = async () => {
+    if (!deferredPrompt) return;
+    deferredPrompt.prompt();
+    const { outcome } = await deferredPrompt.userChoice;
+    if (outcome === 'accepted') {
+      deferredPrompt = null;
+    }
+  };
+}
+
 /**
  * Initialize the application
  */
@@ -18,6 +53,8 @@ export async function init() {
     const state = getState();
     
     applyDarkMode();
+    
+    initPWAInstall();
     
     const appContainer = document.getElementById('app');
     if (!appContainer) {
