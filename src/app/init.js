@@ -6,48 +6,6 @@
 import { loadState, applyDarkMode, getState } from '../features/store.js';
 import { initRouter, navigate } from './router.js';
 
-let deferredPrompt = null;
-
-/**
- * Initialize PWA install listener
- */
-function initPWAInstall() {
-  setTimeout(() => {
-    const installBtn = document.getElementById('install-app-btn');
-    if (installBtn) {
-      installBtn.classList.remove('hidden');
-      installBtn.classList.add('flex');
-    }
-  }, 500);
-
-  window.addEventListener('beforeinstallprompt', (e) => {
-    e.preventDefault();
-    deferredPrompt = e;
-  });
-
-  window.installApp = async () => {
-    if (deferredPrompt) {
-      deferredPrompt.prompt();
-      const { outcome } = await deferredPrompt.userChoice;
-      if (outcome === 'accepted') {
-        deferredPrompt = null;
-      }
-    } else {
-      // Show instructions based on OS
-      const isAndroid = /Android/i.test(navigator.userAgent);
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
-      
-      if (isIOS) {
-        alert('Para instalar WePai en tu iPhone:\n\n1. Toca el botón Compartir (cuadrado con flecha)\n2. Desliza y busca "Agregar a pantalla de inicio"\n3. Toca "Agregar"');
-      } else if (isAndroid) {
-        alert('Para instalar WePai en tu Android:\n\n1. Toca los 3 puntos (menú)\n2. Toca "Agregar a pantalla de inicio"\n3. Toca "Agregar"');
-      } else {
-        alert('Para instalar en PC:\n\nChrome: Menú → "Instalar WePai"\nO busca "Agregar a pantalla de inicio" en el menú');
-      }
-    }
-  };
-}
-
 /**
  * Initialize the application
  */
@@ -60,8 +18,6 @@ export async function init() {
     const state = getState();
     
     applyDarkMode();
-    
-    initPWAInstall();
     
     const appContainer = document.getElementById('app');
     if (!appContainer) {
