@@ -200,10 +200,9 @@ function renderRoutineForm() {
               <label class="block text-sm text-on-surface-variant mb-4">Días de la semana</label>
               <div class="flex flex-wrap gap-3">
                 ${['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(day => `
-                  <label class="flex items-center gap-2 px-4 py-3 rounded-xl bg-surface-container-low cursor-pointer hover:bg-surface-container transition ${flow.selectedDays.includes(day) ? 'bg-primary-container/20 border-2 border-primary' : ''}">
-                    <input type="checkbox" name="days" value="${day}" ${flow.selectedDays.includes(day) ? 'checked' : ''} class="accent-primary">
-                    <span class="text-sm">${day}</span>
-                  </label>
+                  <div onclick="window.toggleDay('${day}')" class="day-toggle flex items-center justify-center px-4 py-3 rounded-xl cursor-pointer transition ${flow.selectedDays.includes(day) ? 'signature-gradient text-white' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}">
+                    <span class="text-sm font-medium">${day}</span>
+                  </div>
                 `).join('')}
               </div>
             </div>
@@ -316,14 +315,24 @@ function renderRoutineForm() {
     renderRoutineForm();
   };
 
+  window.toggleDay = (day) => {
+    const flow = getFlowState();
+    const idx = flow.selectedDays.indexOf(day);
+    if (idx > -1) {
+      flow.selectedDays.splice(idx, 1);
+    } else {
+      flow.selectedDays.push(day);
+    }
+    renderRoutineForm();
+  };
+
   window.submitDays = () => {
-    const checkboxes = document.querySelectorAll('input[name="days"]:checked');
-    const days = Array.from(checkboxes).map(cb => cb.value);
-    if (days.length === 0) {
+    const flow = getFlowState();
+    if (flow.selectedDays.length === 0) {
       window.showToast('Selecciona al menos un día');
       return;
     }
-    stepSetDays(days);
+    stepSetDays(flow.selectedDays);
     renderRoutineForm();
   };
 
