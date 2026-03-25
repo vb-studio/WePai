@@ -236,9 +236,56 @@
       border-radius: 9999px;
       font-weight: 600;
     }
+
+    /* Toast */
+    #toast-container {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 9999;
+      pointer-events: none;
+    }
+    
+    .toast {
+      background: rgba(28, 27, 27, 0.95);
+      color: white;
+      padding: 16px 32px;
+      border-radius: 16px;
+      font-weight: 600;
+      font-size: 16px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      opacity: 0;
+      transform: scale(0.9);
+      transition: all 0.3s ease;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    
+    .toast.show {
+      opacity: 1;
+      transform: scale(1);
+    }
+    
+    .toast .material-symbols-outlined {
+      color: #4ade80;
+    }
+    
+    .dark .toast {
+      background: rgba(48, 48, 48, 0.95);
+    }
   </style>
 </head>
   <body class="bg-surface text-on-surface font-body min-h-screen">
+
+    <!-- Toast Container -->
+    <div id="toast-container">
+      <div id="toast" class="toast">
+        <span class="material-symbols-outlined">check_circle</span>
+        <span id="toast-message">Cambios guardados</span>
+      </div>
+    </div>
 
     <!-- Mobile Bottom Navigation -->
     <nav class="mobile-nav fixed bottom-0 w-full z-50 rounded-t-[24px] bg-[#fcf9f8]/90 dark:bg-[#1c1b1b]/90 backdrop-blur-2xl border-t border-[#e2bfb0]/15 dark:border-[#49454f]/15 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] flex justify-around items-center px-8 pb-8 pt-4 md:hidden">

@@ -345,7 +345,7 @@ function renderExercises() {
     const result = finalizeWorkout();
     
     if (!result.success) {
-      alert(result.error || 'Error al guardar');
+      window.showToast(result.error || 'Error al guardar');
       return;
     }
     

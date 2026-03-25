@@ -309,7 +309,7 @@ function renderRoutineForm() {
   window.submitName = () => {
     const name = document.getElementById('routine-name').value.trim();
     if (!name) {
-      alert('El nombre es obligatorio');
+      window.showToast('El nombre es obligatorio');
       return;
     }
     stepSetName(name);
@@ -320,7 +320,7 @@ function renderRoutineForm() {
     const checkboxes = document.querySelectorAll('input[name="days"]:checked');
     const days = Array.from(checkboxes).map(cb => cb.value);
     if (days.length === 0) {
-      alert('Selecciona al menos un día');
+      window.showToast('Selecciona al menos un día');
       return;
     }
     stepSetDays(days);
@@ -358,7 +358,7 @@ function renderRoutineForm() {
   window.saveRoutine = () => {
     const result = finalizeRoutine();
     if (!result.success) {
-      alert(result.error || 'Error al guardar');
+      window.showToast(result.error || 'Error al guardar');
       return;
     }
     renderRoutinesList();

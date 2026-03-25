@@ -7,6 +7,21 @@ import { loadState, applyDarkMode, getState } from '../features/store.js';
 import { initRouter, navigate } from './router.js';
 
 /**
+ * Show toast notification
+ */
+function showToast(message = 'Cambios guardados') {
+  const toast = document.getElementById('toast');
+  const toastMessage = document.getElementById('toast-message');
+  if (toast && toastMessage) {
+    toastMessage.textContent = message;
+    toast.classList.add('show');
+    setTimeout(() => {
+      toast.classList.remove('show');
+    }, 2500);
+  }
+}
+
+/**
  * Initialize the application
  */
 export async function init() {
@@ -29,6 +44,7 @@ export async function init() {
     window.navigate = navigate;
     window.getState = getState;
     window.reloadPage = () => location.reload();
+    window.showToast = showToast;
     
     console.log('✅ WePai initialized');
     

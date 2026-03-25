@@ -243,7 +243,7 @@ function renderSettings() {
       if (file) {
         importData(file).then(() => {
           renderSettings();
-          alert('Datos importados correctamente');
+          window.showToast('Datos importados correctamente');
         });
       }
     };

@@ -165,7 +165,7 @@ function renderProfile() {
       objetivo: document.getElementById('input-objetivo').value
     };
     saveProfile(perfil);
-    alert('Perfil guardado correctamente');
+    window.showToast('Perfil guardado correctamente');
     renderProfile();
   };
 
