@@ -74,12 +74,12 @@ function renderDateCarousel() {
           dayStyle = 'bg-surface-container-low opacity-50';
         }
         return `
-          <button type="button" data-date="${dateStr}" tabindex="-1"
-            class="date-btn flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 ${dayStyle}" style="min-width: 60px;">
+          <div role="button" tabindex="-1" data-date="${dateStr}" 
+            class="date-btn flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 cursor-pointer ${dayStyle}" style="min-width: 60px;">
             <span class="font-label text-[8px] uppercase font-bold ${isSelected ? 'text-white' : ''}">${formatDate(date, { weekday: 'short' }).slice(0,3)}</span>
             <span class="font-headline text-xl font-bold ${isSelected ? 'text-white' : ''}">${date.getDate()}</span>
             ${isSelected ? '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
-          </button>
+          </div>
         `;
       }).join('')}
     </section>
@@ -368,8 +368,7 @@ function renderExercises() {
 
   setTimeout(() => {
     document.querySelectorAll('.date-btn').forEach(btn => {
-      btn.onclick = (e) => {
-        btn.blur();
+      btn.onclick = () => {
         window.selectDate(btn.dataset.date);
       };
     });
