@@ -12,48 +12,38 @@ let deferredPrompt = null;
  * Initialize PWA install listener
  */
 function initPWAInstall() {
-  // Check if already installed
-  if (window.matchMedia('(display-mode: standalone)').matches) {
-    return;
-  }
-  
-  // Always show install button (browsers handle if it's clickable or not)
   setTimeout(() => {
     const installBtn = document.getElementById('install-app-btn');
     if (installBtn) {
       installBtn.classList.remove('hidden');
       installBtn.classList.add('flex');
     }
-  }, 1000);
-  
+  }, 500);
+
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
-    const installBtn = document.getElementById('install-app-btn');
-    if (installBtn) {
-      installBtn.classList.remove('hidden');
-      installBtn.classList.add('flex');
-    }
-  });
-
-  window.addEventListener('appinstalled', () => {
-    deferredPrompt = null;
-    const installBtn = document.getElementById('install-app-btn');
-    if (installBtn) {
-      installBtn.classList.add('hidden');
-      installBtn.classList.remove('flex');
-    }
   });
 
   window.installApp = async () => {
-    if (!deferredPrompt) {
-      alert('Para instalar: Busca "Agregar a pantalla de inicio" en el menú del navegador');
-      return;
-    }
-    deferredPrompt.prompt();
-    const { outcome } = await deferredPrompt.userChoice;
-    if (outcome === 'accepted') {
-      deferredPrompt = null;
+    if (deferredPrompt) {
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      if (outcome === 'accepted') {
+        deferredPrompt = null;
+      }
+    } else {
+      // Show instructions based on OS
+      const isAndroid = /Android/i.test(navigator.userAgent);
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      
+      if (isIOS) {
+        alert('Para instalar WePai en tu iPhone:\n\n1. Toca el botón Compartir (cuadrado con flecha)\n2. Desliza y busca "Agregar a pantalla de inicio"\n3. Toca "Agregar"');
+      } else if (isAndroid) {
+        alert('Para instalar WePai en tu Android:\n\n1. Toca los 3 puntos (menú)\n2. Toca "Agregar a pantalla de inicio"\n3. Toca "Agregar"');
+      } else {
+        alert('Para instalar en PC:\n\nChrome: Menú → "Instalar WePai"\nO busca "Agregar a pantalla de inicio" en el menú');
+      }
     }
   };
 }
