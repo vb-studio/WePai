@@ -346,7 +346,11 @@ function renderRoutineForm() {
   };
 
   window.addExercise = () => {
-    stepAddExercise({ name: '', sets: 3, reps: 10 });
+    const result = stepAddExercise({ name: 'Nuevo ejercicio', sets: 3, reps: 10 });
+    if (!result.success) {
+      window.showToast(result.error || 'Error al añadir ejercicio');
+      return;
+    }
     renderRoutineForm();
   };
 
