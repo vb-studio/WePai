@@ -244,14 +244,16 @@ function renderRoutineForm() {
                   <div class="flex items-center gap-2">
                     <div class="flex items-center gap-1">
                       <span class="text-xs text-on-surface-variant">Series</span>
-                      <input type="number" value="${ex.sets}" min="1" max="10" 
+                      <input type="number" value="${ex.sets}" min="1" max="10" step="1"
+                        oninput="if(this.value>10)this.value=10;if(this.value<1)this.value=1"
                         onchange="window.updateExField(${idx}, 'sets', this.value)"
                         class="w-14 px-2 py-1 bg-surface-container text-sm rounded-lg text-center">
                     </div>
                     <span class="text-sm text-on-surface-variant">×</span>
                     <div class="flex items-center gap-1">
                       <span class="text-xs text-on-surface-variant">Reps</span>
-                      <input type="number" value="${ex.reps}" min="1" max="100" 
+                      <input type="number" value="${ex.reps}" min="1" max="50" step="1"
+                        oninput="if(this.value>50)this.value=50;if(this.value<1)this.value=1"
                         onchange="window.updateExField(${idx}, 'reps', this.value)"
                         class="w-14 px-2 py-1 bg-surface-container text-sm rounded-lg text-center">
                     </div>
@@ -356,11 +358,7 @@ function renderRoutineForm() {
   };
 
   window.addExercise = () => {
-    const result = stepAddExercise({ name: 'Nuevo ejercicio', sets: 3, reps: 10 });
-    if (!result.success) {
-      window.showToast(result.error || 'Error al añadir ejercicio');
-      return;
-    }
+    stepAddExercise({ name: '', sets: 3, reps: 10 });
     renderRoutineForm();
   };
 
@@ -369,7 +367,10 @@ function renderRoutineForm() {
   };
 
   window.updateExField = (idx, field, value) => {
-    stepUpdateExercise(idx, { [field]: parseInt(value) || 1 });
+    let num = parseInt(value) || 1;
+    if (field === 'sets') num = Math.min(10, Math.max(1, num));
+    if (field === 'reps') num = Math.min(50, Math.max(1, num));
+    stepUpdateExercise(idx, { [field]: num });
   };
 
   window.removeEx = (idx) => {
