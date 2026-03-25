@@ -17,6 +17,15 @@ function initPWAInstall() {
     return;
   }
   
+  // Always show install button (browsers handle if it's clickable or not)
+  setTimeout(() => {
+    const installBtn = document.getElementById('install-app-btn');
+    if (installBtn) {
+      installBtn.classList.remove('hidden');
+      installBtn.classList.add('flex');
+    }
+  }, 1000);
+  
   window.addEventListener('beforeinstallprompt', (e) => {
     e.preventDefault();
     deferredPrompt = e;
@@ -38,7 +47,7 @@ function initPWAInstall() {
 
   window.installApp = async () => {
     if (!deferredPrompt) {
-      alert('Esta función no está disponible en este navegador');
+      alert('Para instalar: Busca "Agregar a pantalla de inicio" en el menú del navegador');
       return;
     }
     deferredPrompt.prompt();
