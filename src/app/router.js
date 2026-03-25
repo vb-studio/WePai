@@ -111,6 +111,7 @@ async function loadPage(path, push = true) {
     
   } catch (error) {
     console.error(`Error loading page ${routeName}:`, error);
+    if (!routesElement) return;
     routesElement.innerHTML = `
       <div class="page-error">
         <span class="material-symbols-outlined">error</span>

@@ -151,8 +151,8 @@ function renderProfile() {
           </div>
         </section>
 
-        <!-- Install App Button -->
-        <section class="py-6">
+        <!-- Install App Button - Mobile Only -->
+        <section class="py-6 md:hidden">
           <button id="install-app-btn" onclick="window.installApp()" class="w-full py-4 rounded-xl bg-surface-container-low border-2 border-primary-container hover:border-primary transition-colors flex items-center justify-center gap-3 hidden">
             <span class="material-symbols-outlined text-2xl text-primary">download_for_offline</span>
             <span class="font-medium text-on-surface">Instalar App</span>

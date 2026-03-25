@@ -65,6 +65,7 @@ export async function init() {
     
     window.navigate = navigate;
     window.getState = getState;
+    window.reloadPage = () => location.reload();
     
     console.log('✅ WePai initialized');
     
