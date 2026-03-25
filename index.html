@@ -101,6 +101,31 @@
       border-color: transparent !important;
     }
 
+    /* Global fix for all interactive elements */
+    * {
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    button, input, label, select, textarea, [role="button"] {
+      -webkit-tap-highlight-color: transparent;
+      outline: none !important;
+    }
+    
+    button:focus, button:focus-visible,
+    input:focus, input:focus-visible,
+    label:focus, label:focus-visible {
+      outline: none !important;
+      box-shadow: none !important;
+    }
+    
+    input[type="checkbox"] {
+      -webkit-tap-highlight-color: transparent;
+    }
+    
+    input[type="checkbox"]:checked {
+      -webkit-tap-highlight-color: transparent;
+    }
+
     .glass-nav {
       backdrop-filter: blur(20px);
     }
