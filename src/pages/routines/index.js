@@ -114,13 +114,14 @@ function renderRoutinesList() {
             ${['L', 'M', 'X', 'J', 'V', 'S', 'D'].map((day, i) => {
               const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
               const hasRoutine = routines.some(r => r.days.includes(dayNames[i]));
+              const isRestDay = state.restDays && state.restDays.includes(dayNames[i]);
               return `
-                <div class="bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 ${hasRoutine ? 'border-primary shadow-sm' : 'border-transparent opacity-60'}">
+                <div class="bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 ${hasRoutine ? 'border-primary shadow-sm' : isRestDay ? 'border-blue-400 shadow-sm' : 'border-transparent opacity-60'}">
                   <span class="text-[10px] md:text-xs font-bold text-on-surface-variant">${day}</span>
-                  <div class="w-10 h-10 rounded-full ${hasRoutine ? 'bg-primary-container/10 flex items-center justify-center text-primary' : 'bg-surface-container-highest flex items-center justify-center text-on-surface-variant'}">
-                    <span class="material-symbols-outlined text-xl">${hasRoutine ? 'fitness_center' : 'weekend'}</span>
+                  <div class="w-10 h-10 rounded-full ${hasRoutine ? 'bg-primary-container/10 flex items-center justify-center text-primary' : isRestDay ? 'bg-blue-100 flex items-center justify-center text-blue-500' : 'bg-surface-container-highest flex items-center justify-center text-on-surface-variant'}">
+                    <span class="material-symbols-outlined text-xl">${hasRoutine ? 'fitness_center' : isRestDay ? 'bedtime' : 'block'}</span>
                   </div>
-                  <span class="text-[8px] font-bold uppercase tracking-tighter text-on-surface whitespace-nowrap">${hasRoutine ? 'Activo' : 'Descanso'}</span>
+                  <span class="text-[8px] font-bold uppercase tracking-tighter text-on-surface whitespace-nowrap">${hasRoutine ? 'Activo' : isRestDay ? 'Descanso' : 'Inactivo'}</span>
                 </div>
               `;
             }).join('')}
