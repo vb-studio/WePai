@@ -86,7 +86,7 @@ function renderChat() {
         ` : ''}
 
         <div id="chat-messages">
-          ${messages.map(msg => renderMessage(msg)).join('')}
+          ${renderMessagesWithDates()}
         </div>
 
         ${isTyping ? `
@@ -147,12 +147,33 @@ function renderChat() {
   };
 
   window.clearChat = () => {
-    if (confirm('¿Quieres reiniciar la conversación?')) {
+    const modal = document.createElement('div');
+    modal.id = 'clear-chat-modal';
+    modal.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;';
+    modal.innerHTML = `
+      <div style="background:var(--surface-container-low,#fff);border-radius:24px;padding:1.5rem;width:100%;max-width:320px;text-align:center;">
+        <div style="width:60px;height:60px;background:rgba(255,107,0,0.1);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 16px;">
+          <span class="material-symbols-outlined" style="font-size:32px;color:#ff6b00;">delete</span>
+        </div>
+        <h3 style="font-family:'Manrope',sans-serif;font-size:18px;font-weight:700;margin-bottom:8px;color:var(--on-surface,#1c1b1b);">¿Reiniciar conversación?</h3>
+        <p style="font-size:13px;color:var(--on-surface-variant,#5a4136);margin-bottom:20px;">Se borrarán todos los mensajes.</p>
+        <div style="display:flex;gap:12px;">
+          <button id="cancel-clear" style="flex:1;padding:12px;border-radius:12px;border:1px solid var(--outline-variant,#e2bfb0);background:transparent;font-weight:600;color:var(--on-surface,#1c1b1b);">Cancelar</button>
+          <button id="confirm-clear" style="flex:1;padding:12px;border-radius:12px;border:none;background:linear-gradient(135deg,#a04100,#ff6b00);color:white;font-weight:600;">Eliminar</button>
+        </div>
+      </div>
+    `;
+    document.body.appendChild(modal);
+    
+    document.getElementById('cancel-clear').onclick = () => modal.remove();
+    document.getElementById('confirm-clear').onclick = () => {
+      modal.remove();
       clearChatHistory();
       messages = [];
       renderChat();
       window.showToast('Conversación reiniciada');
-    }
+    };
+    modal.onclick = (e) => { if(e.target === modal) modal.remove(); };
   };
 
   window.toggleVoice = () => {
@@ -172,9 +193,7 @@ function renderMessage(msg) {
       </div>
     `;
   } else {
-    const formatted = msg.content
-      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
-      .replace(/\n/g, '<br>');
+    const formatted = msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g, '<br>');
     return `
       <div class="msg-ai">
         <div class="msg-ai-avatar"><span class="material-symbols-outlined text-xl">psychology</span></div>
@@ -184,12 +203,83 @@ function renderMessage(msg) {
   }
 }
 
+function renderMessagesWithDates() {
+  if (messages.length === 0) return '';
+  
+  let html = '';
+  let lastDate = null;
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+  
+  messages.forEach((msg, idx) => {
+    const msgDate = msg.date ? new Date(msg.date) : new Date();
+    msgDate.setHours(0, 0, 0, 0);
+    
+    const dateKey = msgDate.toISOString().split('T')[0];
+    
+    if (dateKey !== lastDate) {
+      let dateLabel = '';
+      const diffDays = Math.floor((today - msgDate) / (1000 * 60 * 60 * 24));
+      
+      if (diffDays === 0) {
+        dateLabel = 'HOY';
+      } else if (diffDays === 1) {
+        dateLabel = 'AYER';
+      } else if (diffDays < 7) {
+        dateLabel = msgDate.toLocaleDateString('es-ES', { weekday: 'uppercase' });
+      } else {
+        dateLabel = msgDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }).toUpperCase();
+      }
+      
+      html += `<div class="chat-date">${dateLabel} · ${msgDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</div>`;
+      lastDate = dateKey;
+    }
+    
+    html += renderMessage(msg);
+  });
+  
+  return html;
+}
+}
+
 function addMessage(content, role) {
-  messages.push({ role, content });
+  messages.push({ role, content, date: new Date().toISOString() });
   saveChatHistory(messages);
   
   const messagesContainer = document.getElementById('chat-messages');
   if (messagesContainer) {
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    const msgDate = new Date();
+    msgDate.setHours(0, 0, 0, 0);
+    const diffDays = Math.floor((today - msgDate) / (1000 * 60 * 60 * 24));
+    
+    let dateLabel = '';
+    if (diffDays === 0) {
+      dateLabel = 'HOY';
+    } else if (diffDays === 1) {
+      dateLabel = 'AYER';
+    } else if (diffDays < 7) {
+      dateLabel = msgDate.toLocaleDateString('es-ES', { weekday: 'uppercase' });
+    } else {
+      dateLabel = msgDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' }).toUpperCase();
+    }
+    
+    const dateKey = msgDate.toISOString().split('T')[0];
+    const lastMsg = messages[messages.length - 2];
+    let needsDateSeparator = true;
+    if (lastMsg) {
+      const lastDate = lastMsg.date ? new Date(lastMsg.date) : new Date();
+      lastDate.setHours(0, 0, 0, 0);
+      if (lastDate.toISOString().split('T')[0] === dateKey) {
+        needsDateSeparator = false;
+      }
+    }
+    
+    if (needsDateSeparator) {
+      messagesContainer.innerHTML += `<div class="chat-date">${dateLabel} · ${msgDate.toLocaleDateString('es-ES', { day: 'numeric', month: 'long' })}</div>`;
+    }
+    
     messagesContainer.innerHTML += renderMessage({ role, content });
     scrollToBottom();
   }
