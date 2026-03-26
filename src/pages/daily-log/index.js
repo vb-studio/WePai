@@ -291,6 +291,25 @@ function renderSelectRoutine() {
     `;
   }
   
+  window.goToCoach = function() {
+    window.location.href = '/coach';
+  };
+  
+  window.analyzeRoutine = function(routineName) {
+    const state = getState();
+    const routine = state.rutinas.find(r => r.name === routineName);
+    if (!routine) {
+      window.showToast('Rutina no encontrada: ' + routineName);
+      return;
+    }
+    const context = {
+      type: 'analyze_routine',
+      routine: routine
+    };
+    localStorage.setItem('wepai_coach_context', JSON.stringify(context));
+    window.location.href = '/coach';
+  };
+  
   container.innerHTML = `
     <div id="screen-registro" class="screen active">
       <header class="lg:hidden bg-[#fcf9f8]/80 dark:bg-[#1c1b1b]/80 backdrop-blur-xl fixed top-0 w-full z-50">
@@ -549,25 +568,6 @@ function renderExercises() {
     }
     
     renderSummary(result.summary);
-  };
-  
-  window.goToCoach = function() {
-    window.location.href = '/coach';
-  };
-  
-  window.analyzeRoutine = function(routineName) {
-    const state = getState();
-    const routine = state.rutinas.find(r => r.name === routineName);
-    if (!routine) {
-      window.showToast('Rutina no encontrada: ' + routineName);
-      return;
-    }
-    const context = {
-      type: 'analyze_routine',
-      routine: routine
-    };
-    localStorage.setItem('wepai_coach_context', JSON.stringify(context));
-    window.location.href = '/coach';
   };
 }
 
