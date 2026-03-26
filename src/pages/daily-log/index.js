@@ -56,7 +56,7 @@ function renderDateCarousel() {
         const isTodayDate = isToday(date);
         const registro = state.registros.find(r => r.date === dateStr);
         const hasWorkout = registro && registro.exercises && registro.exercises.length > 0;
-        const isRest = registro && registro.isRest === true;
+        const isRest = (registro && registro.isRest === true) || (state.restDays && state.restDays.includes(dayNames[date.getDay()]));
         const dayOfWeek = dayNames[date.getDay()];
         const hasRoutine = state.rutinas.some(r => r.days.includes(dayOfWeek));
         const today = new Date();
