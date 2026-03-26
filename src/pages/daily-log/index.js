@@ -222,7 +222,7 @@ function renderSelectRoutine() {
         <div class="ai-message">
           ${aiRecommendation}
         </div>
-        <button class="ai-ask-btn" onclick="window.showToast('Próximamente disponible')">
+        <button type="button" class="ai-ask-btn" id="ask-coach-btn">
           <span>Hacerle una pregunta al coach…</span>
         </button>
       </div>
@@ -568,11 +568,18 @@ function renderExercises() {
   
   const routineNameForBtn = todayRoutine.name;
   setTimeout(() => {
-    const btn = document.getElementById('analyze-btn');
-    if (btn) {
-      btn.addEventListener('click', () => {
+    const analyzeBtn = document.getElementById('analyze-btn');
+    if (analyzeBtn) {
+      analyzeBtn.onclick = function() {
         window.analyzeRoutine(routineNameForBtn);
-      });
+      };
+    }
+    
+    const askCoachBtn = document.getElementById('ask-coach-btn');
+    if (askCoachBtn) {
+      askCoachBtn.onclick = function() {
+        window.location.href = '/coach';
+      };
     }
   }, 100);
 }
