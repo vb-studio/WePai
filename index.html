@@ -327,6 +327,196 @@
       background: rgba(48, 48, 48, 0.95);
     }
 
+    /* Mockup Styles */
+    .section-eyebrow {
+      font-family: 'Manrope', sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #C45A0A;
+      margin-bottom: 6px;
+    }
+
+    .rest-hero {
+      background: linear-gradient(135deg, #EEF3FF 0%, #E4EBFF 100%);
+      border-radius: 20px;
+      padding: 20px;
+      border: 1.5px solid #D0DBFF;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .rest-hero::before {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 100px; height: 100px;
+      background: radial-gradient(circle, rgba(91,127,212,0.12) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .rest-hero-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 12px;
+    }
+
+    .rest-moon-icon {
+      width: 42px; height: 42px;
+      background: #fff;
+      border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px;
+      box-shadow: 0 2px 8px rgba(91,127,212,0.15);
+    }
+
+    .rest-hero-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 18px;
+      font-weight: 800;
+      color: #2D3F7C;
+    }
+
+    .rest-hero-sub {
+      font-size: 12px;
+      color: #5B7FD4;
+      font-weight: 500;
+      margin-top: 2px;
+    }
+
+    .rest-tip {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #3D4F7A;
+      font-weight: 400;
+    }
+
+    .ai-card {
+      background: #FFFFFF;
+      border-radius: 20px;
+      border: 1.5px solid #EDE4D8;
+      overflow: hidden;
+      margin: 0 20px 16px;
+    }
+
+    .ai-card-header {
+      padding: 16px 18px 12px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      border-bottom: 1px solid #EDE4D8;
+    }
+
+    .ai-avatar {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, #C45A0A 0%, #E8834A 100%);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    .ai-name {
+      font-family: 'Manrope', sans-serif;
+      font-size: 13px;
+      font-weight: 700;
+      color: #1C1410;
+    }
+
+    .ai-badge {
+      font-size: 10px;
+      font-weight: 600;
+      color: #C45A0A;
+      background: #FFF0E6;
+      border-radius: 20px;
+      padding: 2px 8px;
+      margin-top: 1px;
+      display: inline-block;
+    }
+
+    .ai-message {
+      padding: 14px 18px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: #6B5B4E;
+    }
+
+    .ai-message strong {
+      color: #1C1410;
+      font-weight: 600;
+    }
+
+    .ai-ask-btn {
+      margin: 0 18px 16px;
+      width: calc(100% - 36px);
+      padding: 13px;
+      background: #FFF0E6;
+      border: 1.5px dashed #E8834A;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      cursor: pointer;
+      transition: background 0.2s;
+      font-family: inherit;
+    }
+
+    .ai-ask-btn:hover {
+      background: #FFE6D0;
+    }
+
+    .ai-ask-btn span {
+      font-size: 13px;
+      font-weight: 500;
+      color: #C45A0A;
+      flex: 1;
+      text-align: left;
+    }
+
+    .section-divider {
+      height: 1px;
+      background: #EDE4D8;
+      margin: 4px 20px 20px;
+      opacity: 0.6;
+    }
+
+    .routine-header {
+      padding: 0 24px 20px;
+    }
+
+    .routine-title {
+      font-family: 'Manrope', sans-serif;
+      font-size: 26px;
+      font-weight: 800;
+      color: #1C1410;
+      letter-spacing: -0.02em;
+      line-height: 1.1;
+      margin-bottom: 4px;
+    }
+
+    .routine-meta {
+      font-size: 13px;
+      color: #A8998C;
+      font-weight: 500;
+    }
+
+    .routine-meta span {
+      color: #C45A0A;
+      font-weight: 600;
+    }
+
+    .main-routine-card {
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .main-routine-card:active {
+      transform: scale(0.98);
+    }
+
     /* Modal */
     #modal-overlay {
       position: fixed;

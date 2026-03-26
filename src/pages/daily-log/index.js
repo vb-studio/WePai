@@ -22,8 +22,7 @@ import {
   stepStartTimer,
   stepStopTimer,
   stepSkipTimer,
-  resetFlow,
-  getAvailableRoutines
+  resetFlow
 } from '../../features/flows/log-workout-flow.js';
 import { calculateTotalVolume } from '../../features/calculations/volume.js';
 import { calculateCurrentStreak } from '../../features/calculations/streak.js';
@@ -118,9 +117,57 @@ function centerCarouselOnToday() {
   });
 }
 
+function getYesterdayMuscleTip() {
+  const state = getState();
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+  const yesterdayStr = yesterday.toISOString().split('T')[0];
+  
+  const yesterdayReg = state.registros.find(r => r.date === yesterdayStr);
+  
+  if (!yesterdayReg || !yesterdayReg.exercises || yesterdayReg.exercises.length === 0) {
+    return {
+      muscle: 'pecho, espalda y hombros',
+      tip: 'Has tenido una semana activa. Hoy es un buen día para descansar y dejar que tu cuerpo se recupere para la próxima semana de entrenamiento.'
+    };
+  }
+  
+  const muscleTips = [
+    { muscles: ['pierna', 'piernas', 'cuadriceps', 'femoral', 'gemelos'], name: 'pierna', tip: 'Ayer trabajaste pierna con alta intensidad. Hoy tu cuerpo necesita reparar fibras musculares. Prioriza hidratación y proteína en tus comidas.' },
+    { muscles: ['pecho', 'pectoral'], name: 'pecho', tip: 'Ayer trabajaste pecho. Considera estiramientos de pectorales y abdominales suaves hoy.' },
+    { muscles: ['espalda', 'dorsal', 'lat'], name: 'espalda', tip: 'Ayer trabajaste espalda. Estiramientos de dorsales y movilidad de hombros te ayudarán en la recuperación.' },
+    { muscles: ['hombro', 'hombros', 'deltoides'], name: 'hombros', tip: 'Ayer trabajaste hombros. Estiramientos de deltoides y trapecios recomendada.' },
+    { muscles: ['brazo', 'biceps', 'triceps'], name: 'brazos', tip: 'Ayer trabajaste brazos. Hidratación extra y proteína recomendada para la recuperación.' }
+  ];
+  
+  const exerciseNames = yesterdayReg.exercises.map(ex => ex.name.toLowerCase()).join(' ');
+  
+  for (const mt of muscleTips) {
+    if (mt.muscles.some(m => exerciseNames.includes(m))) {
+      return { muscle: mt.name, tip: mt.tip };
+    }
+  }
+  
+  return {
+    muscle: 'múltiples grupos musculares',
+    tip: 'Ayer tuviste una sesión completa. Descansa bien, hidrátate y come proteínas para optimizar tu recuperación.'
+  };
+}
+
+function getAIRecommendation() {
+  const tips = [
+    'Basándome en tus últimas sesiones, te recomiendo estiramientos de isquiotibiales y cuádriceps. También considera aumentar tu consumo de carbohidratos complejos para reponer glucógeno.',
+    'Tu frecuencia cardíaca ha estado alta esta semana. Te sugiero incorporar 10 minutos de respiración profunda antes de dormir para mejorar tu recuperación.',
+    'Has mejorado en press de banca. Considera aumentar ligeramente el peso mientras mantienes la técnica. No olvides trabajar los músculos auxiliares.',
+    'Remember that consistency is key. Keep up the good work!',
+    'Hoy sería un buen día para trabajar abdominales y core de forma ringan.'
+  ];
+  return tips[Math.floor(Math.random() * tips.length)];
+}
+
 function renderSelectRoutine() {
   const state = getState();
-  const routines = getAvailableRoutines();
   const todayStr = toISODate();
   const todayDate = new Date();
   const todayDayName = dayNames[todayDate.getDay()];
@@ -129,43 +176,106 @@ function renderSelectRoutine() {
   const isRest = registro && registro.isRest === true;
   const hasWorkout = registro && registro.exercises && registro.exercises.length > 0;
   
-  let todayStatus = '';
+  const { muscle: yesterdayMuscle, tip: yesterdayTip } = getYesterdayMuscleTip();
+  const aiRecommendation = getAIRecommendation();
+  const formattedDate = todayDate.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric' });
+  
+  let mainContent = '';
+  
   if (isRest) {
-    todayStatus = `
-      <div class="rounded-2xl p-6 bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 mb-4">
-        <div class="flex items-center gap-4">
-          <span class="material-symbols-outlined text-4xl text-blue-500">bedtime</span>
+    mainContent = `
+      <div class="section-eyebrow" style="padding: 0 24px 6px;">HOY</div>
+      <div class="rest-hero" style="margin: 0 20px 16px;">
+        <div class="rest-hero-top">
+          <div class="rest-moon-icon">🌙</div>
           <div>
-            <h3 class="font-headline font-bold text-xl text-on-surface">Día de Descanso</h3>
-            <p class="text-sm text-on-surface-variant">Recuperación activa</p>
+            <div class="rest-hero-title">Día de Descanso</div>
+            <div class="rest-hero-sub">Recuperación activa · ${formattedDate}</div>
           </div>
+        </div>
+        <div class="rest-tip">
+          Ayer trabajaste <strong>${yesterdayMuscle}</strong>. ${yesterdayTip}
         </div>
       </div>
-    `;
-  } else if (hasWorkout) {
-    const vol = registro.exercises.reduce((sum, ex) => sum + (ex.sets * ex.weight), 0);
-    todayStatus = `
-      <div class="rounded-2xl p-6 bg-green-50 dark:bg-green-900/30 border-2 border-green-200 dark:border-green-700 mb-4">
-        <div class="flex items-center gap-4">
-          <span class="material-symbols-outlined text-4xl text-green-500">check_circle</span>
+      <div class="section-divider"></div>
+      <div class="section-eyebrow">TU ASISTENTE IA</div>
+      <div class="ai-card">
+        <div class="ai-card-header">
+          <div class="ai-avatar">🤖</div>
           <div>
-            <h3 class="font-headline font-bold text-xl text-on-surface">Entrenamiento Completado</h3>
-            <p class="text-sm text-on-surface-variant">${registro.exercises.length} ejercicios • ${vol.toLocaleString()} kg</p>
+            <div class="ai-name">WePai Coach</div>
+            <span class="ai-badge">IA · Personalizado</span>
           </div>
         </div>
+        <div class="ai-message">
+          ${aiRecommendation}
+        </div>
+        <button class="ai-ask-btn" onclick="window.showToast('Próximamente disponible')">
+          <span>Hacerle una pregunta al coach…</span>
+        </button>
       </div>
     `;
   } else if (todayRoutine) {
-    todayStatus = `
-      <div class="rounded-2xl p-6 bg-orange-50 dark:bg-orange-900/30 border-2 border-orange-200 dark:border-orange-700 mb-4">
-        <div class="flex items-center gap-4">
-          <span class="material-symbols-outlined text-4xl text-orange-500">event_note</span>
-          <div>
-            <h3 class="font-headline font-bold text-xl text-on-surface">${todayRoutine.name}</h3>
-            <p class="text-sm text-on-surface-variant">${todayRoutine.exercises.length} ejercicios programados</p>
+    const muscleGroups = ['Pecho', 'Espalda', 'Hombros', 'Brazos', 'Pierna', 'Abdomen'];
+    const routineMuscles = todayRoutine.exercises.slice(0, 3).map((ex, i) => muscleGroups[i % muscleGroups.length]);
+    
+    mainContent = `
+      <div class="section-eyebrow" style="padding: 0 24px 6px;">HOY · ${formattedDate.toUpperCase()}</div>
+      
+      <div class="routine-header" style="padding: 0 24px 20px;">
+        <div class="routine-title" style="font-family: 'Manrope', sans-serif; font-size: 26px; font-weight: 800; color: #1c1b1b; line-height: 1.1; margin-bottom: 4px;">¿Listo para<br>entrenar?</div>
+        <div class="routine-meta" style="font-size: 13px; color: #A8998C; font-weight: 500;">Rutina asignada · <span style="color: #C45A0A; font-weight: 600;">${todayRoutine.exercises.length} ejercicios</span></div>
+      </div>
+
+      <div class="main-routine-card" onclick="window.selectRoutine('${todayRoutine.id}')" style="margin: 0 20px 12px; background: linear-gradient(135deg, #C45A0A 0%, #E8834A 100%); border-radius: 22px; padding: 20px; cursor: pointer; position: relative; overflow: hidden;">
+        <div style="position: absolute; top: -30px; right: -30px; width: 120px; height: 120px; background: radial-gradient(circle, rgba(255,255,255,0.12) 0%, transparent 70%); border-radius: 50%;"></div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px;">
+          <div style="width: 44px; height: 44px; background: rgba(255,255,255,0.2); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px;">🏋️</div>
+          <div style="width: 32px; height: 32px; background: rgba(255,255,255,0.2); border-radius: 50%; display: flex; align-items: center; justify-content: center;">
+            <svg style="width: 14px; height: 14px; stroke: #fff; fill: none; stroke-width: 2.5;" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
           </div>
         </div>
+        <div style="font-family: 'Manrope', sans-serif; font-size: 22px; font-weight: 800; color: #fff; margin-bottom: 4px;">${todayRoutine.name}</div>
+        <div style="font-size: 13px; color: rgba(255,255,255,0.75);">${todayDayName} · ${todayRoutine.exercises.length} ejercicios · ~45 min</div>
+        <div style="display: flex; gap: 8px; margin-top: 14px; flex-wrap: wrap;">
+          ${routineMuscles.map(m => `<span style="background: rgba(255,255,255,0.2); border-radius: 20px; padding: 5px 12px; font-size: 11px; font-weight: 600; color: #fff;">${m}</span>`).join('')}
+        </div>
       </div>
+
+      <div class="section-divider"></div>
+      <div class="section-eyebrow" style="margin-bottom: 12px;">ANALIZAR RUTINA</div>
+      <div class="ai-card" style="margin: 0 20px 16px;">
+        <div class="ai-card-header" style="padding: 16px 18px 12px; display: flex; align-items: center; gap: 10px; border-bottom: 1px solid #EDE4D8;">
+          <div class="ai-avatar" style="background: linear-gradient(135deg, #C45A0A 0%, #E8834A 100%);">🤖</div>
+          <div>
+            <div class="ai-name">WePai Coach</div>
+            <span class="ai-badge">IA · Análisis</span>
+          </div>
+        </div>
+        <button class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;" onclick="window.showToast('Próximamente disponible')">
+          <span style="color: #C45A0A;">Analizar "${todayRoutine.name}"</span>
+        </button>
+      </div>
+    `;
+  } else {
+    mainContent = `
+      <div class="section-eyebrow" style="padding: 0 24px 6px;">HOY · ${formattedDate.toUpperCase()}</div>
+      
+      <div class="routine-header" style="padding: 0 24px 20px;">
+        <div class="routine-title" style="font-family: 'Manrope', sans-serif; font-size: 26px; font-weight: 800; color: #1c1b1b; line-height: 1.1; margin-bottom: 4px;">¿Qué vas a<br>hacer hoy?</div>
+        <div class="routine-meta" style="font-size: 13px; color: #A8998C;">Sin rutina asignada para ${todayDayName}</div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="section-eyebrow" style="margin-bottom: 12px;">CREAR ENTRENAMIENTO</div>
+      <button onclick="window.selectRoutine(null)" style="margin: 0 20px 16px; padding: 15px 18px; background: transparent; border: 1.5px solid #EDE4D8; border-radius: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; width: calc(100% - 40px); text-align: left;">
+        <div style="width: 38px; height: 38px; background: #F5EFE6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">⚡</div>
+        <div style="flex: 1;">
+          <div style="font-size: 14px; font-weight: 600; color: #1c1b1b;">Entrenamiento Libre</div>
+          <div style="font-size: 11.5px; color: #A8998C; margin-top: 1px;">Crea tus ejercicios</div>
+        </div>
+        <svg style="width: 14px; height: 14px; stroke: #A8998C; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
     `;
   }
   
@@ -187,37 +297,8 @@ function renderSelectRoutine() {
       <main class="max-w-7xl mx-auto px-6 pt-24 pb-32">
         ${renderDateCarousel()}
 
-        <section class="py-4">
-          <div class="flex flex-col gap-1">
-            <span class="font-label text-[10px] uppercase tracking-[0.15rem] text-primary font-semibold">Registro</span>
-            <h2 class="font-headline font-extrabold text-4xl md:text-5xl tracking-tighter text-on-surface">¿Qué vas a hacer?</h2>
-          </div>
-        </section>
-
-        ${todayStatus}
-
-        <div class="grid grid-cols-1 gap-4 max-w-2xl mx-auto">
-          <button onclick="window.selectRoutine(null)" class="p-6 rounded-2xl bg-surface-container-low border-2 border-primary-container hover:border-primary transition-colors text-left">
-            <div class="flex items-center gap-4">
-              <span class="material-symbols-outlined text-4xl text-primary">fitness_center</span>
-              <div>
-                <h3 class="font-headline font-bold text-xl text-on-surface">Entrenamiento Libre</h3>
-                <p class="text-sm text-on-surface-variant">Sin rutina definida, crea tus ejercicios</p>
-              </div>
-            </div>
-          </button>
-
-          ${routines.map(routine => `
-            <button onclick="window.selectRoutine('${routine.id}')" class="p-6 rounded-2xl bg-surface-container-low border-2 border-outline-variant hover:border-primary transition-colors text-left">
-              <div class="flex items-center gap-4">
-                <span class="material-symbols-outlined text-4xl text-on-surface-variant">event_note</span>
-                <div>
-                  <h3 class="font-headline font-bold text-xl text-on-surface">${routine.name}</h3>
-                  <p class="text-sm text-on-surface-variant">${routine.days.join(', ')} • ${routine.exercises.length} ejercicios</p>
-                </div>
-              </div>
-            </button>
-          `).join('')}
+        <div class="scroll-content" style="flex: 1; overflow-y: auto;">
+          ${mainContent}
         </div>
       </main>
     </div>
