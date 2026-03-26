@@ -240,7 +240,6 @@ function renderMessagesWithDates() {
   
   return html;
 }
-}
 
 function addMessage(content, role) {
   messages.push({ role, content, date: new Date().toISOString() });
