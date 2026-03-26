@@ -1,21 +1,9 @@
 /**
  * WePai Coach Service
- * Gemini 2.5 Flash API integration
+ * Uses Vercel Cloud Function to hide API key
  */
 
-const getApiKey = () => {
-  // Try environment variable first
-  if (typeof import.meta !== 'undefined' && import.meta?.env) {
-    const key = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '';
-    if (key) return key;
-  }
-  // Fallback for development - check window object (set by Vercel)
-  if (typeof window !== 'undefined' && window.__ENV?.GEMINI_API_KEY) {
-    return window.__ENV.GEMINI_API_KEY;
-  }
-  return '';
-};
-const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
+const API_ENDPOINT = '/api/coach';
 
 const STORAGE_KEY = 'wepai_chat_history';
 
@@ -124,60 +112,34 @@ function calculateStreak(registros) {
 }
 
 export async function sendMessage(userMessage, conversationHistory = []) {
-  const apiKey = getApiKey();
-  console.log('API Key loaded:', apiKey ? 'YES' : 'NO');
-  console.log('import.meta.env:', typeof import.meta !== 'undefined' ? import.meta.env : 'N/A');
-  
-  if (!apiKey) {
-    throw new Error('API key no configurada. Por favor configura VITE_GEMINI_API_KEY en Vercel');
-  }
-  
   const context = buildContextPrompt();
   
-  const contents = conversationHistory.map(msg => ({
-    role: msg.role === 'user' ? 'user' : 'model',
-    parts: [{ text: msg.content }]
-  }));
-  
-  contents.push({
-    role: 'user',
-    parts: [{ text: userMessage }]
-  });
-
-  const requestBody = {
-    contents,
-    systemInstruction: {
-      parts: [{ text: context }]
-    },
-    generationConfig: {
-      temperature: 0.9,
-      maxOutputTokens: 500,
-    }
-  };
+  const allMessages = [
+    ...conversationHistory,
+    { role: 'user', content: userMessage }
+  ];
 
   try {
-    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
+    const response = await fetch(API_ENDPOINT, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestBody)
+      body: JSON.stringify({
+        messages: allMessages,
+        context: context
+      })
     });
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.error?.message || 'Error en la API');
+      throw new Error(errorData.error || 'Error en la API');
     }
 
     const data = await response.json();
-    
-    if (data.candidates && data.candidates[0]?.content?.parts?.[0]?.text) {
-      return data.candidates[0].content.parts[0].text;
-    } else {
-      throw new Error('Respuesta vacía de la API');
-    }
+    return data.response;
   } catch (error) {
-    console.error('Error calling Gemini API:', error);
+    console.error('Error calling Coach API:', error);
     throw error;
   }
 }
