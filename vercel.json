@@ -1,12 +1,5 @@
 {
   "rewrites": [
     { "source": "/(.*)", "destination": "/index.html" }
-  ],
-  "functions": {
-    "api/coach.js": {
-      "method": "POST",
-      "memory": 1024,
-      "maxDuration": 30
-    }
-  }
+  ]
 }
