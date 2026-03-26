@@ -3,7 +3,12 @@
  * Gemini 2.5 Flash API integration
  */
 
-const GEMINI_API_KEY = 'AIzaSyDMsjr5SqH3gs4_H2A0eCE21h8TbqAcJGw';
+const getApiKey = () => {
+  if (typeof import.meta !== 'undefined' && import.meta?.env) {
+    return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '';
+  }
+  return '';
+};
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const STORAGE_KEY = 'wepai_chat_history';
@@ -113,6 +118,11 @@ function calculateStreak(registros) {
 }
 
 export async function sendMessage(userMessage, conversationHistory = []) {
+  const apiKey = getApiKey();
+  if (!apiKey) {
+    throw new Error('API key no configurada. Configura GEMINI_API_KEY en variables de entorno o archivo .env');
+  }
+  
   const context = buildContextPrompt();
   
   const contents = conversationHistory.map(msg => ({
@@ -137,7 +147,7 @@ export async function sendMessage(userMessage, conversationHistory = []) {
   };
 
   try {
-    const response = await fetch(`${GEMINI_API_URL}?key=${GEMINI_API_KEY}`, {
+    const response = await fetch(`${GEMINI_API_URL}?key=${apiKey}`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
