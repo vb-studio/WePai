@@ -17,23 +17,26 @@ export async function render(cont) {
   renderChat();
   setupVoiceInput();
   
-  const contextStr = localStorage.getItem('wepai_coach_context');
-  if (contextStr) {
-    localStorage.removeItem('wepai_coach_context');
-    const context = JSON.parse(contextStr);
-    
-    if (context.type === 'analyze_routine' && context.routine) {
-      const routine = context.routine;
-      const exercisesList = routine.exercises.map(ex => `- ${ex.name}: ${ex.sets} series x ${ex.reps} repeticiones`).join('\n');
-      const prompt = `Analiza mi rutina "${routine.name}" que tiene los siguientes ejercicios:\n${exercisesList}\n\nDime qué grupos musculares están trabajando, si hay desequilibrios, y sugerencias de mejora.`;
+  setTimeout(() => {
+    const contextStr = localStorage.getItem('wepai_coach_context');
+    if (contextStr) {
+      localStorage.removeItem('wepai_coach_context');
+      const context = JSON.parse(contextStr);
       
-      setTimeout(() => {
-        if (window.sendMessage) {
-          window.sendMessage(prompt);
+      if (context.type === 'analyze_routine' && context.routine) {
+        const routine = context.routine;
+        const exercisesList = routine.exercises.map(ex => `- ${ex.name}: ${ex.sets} series x ${ex.reps} repeticiones`).join('\n');
+        const prompt = `Analiza mi rutina "${routine.name}" que tiene los siguientes ejercicios:\n${exercisesList}\n\nDime qué grupos musculares están trabajando, si hay desequilibrios, y sugerencias de mejora.`;
+        
+        const input = document.getElementById('chat-input');
+        if (input) {
+          input.value = prompt;
+          addMessage(prompt, 'user');
+          getAIResponse(prompt);
         }
-      }, 800);
+      }
     }
-  }
+  }, 500);
 }
 
 function renderChat() {
