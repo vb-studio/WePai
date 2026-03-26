@@ -187,7 +187,7 @@ function renderRoutinesList() {
     
     let buttons = days.map(day => {
       const isRest = state.restDays?.includes(day);
-      return `<button onclick="window.selectRestDay('${day}')" class="w-full p-4 rounded-xl text-left transition ${isRest ? 'bg-blue-500 text-white' : 'bg-surface-container-low hover:bg-surface-container'}">
+      return `<button data-day="${day}" onclick="window.selectRestDay('${day}')" class="w-full p-4 rounded-xl text-left transition ${isRest ? 'bg-blue-500 text-white' : 'bg-surface-container-low hover:bg-surface-container'}">
         <div class="flex items-center justify-between">
           <span class="font-medium">${day}</span>
           ${isRest ? '<span class="material-symbols-outlined">check</span>' : ''}
@@ -220,8 +220,14 @@ function renderRoutinesList() {
       state.restDays.push(day);
     }
     saveState();
-    window.closeRestDayModal();
-    renderRoutinesList();
+    
+    // Update button styles without closing modal
+    const btn = document.querySelector(`[data-day="${day}"]`);
+    if (btn) {
+      const isRest = state.restDays.includes(day);
+      btn.className = isRest ? 'w-full p-4 rounded-xl text-left transition bg-blue-500 text-white' : 'w-full p-4 rounded-xl text-left transition bg-surface-container-low hover:bg-surface-container';
+      btn.innerHTML = `<div class="flex items-center justify-between"><span class="font-medium">${day}</span>${isRest ? '<span class="material-symbols-outlined">check</span>' : ''}</div>`;
+    }
   };
 
   window.closeRestDayModal = () => {
