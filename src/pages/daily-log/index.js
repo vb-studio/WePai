@@ -264,8 +264,8 @@ function renderSelectRoutine() {
             <span class="ai-badge">IA · Análisis</span>
           </div>
         </div>
-        <button type="button" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A; cursor: pointer;" onclick="window.analyzeRoutine('${todayRoutine.name}')">
-          <span style="color: #C45A0A; cursor: pointer;">Analizar "${todayRoutine.name}"</span>
+        <button type="button" id="analyze-btn" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A; cursor: pointer; pointer-events: auto; position: relative; z-index: 100;">
+          <span style="color: #C45A0A;">Analizar "${todayRoutine.name}"</span>
         </button>
       </div>
     `;
@@ -552,10 +552,8 @@ function renderExercises() {
   };
   
   window.analyzeRoutine = (routineName) => {
-    console.log('analyzeRoutine clicked:', routineName);
     const state = getState();
     const routine = state.rutinas.find(r => r.name === routineName);
-    console.log('Found routine:', routine);
     if (!routine) {
       window.showToast('Rutina no encontrada: ' + routineName);
       return;
@@ -567,6 +565,16 @@ function renderExercises() {
     localStorage.setItem('wepai_coach_context', JSON.stringify(context));
     window.location.hash = '#/coach';
   };
+  
+  const routineNameForBtn = todayRoutine.name;
+  setTimeout(() => {
+    const btn = document.getElementById('analyze-btn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        window.analyzeRoutine(routineNameForBtn);
+      });
+    }
+  }, 100);
 }
 
 function renderSummary(summary) {
