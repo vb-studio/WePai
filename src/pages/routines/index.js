@@ -127,21 +127,17 @@ function renderRoutinesList() {
           </div>
         </section>
 
-        <!-- Rest Days Configuration -->
+        <!-- Mark Rest Day -->
         <section class="space-y-4">
-          <h3 class="text-xl font-headline font-bold">Días de Descanso</h3>
-          <p class="text-sm text-on-surface-variant">Selecciona los días固定的 de descanso semanal</p>
-          <div class="flex flex-wrap gap-3">
-            ${['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(day => {
-              const isRestDay = state.restDays?.includes(day);
-              return `
-                <button type="button" onclick="window.toggleRestDay('${day}')" 
-                  class="rest-day-btn px-4 py-3 rounded-xl font-medium transition ${isRestDay ? 'bg-blue-500 text-white' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}">
-                  ${day}
-                </button>
-              `;
-            }).join('')}
-          </div>
+          <h3 class="text-xl font-headline font-bold">Descanso</h3>
+          <button type="button" onclick="window.showRestDayModal()" class="w-full p-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 transition text-left">
+            <div class="flex items-center gap-4">
+              <span class="material-symbols-outlined text-3xl text-blue-500">bedtime</span>
+              <div>
+                <span class="font-headline font-bold text-lg text-on-surface">Marcar día de descanso</span>
+              </div>
+            </div>
+          </button>
         </section>
       </main>
     </div>
@@ -180,6 +176,56 @@ function renderRoutinesList() {
     }
     saveState();
     renderRoutinesList();
+  };
+
+  window.showRestDayModal = () => {
+    const state = getState();
+    const days = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const today = new Date();
+    const todayName = days[today.getDay()];
+    
+    let buttons = days.map(day => {
+      const isRest = state.restDays?.includes(day);
+      return `<button onclick="window.selectRestDay('${day}')" class="w-full p-4 rounded-xl text-left transition ${isRest ? 'bg-blue-500 text-white' : 'bg-surface-container-low hover:bg-surface-container'}">
+        <div class="flex items-center justify-between">
+          <span class="font-medium">${day}</span>
+          ${isRest ? '<span class="material-symbols-outlined">check</span>' : ''}
+        </div>
+      </button>`;
+    }).join('');
+    
+    const modalHtml = `
+      <div id="rest-day-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;" onclick="if(event.target.id==='rest-day-modal')window.closeRestDayModal()">
+        <div style="background:var(--surface-container-low, #fff);border-radius:24px;padding:1.5rem;width:100%;max-width:350px;">
+          <h3 class="font-headline font-bold text-xl mb-4">Seleccionar día de descanso</h3>
+          <div class="space-y-2">${buttons}</div>
+          <button onclick="window.closeRestDayModal()" class="w-full mt-4 p-3 rounded-xl bg-surface-container text-on-surface font-medium">Cancelar</button>
+        </div>
+      </div>
+    `;
+    
+    const existing = document.getElementById('rest-day-modal');
+    if (existing) existing.remove();
+    document.body.insertAdjacentHTML('beforeend', modalHtml);
+  };
+
+  window.selectRestDay = (day) => {
+    const state = getState();
+    if (!state.restDays) state.restDays = [];
+    const idx = state.restDays.indexOf(day);
+    if (idx > -1) {
+      state.restDays.splice(idx, 1);
+    } else {
+      state.restDays.push(day);
+    }
+    saveState();
+    window.closeRestDayModal();
+    renderRoutinesList();
+  };
+
+  window.closeRestDayModal = () => {
+    const modal = document.getElementById('rest-day-modal');
+    if (modal) modal.remove();
   };
 
   window.markTodayAsRest = () => {
