@@ -200,7 +200,7 @@ function renderRoutinesList() {
         <div style="background:var(--surface-container-low, #fff);border-radius:24px;padding:1.5rem;width:100%;max-width:350px;">
           <h3 class="font-headline font-bold text-xl mb-4">Seleccionar día de descanso</h3>
           <div class="space-y-2">${buttons}</div>
-          <button onclick="window.closeRestDayModal()" class="w-full mt-4 p-3 rounded-xl bg-surface-container text-on-surface font-medium">Cancelar</button>
+          <button onclick="window.closeRestDayModal()" class="w-full mt-4 p-3 rounded-xl signature-gradient text-white font-medium">Hecho</button>
         </div>
       </div>
     `;
