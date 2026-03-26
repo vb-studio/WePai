@@ -264,7 +264,7 @@ function renderSelectRoutine() {
             <span class="ai-badge">IA · Análisis</span>
           </div>
         </div>
-        <button type="button" id="analyze-btn" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;">
+        <button type="button" id="analyze-btn" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;" data-routine="${todayRoutine.name}">
           <span style="color: #C45A0A;">Analizar "${todayRoutine.name}"</span>
         </button>
       </div>
@@ -567,21 +567,20 @@ function renderExercises() {
   };
   
   const routineNameForBtn = todayRoutine.name;
-  setTimeout(() => {
-    const analyzeBtn = document.getElementById('analyze-btn');
+  document.addEventListener('click', function(e) {
+    const analyzeBtn = e.target.closest('#analyze-btn');
     if (analyzeBtn) {
-      analyzeBtn.onclick = function() {
-        window.analyzeRoutine(routineNameForBtn);
-      };
+      const routineName = analyzeBtn.getAttribute('data-routine');
+      if (routineName) {
+        window.analyzeRoutine(routineName);
+      }
     }
     
-    const askCoachBtn = document.getElementById('ask-coach-btn');
+    const askCoachBtn = e.target.closest('#ask-coach-btn');
     if (askCoachBtn) {
-      askCoachBtn.onclick = function() {
-        window.location.href = '/coach';
-      };
+      window.location.href = '/coach';
     }
-  }, 100);
+  });
 }
 
 function renderSummary(summary) {
