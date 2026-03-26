@@ -31,6 +31,8 @@ export async function render(cont) {
         const input = document.getElementById('chat-input');
         if (input) {
           input.value = prompt;
+          addMessage(prompt, 'user');
+          scrollToBottom();
           getAIResponse(prompt);
         }
       }
