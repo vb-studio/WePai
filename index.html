@@ -825,7 +825,7 @@
     .chat-input {
       flex: 1;
       border: none;
-      background: transparent;
+      background: transparent !important;
       font-family: 'Inter', sans-serif;
       font-size: 13.5px;
       color: #1C1410;
@@ -833,11 +833,15 @@
     }
     
     .dark .chat-input {
-      color: #e6e1e5;
+      color: #e6e1e5 !important;
     }
 
     .chat-input::placeholder {
       color: #A8998C;
+    }
+    
+    .dark .chat-input::placeholder {
+      color: #938f99;
     }
 
     .chat-mic-btn {
