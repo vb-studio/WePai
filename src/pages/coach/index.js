@@ -40,9 +40,14 @@ function renderChat() {
               </div>
             </div>
           </div>
-          <button data-link href="/profile" style="background: none; border: none; cursor: pointer;">
-            <span class="material-symbols-outlined text-2xl" style="color: #C45A0A;">person</span>
-          </button>
+          <div style="display: flex; gap: 8px;">
+            <button onclick="window.clearChat()" style="background: none; border: none; cursor: pointer;">
+              <span class="material-symbols-outlined text-2xl" style="color: #A8998C;">delete</span>
+            </button>
+            <button data-link href="/profile" style="background: none; border: none; cursor: pointer;">
+              <span class="material-symbols-outlined text-2xl" style="color: #C45A0A;">person</span>
+            </button>
+          </div>
         </div>
       </header>
 
@@ -117,6 +122,15 @@ function renderChat() {
     addMessage(message, 'user');
     
     await getAIResponse(message);
+  };
+
+  window.clearChat = () => {
+    if (confirm('¿Quieres reiniciar la conversación?')) {
+      clearChatHistory();
+      messages = [];
+      renderChat();
+      window.showToast('Conversación reiniciada');
+    }
   };
 
   window.toggleVoice = () => {
