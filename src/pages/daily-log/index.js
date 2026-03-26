@@ -222,7 +222,7 @@ function renderSelectRoutine() {
         <div class="ai-message">
           ${aiRecommendation}
         </div>
-        <button type="button" class="ai-ask-btn" id="ask-coach-btn">
+        <button type="button" class="ai-ask-btn" onclick="window.goToCoach()">
           <span>Hacerle una pregunta al coach…</span>
         </button>
       </div>
@@ -264,7 +264,7 @@ function renderSelectRoutine() {
             <span class="ai-badge">IA · Análisis</span>
           </div>
         </div>
-        <button type="button" id="analyze-btn" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;" data-routine="${todayRoutine.name}">
+        <button type="button" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;" onclick="window.analyzeRoutine('${todayRoutine.name}')">
           <span style="color: #C45A0A;">Analizar "${todayRoutine.name}"</span>
         </button>
       </div>
@@ -551,7 +551,11 @@ function renderExercises() {
     renderSummary(result.summary);
   };
   
-  window.analyzeRoutine = (routineName) => {
+  window.goToCoach = function() {
+    window.location.href = '/coach';
+  };
+  
+  window.analyzeRoutine = function(routineName) {
     const state = getState();
     const routine = state.rutinas.find(r => r.name === routineName);
     if (!routine) {
@@ -565,22 +569,6 @@ function renderExercises() {
     localStorage.setItem('wepai_coach_context', JSON.stringify(context));
     window.location.href = '/coach';
   };
-  
-  const routineNameForBtn = todayRoutine.name;
-  document.addEventListener('click', function(e) {
-    const analyzeBtn = e.target.closest('#analyze-btn');
-    if (analyzeBtn) {
-      const routineName = analyzeBtn.getAttribute('data-routine');
-      if (routineName) {
-        window.analyzeRoutine(routineName);
-      }
-    }
-    
-    const askCoachBtn = e.target.closest('#ask-coach-btn');
-    if (askCoachBtn) {
-      window.location.href = '/coach';
-    }
-  });
 }
 
 function renderSummary(summary) {

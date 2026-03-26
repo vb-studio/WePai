@@ -472,8 +472,6 @@
       border: 1.5px solid #EDE4D8;
       overflow: hidden;
       margin: 0 20px 16px;
-      position: relative;
-      z-index: 10;
     }
     
     .dark .ai-card {
@@ -578,6 +576,8 @@
       cursor: pointer;
       transition: background 0.2s;
       font-family: inherit;
+      -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
     }
     
     .dark .ai-ask-btn {
