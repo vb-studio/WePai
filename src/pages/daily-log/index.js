@@ -563,7 +563,7 @@ function renderExercises() {
       routine: routine
     };
     localStorage.setItem('wepai_coach_context', JSON.stringify(context));
-    window.location.href = '/coach';
+    window.location.hash = '#/coach';
   };
 }
 
