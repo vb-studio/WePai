@@ -563,7 +563,7 @@ function renderExercises() {
       routine: routine
     };
     localStorage.setItem('wepai_coach_context', JSON.stringify(context));
-    window.location.hash = '#/coach';
+    window.location.href = '/coach';
   };
   
   const routineNameForBtn = todayRoutine.name;
