@@ -125,8 +125,11 @@ function calculateStreak(registros) {
 
 export async function sendMessage(userMessage, conversationHistory = []) {
   const apiKey = getApiKey();
+  console.log('API Key loaded:', apiKey ? 'YES' : 'NO');
+  console.log('import.meta.env:', typeof import.meta !== 'undefined' ? import.meta.env : 'N/A');
+  
   if (!apiKey) {
-    throw new Error('API key no configurada. Configura GEMINI_API_KEY en variables de entorno o archivo .env');
+    throw new Error('API key no configurada. Por favor configura VITE_GEMINI_API_KEY en Vercel');
   }
   
   const context = buildContextPrompt();
