@@ -264,7 +264,7 @@ function renderSelectRoutine() {
             <span class="ai-badge">IA · Análisis</span>
           </div>
         </div>
-        <button type="button" id="analyze-btn" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A; cursor: pointer; pointer-events: auto; position: relative; z-index: 100;">
+        <button type="button" id="analyze-btn" class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;">
           <span style="color: #C45A0A;">Analizar "${todayRoutine.name}"</span>
         </button>
       </div>
