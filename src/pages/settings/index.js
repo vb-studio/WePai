@@ -36,6 +36,9 @@ function renderSettings() {
             </button>
             <span class="text-xl font-bold text-on-surface">Configuración</span>
           </div>
+          <button data-link href="/profile" class="text-[#FF6B00]">
+            <span class="material-symbols-outlined text-2xl">person</span>
+          </button>
         </div>
       </header>
 

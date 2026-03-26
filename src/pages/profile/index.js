@@ -40,9 +40,12 @@ function renderProfile() {
           <div class="flex items-center gap-3">
             <span class="text-2xl font-black tracking-tighter text-[#1c1b1b] dark:text-white font-['Manrope']">WePai</span>
           </div>
-          <div class="flex items-center gap-4">
+          <div class="flex items-center gap-3">
             <button data-link href="/" class="text-[#FF6B00] hover:opacity-80 transition-opacity">
               <span class="material-symbols-outlined text-2xl">arrow_back</span>
+            </button>
+            <button data-link href="/settings" class="text-[#FF6B00] hover:opacity-80 transition-opacity">
+              <span class="material-symbols-outlined text-2xl">settings</span>
             </button>
           </div>
         </div>

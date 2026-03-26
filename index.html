@@ -517,6 +517,341 @@
       transform: scale(0.98);
     }
 
+    /* Chat Styles */
+    .chat-main {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      padding-bottom: 80px;
+    }
+
+    .chat-date {
+      text-align: center;
+      font-size: 10.5px;
+      font-weight: 600;
+      color: #A8998C;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      margin: 10px 0;
+    }
+
+    .chat-topbar {
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      border-bottom: 1px solid #EDE4D8;
+      background: #FAFAF7;
+    }
+
+    .chat-back {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #F5EFE6;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+    }
+
+    .chat-back svg {
+      width: 16px;
+      height: 16px;
+      stroke: #1C1410;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    .chat-avatar {
+      width: 38px;
+      height: 38px;
+      background: linear-gradient(135deg, #C45A0A 0%, #E8834A 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      box-shadow: 0 3px 10px rgba(196,90,10,0.25);
+    }
+
+    .chat-meta {
+      flex: 1;
+    }
+
+    .chat-name {
+      font-family: 'Manrope', sans-serif;
+      font-size: 14px;
+      font-weight: 800;
+      color: #1C1410;
+    }
+
+    .chat-status {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 1px;
+    }
+
+    .status-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4CAF50;
+      box-shadow: 0 0 0 2px rgba(76,175,80,0.2);
+      animation: pulse-dot 2s infinite;
+    }
+
+    @keyframes pulse-dot {
+      0%, 100% { box-shadow: 0 0 0 2px rgba(76,175,80,0.2); }
+      50% { box-shadow: 0 0 0 4px rgba(76,175,80,0.1); }
+    }
+
+    .chat-status-text {
+      font-size: 11px;
+      color: #A8998C;
+      font-weight: 500;
+    }
+
+    .msg-ai {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .msg-ai-avatar {
+      width: 28px;
+      height: 28px;
+      background: linear-gradient(135deg, #C45A0A 0%, #E8834A 100%);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      flex-shrink: 0;
+    }
+
+    .bubble-ai {
+      max-width: 76%;
+      background: #F0EBE4;
+      border-radius: 18px 18px 18px 4px;
+      padding: 11px 14px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #1C1410;
+      border: 1px solid #EDE4D8;
+    }
+
+    .bubble-ai strong {
+      color: #C45A0A;
+      font-weight: 600;
+    }
+
+    .msg-user {
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .bubble-user {
+      max-width: 78%;
+      background: #C45A0A;
+      border-radius: 18px 18px 4px 18px;
+      padding: 11px 14px;
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: #fff;
+    }
+
+    .msg-typing {
+      display: flex;
+      align-items: flex-end;
+      gap: 8px;
+    }
+
+    .typing-bubble {
+      background: #F0EBE4;
+      border-radius: 18px 18px 18px 4px;
+      padding: 12px 16px;
+      border: 1px solid #EDE4D8;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .typing-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #A8998C;
+      animation: typing 1.2s infinite;
+    }
+
+    .typing-dot:nth-child(2) {
+      animation-delay: 0.2s;
+    }
+
+    .typing-dot:nth-child(3) {
+      animation-delay: 0.4s;
+    }
+
+    @keyframes typing {
+      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
+      30% { transform: translateY(-4px); opacity: 1; }
+    }
+
+    .suggestions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      padding: 4px 0 10px;
+    }
+
+    .suggestion-chip {
+      background: #FDF9F5;
+      border: 1.5px solid #EDE4D8;
+      border-radius: 20px;
+      padding: 7px 13px;
+      font-size: 12px;
+      font-weight: 500;
+      color: #6B5B4E;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: all 0.15s;
+      font-family: inherit;
+    }
+
+    .suggestion-chip:hover {
+      background: #FFF0E6;
+      border-color: #E8834A;
+      color: #C45A0A;
+    }
+
+    .chat-input-bar {
+      position: fixed;
+      bottom: 80px;
+      left: 0;
+      right: 0;
+      padding: 10px 14px 14px;
+      background: #FAFAF7;
+      border-top: 1px solid #EDE4D8;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      z-index: 40;
+    }
+
+    .chat-input-wrap {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      background: #FFFFFF;
+      border: 1.5px solid #EDE4D8;
+      border-radius: 24px;
+      padding: 10px 14px;
+      gap: 8px;
+    }
+
+    .chat-input {
+      flex: 1;
+      border: none;
+      background: transparent;
+      font-family: 'Inter', sans-serif;
+      font-size: 13.5px;
+      color: #1C1410;
+      outline: none;
+    }
+
+    .chat-input::placeholder {
+      color: #A8998C;
+    }
+
+    .chat-mic-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .chat-mic-btn svg {
+      width: 20px;
+      height: 20px;
+      stroke: #A8998C;
+      fill: none;
+      stroke-width: 1.8;
+    }
+
+    .chat-mic-btn.recording svg {
+      stroke: #C45A0A;
+      animation: pulse 1s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+
+    .send-btn {
+      width: 42px;
+      height: 42px;
+      background: #C45A0A;
+      border: none;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 3px 10px rgba(196,90,10,0.35);
+      flex-shrink: 0;
+    }
+
+    .send-btn:hover {
+      transform: scale(1.05);
+      box-shadow: 0 5px 14px rgba(196,90,10,0.45);
+    }
+
+    .send-btn svg {
+      width: 17px;
+      height: 17px;
+      stroke: #fff;
+      fill: none;
+      stroke-width: 2.5;
+    }
+
+    /* Coach Nav Pill */
+    .coach-pill {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      background: #C45A0A;
+      border-radius: 20px;
+      padding: 6px 12px 6px 8px;
+      transition: background 0.2s;
+    }
+
+    .coach-pill svg {
+      width: 14px;
+      height: 14px;
+      stroke: #fff !important;
+      stroke-width: 2;
+      flex-shrink: 0;
+    }
+
+    .coach-pill-label {
+      font-size: 10px;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+
     /* Modal */
     #modal-overlay {
       position: fixed;
@@ -568,7 +903,7 @@
     </div>
 
     <!-- Mobile Bottom Navigation -->
-    <nav class="mobile-nav fixed bottom-0 w-full z-50 rounded-t-[24px] bg-[#fcf9f8]/90 dark:bg-[#1c1b1b]/90 backdrop-blur-2xl border-t border-[#e2bfb0]/15 dark:border-[#49454f]/15 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] flex justify-around items-center px-8 pb-8 pt-4 md:hidden">
+    <nav class="mobile-nav fixed bottom-0 w-full z-50 rounded-t-[24px] bg-[#fcf9f8]/90 dark:bg-[#1c1b1b]/90 backdrop-blur-2xl border-t border-[#e2bfb0]/15 dark:border-[#49454f]/15 shadow-[0_-4px_20px_rgba(0,0,0,0.06)] flex justify-around items-center px-4 pb-8 pt-4 md:hidden">
       <button data-link href="/log" class="nav-item flex flex-col items-center justify-center text-[#1c1b1b]/60 dark:text-white/60 py-2 hover:text-[#FF6B00] transition-colors active:scale-90 duration-300">
         <span class="material-symbols-outlined text-2xl">edit_note</span>
         <span class="font-label text-[10px] mt-1">Registro</span>
@@ -581,9 +916,11 @@
         <span class="material-symbols-outlined text-2xl">fitness_center</span>
         <span class="font-label text-[10px] mt-1">Rutinas</span>
       </button>
-      <button data-link href="/profile" class="nav-item flex flex-col items-center justify-center text-[#1c1b1b]/60 dark:text-white/60 py-2 hover:text-[#FF6B00] transition-colors active:scale-90 duration-300">
-        <span class="material-symbols-outlined text-2xl mb-1">person</span>
-        <span class="nav-label font-['Inter'] font-semibold text-[10px] tracking-widest uppercase">Perfil</span>
+      <button data-link href="/coach" class="nav-item flex flex-col items-center justify-center py-1">
+        <div class="coach-pill">
+          <svg viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          <span class="coach-pill-label">Coach</span>
+        </div>
       </button>
     </nav>
 

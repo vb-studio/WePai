@@ -8,7 +8,8 @@ const ROUTES = {
   '/log': 'daily-log',
   '/routines': 'routines',
   '/profile': 'profile',
-  '/settings': 'settings'
+  '/settings': 'settings',
+  '/coach': 'coach'
 };
 
 let currentRoute = null;
