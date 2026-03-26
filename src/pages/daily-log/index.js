@@ -166,28 +166,6 @@ function getYesterdayMuscleTip() {
     tip: 'Ayer tuviste una sesión completa. Descansa bien, hidrátate y come proteínas para optimizar tu recuperación.'
   };
 }
-  
-  const muscleTips = [
-    { muscles: ['pierna', 'piernas', 'cuadriceps', 'femoral', 'gemelos'], name: 'pierna', tip: 'Ayer trabajaste pierna con alta intensidad. Hoy tu cuerpo necesita reparar fibras musculares. Prioriza hidratación y proteína en tus comidas.' },
-    { muscles: ['pecho', 'pectoral'], name: 'pecho', tip: 'Ayer trabajaste pecho. Considera estiramientos de pectorales y abdominales suaves hoy.' },
-    { muscles: ['espalda', 'dorsal', 'lat'], name: 'espalda', tip: 'Ayer trabajaste espalda. Estiramientos de dorsales y movilidad de hombros te ayudarán en la recuperación.' },
-    { muscles: ['hombro', 'hombros', 'deltoides'], name: 'hombros', tip: 'Ayer trabajaste hombros. Estiramientos de deltoides y trapecios recomendada.' },
-    { muscles: ['brazo', 'biceps', 'triceps'], name: 'brazos', tip: 'Ayer trabajaste brazos. Hidratación extra y proteína recomendada para la recuperación.' }
-  ];
-  
-  const exerciseNames = yesterdayReg.exercises.map(ex => ex.name.toLowerCase()).join(' ');
-  
-  for (const mt of muscleTips) {
-    if (mt.muscles.some(m => exerciseNames.includes(m))) {
-      return { muscle: mt.name, tip: mt.tip };
-    }
-  }
-  
-  return {
-    muscle: 'múltiples grupos musculares',
-    tip: 'Ayer tuviste una sesión completa. Descansa bien, hidrátate y come proteínas para optimizar tu recuperación.'
-  };
-}
 
 function getAIRecommendation() {
   const tips = [
