@@ -31,7 +31,7 @@ function renderChat() {
             <button data-link href="/log" class="chat-back">
               <svg viewBox="0 0 24 24"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
             </button>
-            <div class="chat-avatar">🤖</div>
+            <div class="chat-avatar"><span class="material-symbols-outlined text-xl">psychology</span></div>
             <div class="chat-meta">
               <div class="chat-name">WePai Coach</div>
               <div class="chat-status">
@@ -51,7 +51,7 @@ function renderChat() {
 
         ${messages.length === 0 ? `
           <div class="msg-ai">
-            <div class="msg-ai-avatar">🤖</div>
+            <div class="msg-ai-avatar"><span class="material-symbols-outlined text-xl">psychology</span></div>
             <div class="bubble-ai">
               ¡Hola! Soy WePai Coach, tu asistente de fitness. ¿En qué puedo ayudarte hoy?
             </div>
@@ -64,7 +64,7 @@ function renderChat() {
 
         ${isTyping ? `
           <div class="msg-typing">
-            <div class="msg-ai-avatar">🤖</div>
+            <div class="msg-ai-avatar"><span class="material-symbols-outlined text-xl">psychology</span></div>
             <div class="typing-bubble">
               <div class="typing-dot"></div>
               <div class="typing-dot"></div>
@@ -141,7 +141,7 @@ function renderMessage(msg) {
       .replace(/\n/g, '<br>');
     return `
       <div class="msg-ai">
-        <div class="msg-ai-avatar">🤖</div>
+        <div class="msg-ai-avatar"><span class="material-symbols-outlined text-xl">psychology</span></div>
         <div class="bubble-ai">${formatted}</div>
       </div>
     `;
