@@ -126,12 +126,46 @@ function getYesterdayMuscleTip() {
   
   const yesterdayReg = state.registros.find(r => r.date === yesterdayStr);
   
+  const healthTips = [
+    'Descansa entre 7-9 horas para una óptima recuperación muscular.',
+    'Hidratarse con al menos 2 litros de agua al día mejora el rendimiento.',
+    'Los días de descanso son tan importantes como los de entrenamiento.',
+    'Una alimentación rica en proteínas ayuda a la recuperación muscular.',
+    'El estiramiento post-entrenamiento mejora la flexibilidad y reduce lesiones.',
+    'El descanso adecuado aumenta la producción de hormona del crecimiento.',
+    'Incorporar carbohidratos complejos antes del entrenamiento mejora la energía.',
+    'El sueño profundo es cuando los músculos se reparan y crecen.'
+  ];
+  
   if (!yesterdayReg || !yesterdayReg.exercises || yesterdayReg.exercises.length === 0) {
+    const randomTip = healthTips[Math.floor(Math.random() * healthTips.length)];
     return {
-      muscle: 'pecho, espalda y hombros',
-      tip: 'Has tenido una semana activa. Hoy es un buen día para descansar y dejar que tu cuerpo se recupere para la próxima semana de entrenamiento.'
+      muscle: 'consejo de salud',
+      tip: randomTip
     };
   }
+  
+  const muscleTips = [
+    { muscles: ['pierna', 'piernas', 'cuadriceps', 'femoral', 'gemelos'], name: 'pierna', tip: 'Ayer trabajaste pierna con alta intensidad. Hoy tu cuerpo necesita reparar fibras musculares. Prioriza hidratación y proteína en tus comidas.' },
+    { muscles: ['pecho', 'pectoral'], name: 'pecho', tip: 'Ayer trabajaste pecho. Considera estiramientos de pectorales y abdominales suaves hoy.' },
+    { muscles: ['espalda', 'dorsal', 'lat'], name: 'espalda', tip: 'Ayer trabajaste espalda. Estiramientos de dorsales y movilidad de hombros te ayudará en la recuperación.' },
+    { muscles: ['hombro', 'hombros', 'deltoides'], name: 'hombros', tip: 'Ayer trabajaste hombros. Estiramientos de deltoides y trapecios recomendada.' },
+    { muscles: ['brazo', 'biceps', 'triceps'], name: 'brazos', tip: 'Ayer trabajaste brazos. Hidratación extra y proteína recomendada para la recuperación.' }
+  ];
+  
+  const exerciseNames = yesterdayReg.exercises.map(ex => ex.name.toLowerCase()).join(' ');
+  
+  for (const mt of muscleTips) {
+    if (mt.muscles.some(m => exerciseNames.includes(m))) {
+      return { muscle: mt.name, tip: mt.tip };
+    }
+  }
+  
+  return {
+    muscle: 'múltiples grupos musculares',
+    tip: 'Ayer tuviste una sesión completa. Descansa bien, hidrátate y come proteínas para optimizar tu recuperación.'
+  };
+}
   
   const muscleTips = [
     { muscles: ['pierna', 'piernas', 'cuadriceps', 'femoral', 'gemelos'], name: 'pierna', tip: 'Ayer trabajaste pierna con alta intensidad. Hoy tu cuerpo necesita reparar fibras musculares. Prioriza hidratación y proteína en tus comidas.' },
