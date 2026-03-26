@@ -17,15 +17,21 @@ export default async function handler(req, res) {
 
   const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
 
-  const contents = messages.map(msg => ({
-    role: msg.role === 'user' ? 'user' : 'model',
-    parts: [{ text: msg.content }]
-  }));
+  const systemPrompt = context || 'Eres WePai Coach, un asistente de fitness personalizado. Responde siempre en español, de manera amigable y motivadora.';
+  
+  const contents = [
+    { role: 'model', parts: [{ text: 'Entendido, estoy listo para ayudarte.' }] },
+    ...messages.map(msg => ({
+      role: msg.role === 'user' ? 'user' : 'model',
+      parts: [{ text: msg.content }]
+    }))
+  ];
 
   const requestBody = {
     contents,
     systemInstruction: {
-      parts: [{ text: context || 'Eres WePai Coach, un asistente de fitness personalizado. Responde siempre en español.' }]
+      role: 'system',
+      parts: [{ text: systemPrompt }]
     },
     generationConfig: {
       temperature: 0.9,
