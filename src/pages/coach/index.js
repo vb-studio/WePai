@@ -31,7 +31,6 @@ export async function render(cont) {
         const input = document.getElementById('chat-input');
         if (input) {
           input.value = prompt;
-          addMessage(prompt, 'user');
           getAIResponse(prompt);
         }
       }
@@ -202,11 +201,13 @@ async function getAIResponse(userMessage) {
     const response = await sendMessage(userMessage, messages);
     addMessage(response, 'ai');
   } catch (error) {
+    console.error('AI Error:', error);
     addMessage('Lo siento, tuve un problema al procesar tu mensaje. ¿Podrías intentarlo de nuevo?', 'ai');
   }
   
   isTyping = false;
   renderChat();
+  scrollToBottom();
 }
 
 function scrollToBottom() {
