@@ -529,6 +529,11 @@
       padding-bottom: 100px;
       margin-top: 70px;
       min-height: calc(100vh - 150px);
+      background: #fcf9f8;
+    }
+    
+    .dark .chat-main {
+      background: #1c1b1b;
     }
 
     .chat-date {
@@ -549,6 +554,11 @@
       border-bottom: 1px solid #EDE4D8;
       background: #FAFAF7;
     }
+    
+    .dark .chat-topbar {
+      background: #1c1b1b;
+      border-bottom-color: #49454f;
+    }
 
     .chat-back {
       width: 34px;
@@ -561,6 +571,10 @@
       justify-content: center;
       cursor: pointer;
     }
+    
+    .dark .chat-back {
+      background: #383838;
+    }
 
     .chat-back svg {
       width: 16px;
@@ -568,6 +582,10 @@
       stroke: #1C1410;
       fill: none;
       stroke-width: 2.5;
+    }
+    
+    .dark .chat-back svg {
+      stroke: #e6e1e5;
     }
 
     .chat-avatar {
@@ -586,8 +604,13 @@
       flex: 1;
     }
 
-    .chat-name {
-      font-family: 'Manrope', sans-serif;
+    .dark .chat-name {
+      color: #e6e1e5;
+    }
+    
+    .dark .chat-status-text {
+      color: #938f99;
+    }
       font-size: 14px;
       font-weight: 800;
       color: #1C1410;
@@ -648,10 +671,20 @@
       color: #1C1410;
       border: 1px solid #EDE4D8;
     }
+    
+    .dark .bubble-ai {
+      background: #2d2d2d;
+      border-color: #49454f;
+      color: #e6e1e5;
+    }
 
     .bubble-ai strong {
       color: #C45A0A;
       font-weight: 600;
+    }
+    
+    .dark .bubble-ai strong {
+      color: #ff6b00;
     }
 
     .msg-user {
@@ -684,6 +717,11 @@
       align-items: center;
       gap: 4px;
     }
+    
+    .dark .typing-bubble {
+      background: #2d2d2d;
+      border-color: #49454f;
+    }
 
     .typing-dot {
       width: 6px;
@@ -691,6 +729,10 @@
       border-radius: 50%;
       background: #A8998C;
       animation: typing 1.2s infinite;
+    }
+    
+    .dark .typing-dot {
+      background: #938f99;
     }
 
     .typing-dot:nth-child(2) {
@@ -726,11 +768,23 @@
       transition: all 0.15s;
       font-family: inherit;
     }
+    
+    .dark .suggestion-chip {
+      background: #2d2d2d;
+      border-color: #49454f;
+      color: #c7c5cb;
+    }
 
     .suggestion-chip:hover {
       background: #FFF0E6;
       border-color: #E8834A;
       color: #C45A0A;
+    }
+    
+    .dark .suggestion-chip:hover {
+      background: #383838;
+      border-color: #ff6b00;
+      color: #ff6b00;
     }
 
     .chat-input-bar {
