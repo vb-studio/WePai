@@ -116,12 +116,12 @@ function renderRoutinesList() {
               const hasRoutine = routines.some(r => r.days.includes(dayNames[i]));
               const isRestDay = state.restDays && state.restDays.includes(dayNames[i]);
               return `
-                <div class="bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 ${hasRoutine ? 'border-primary shadow-sm' : isRestDay ? 'border-blue-400 shadow-sm' : 'border-transparent opacity-60'}">
+                <div data-weekday="${i}" class="bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 ${hasRoutine ? 'border-primary shadow-sm' : isRestDay ? 'border-blue-400 shadow-sm' : 'border-transparent opacity-60'}">
                   <span class="text-[10px] md:text-xs font-bold text-on-surface-variant">${day}</span>
-                  <div class="w-10 h-10 rounded-full ${hasRoutine ? 'bg-primary-container/10 flex items-center justify-center text-primary' : isRestDay ? 'bg-blue-100 flex items-center justify-center text-blue-500' : 'bg-surface-container-highest flex items-center justify-center text-on-surface-variant'}">
+                  <div class="day-icon w-10 h-10 rounded-full ${hasRoutine ? 'bg-primary-container/10 flex items-center justify-center text-primary' : isRestDay ? 'bg-blue-100 flex items-center justify-center text-blue-500' : 'bg-surface-container-highest flex items-center justify-center text-on-surface-variant'}">
                     <span class="material-symbols-outlined text-xl">${hasRoutine ? 'fitness_center' : isRestDay ? 'bedtime' : 'block'}</span>
                   </div>
-                  <span class="text-[8px] font-bold uppercase tracking-tighter text-on-surface whitespace-nowrap">${hasRoutine ? 'Activo' : isRestDay ? 'Descanso' : 'Inactivo'}</span>
+                  <span class="day-label text-[8px] font-bold uppercase tracking-tighter text-on-surface whitespace-nowrap">${hasRoutine ? 'Activo' : isRestDay ? 'Descanso' : 'Inactivo'}</span>
                 </div>
               `;
             }).join('')}
@@ -250,7 +250,46 @@ function renderRoutinesList() {
       btnConfirm.textContent = 'Hecho';
       listContainer.parentNode.appendChild(btnConfirm);
     }
+    
+    // Update weekly grid in background without closing modal
+    updateWeeklyGrid();
   };
+  
+  window.closeRestDayModal = () => {
+    const modal = document.getElementById('rest-day-modal');
+    if (modal) modal.remove();
+    renderRoutinesList();
+  };
+  
+  function updateWeeklyGrid() {
+    const state = getState();
+    const routines = state.rutinas || [];
+    const dayNames = ['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'];
+    const days = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+    
+    days.forEach((day, i) => {
+      const hasRoutine = routines.some(r => r.days && r.days.includes(dayNames[i]));
+      const isRestDay = state.restDays && state.restDays.includes(dayNames[i]);
+      const cell = document.querySelector(`[data-weekday="${i}"]`);
+      if (cell) {
+        const icon = cell.querySelector('.day-icon');
+        const label = cell.querySelector('.day-label');
+        if (hasRoutine) {
+          cell.className = 'bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 border-primary shadow-sm';
+          if (icon) icon.className = 'day-icon w-10 h-10 rounded-full bg-primary-container/10 flex items-center justify-center text-primary';
+          if (label) label.textContent = 'Activo';
+        } else if (isRestDay) {
+          cell.className = 'bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 border-blue-400 shadow-sm';
+          if (icon) icon.className = 'day-icon w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center text-blue-500';
+          if (label) label.textContent = 'Descanso';
+        } else {
+          cell.className = 'bg-surface-container-lowest p-2 md:p-4 rounded-2xl flex flex-col items-center gap-1 md:gap-3 border-b-4 border-transparent opacity-60';
+          if (icon) icon.className = 'day-icon w-10 h-10 rounded-full bg-surface-container-highest flex items-center justify-center text-on-surface-variant';
+          if (label) label.textContent = 'Inactivo';
+        }
+      }
+    });
+  }
 
   window.closeRestDayModal = () => {
     const modal = document.getElementById('rest-day-modal');
