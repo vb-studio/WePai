@@ -3,7 +3,7 @@
  * Gemini 2.5 Flash API integration
  */
 
-const GEMINI_API_KEY = 'AIzaSyDMsjr5SqH3gs4_H2A0eCE21h8TbqAcJGw';
+const GEMINI_API_KEY = 'YOUR_API_KEY_HERE';
 const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent';
 
 const STORAGE_KEY = 'wepai_chat_history';
