@@ -72,7 +72,7 @@ function renderDateCarousel() {
         } else if (isTodayDate) {
           dayStyle = 'bg-primary-container/20 border-2 border-primary';
         } else if (isRest) {
-          dayStyle = 'bg-blue-100 border-2 border-blue-300 text-blue-700';
+          dayStyle = 'bg-blue-100 dark:bg-blue-900/50 border-2 border-blue-300 dark:border-blue-600 text-blue-700 dark:text-blue-300';
         } else if (hasWorkout) {
           dayStyle = 'bg-green-100 border-2 border-green-300 text-green-700';
         } else if (hasRoutine) {
@@ -264,7 +264,7 @@ function renderSelectRoutine() {
             <span class="ai-badge">IA · Análisis</span>
           </div>
         </div>
-        <button class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;" onclick="window.showToast('Próximamente disponible')">
+        <button class="ai-ask-btn" style="margin: 16px 18px; background: #FFF0E6; border: 1.5px dashed #E8834A;" onclick="window.analyzeRoutine('${todayRoutine.name}')">
           <span style="color: #C45A0A;">Analizar "${todayRoutine.name}"</span>
         </button>
       </div>
@@ -549,6 +549,21 @@ function renderExercises() {
     }
     
     renderSummary(result.summary);
+  };
+  
+  window.analyzeRoutine = (routineName) => {
+    const state = getState();
+    const routine = state.rutinas.find(r => r.name === routineName);
+    if (!routine) {
+      window.showToast('Rutina no encontrada');
+      return;
+    }
+    const context = {
+      type: 'analyze_routine',
+      routine: routine
+    };
+    localStorage.setItem('wepai_coach_context', JSON.stringify(context));
+    window.location.href = '/coach';
   };
 }
 

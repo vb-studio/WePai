@@ -401,6 +401,11 @@
       overflow: hidden;
       margin: 0 20px 16px;
     }
+    
+    .dark .ai-card {
+      background: #1c1b1b;
+      border-color: #49454f;
+    }
 
     .ai-card-header {
       padding: 16px 18px 12px;
@@ -408,6 +413,10 @@
       align-items: center;
       gap: 10px;
       border-bottom: 1px solid #EDE4D8;
+    }
+    
+    .dark .ai-card-header {
+      border-bottom-color: #49454f;
     }
 
     .ai-avatar {
@@ -463,9 +472,18 @@
       transition: background 0.2s;
       font-family: inherit;
     }
+    
+    .dark .ai-ask-btn {
+      background: #2d2d2d;
+      border-color: #ff6b00;
+    }
 
     .ai-ask-btn:hover {
       background: #FFE6D0;
+    }
+    
+    .dark .ai-ask-btn:hover {
+      background: #383838;
     }
 
     .ai-ask-btn span {
@@ -844,6 +862,14 @@
     
     .dark .chat-input::placeholder {
       color: #938f99;
+    }
+    
+    .dark .chat-header-btn {
+      color: #938f99 !important;
+    }
+    
+    .dark .chat-header-btn-profile {
+      color: #ff6b00 !important;
     }
 
     .chat-mic-btn {

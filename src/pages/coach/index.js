@@ -14,6 +14,22 @@ export async function render(cont) {
   container = cont;
   messages = getChatHistory();
   
+  const contextStr = localStorage.getItem('wepai_coach_context');
+  if (contextStr) {
+    localStorage.removeItem('wepai_coach_context');
+    const context = JSON.parse(contextStr);
+    
+    if (context.type === 'analyze_routine' && context.routine) {
+      const routine = context.routine;
+      const exercisesList = routine.exercises.map(ex => `- ${ex.name}: ${ex.sets} series x ${ex.reps} repeticiones`).join('\n');
+      const prompt = `Analiza mi rutina "${routine.name}" que tiene los siguientes ejercicios:\n${exercisesList}\n\nDime qué grupos musculares están trabajando, si hay desequilibrios, y sugerencias de mejora.`;
+      
+      setTimeout(() => {
+        window.sendMessage(prompt);
+      }, 500);
+    }
+  }
+  
   renderChat();
   setupVoiceInput();
 }
@@ -42,10 +58,10 @@ function renderChat() {
           </div>
           <div style="display: flex; gap: 8px;">
             <button onclick="window.clearChat()" style="background: none; border: none; cursor: pointer;">
-              <span class="material-symbols-outlined text-2xl" style="color: #A8998C;">delete</span>
+              <span class="material-symbols-outlined text-2xl chat-header-btn" style="color: #A8998C;">delete</span>
             </button>
             <button data-link href="/profile" style="background: none; border: none; cursor: pointer;">
-              <span class="material-symbols-outlined text-2xl" style="color: #C45A0A;">person</span>
+              <span class="material-symbols-outlined text-2xl chat-header-btn-profile" style="color: #C45A0A;">person</span>
             </button>
           </div>
         </div>
