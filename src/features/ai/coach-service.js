@@ -4,8 +4,14 @@
  */
 
 const getApiKey = () => {
+  // Try environment variable first
   if (typeof import.meta !== 'undefined' && import.meta?.env) {
-    return import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '';
+    const key = import.meta.env.VITE_GEMINI_API_KEY || import.meta.env.GEMINI_API_KEY || '';
+    if (key) return key;
+  }
+  // Fallback for development - check window object (set by Vercel)
+  if (typeof window !== 'undefined' && window.__ENV?.GEMINI_API_KEY) {
+    return window.__ENV.GEMINI_API_KEY;
   }
   return '';
 };
