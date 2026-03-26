@@ -235,8 +235,8 @@ function renderSelectRoutine() {
       <div class="section-eyebrow" style="padding: 0 24px 6px;">HOY · ${formattedDate.toUpperCase()}</div>
       
       <div class="routine-header" style="padding: 0 24px 20px;">
-        <div class="routine-title" style="font-family: 'Manrope', sans-serif; font-size: 26px; font-weight: 800; color: #1c1b1b; line-height: 1.1; margin-bottom: 4px;">¿Listo para<br>entrenar?</div>
-        <div class="routine-meta" style="font-size: 13px; color: #A8998C; font-weight: 500;">Rutina asignada · <span style="color: #C45A0A; font-weight: 600;">${todayRoutine.exercises.length} ejercicios</span></div>
+        <div class="routine-title">¿Listo para<br>entrenar?</div>
+        <div class="routine-meta">Rutina asignada · <span style="color: #C45A0A; font-weight: 600;">${todayRoutine.exercises.length} ejercicios</span></div>
       </div>
 
       <div class="main-routine-card" onclick="window.selectRoutine('${todayRoutine.id}')" style="margin: 0 20px 12px; background: linear-gradient(135deg, #C45A0A 0%, #E8834A 100%); border-radius: 22px; padding: 20px; cursor: pointer; position: relative; overflow: hidden;">
@@ -274,17 +274,17 @@ function renderSelectRoutine() {
       <div class="section-eyebrow" style="padding: 0 24px 6px;">HOY · ${formattedDate.toUpperCase()}</div>
       
       <div class="routine-header" style="padding: 0 24px 20px;">
-        <div class="routine-title" style="font-family: 'Manrope', sans-serif; font-size: 26px; font-weight: 800; color: #1c1b1b; line-height: 1.1; margin-bottom: 4px;">¿Qué vas a<br>hacer hoy?</div>
-        <div class="routine-meta" style="font-size: 13px; color: #A8998C;">Sin rutina asignada para ${todayDayName}</div>
+        <div class="routine-title">¿Qué vas a<br>hacer hoy?</div>
+        <div class="routine-meta">Sin rutina asignada para ${todayDayName}</div>
       </div>
 
       <div class="section-divider"></div>
       <div class="section-eyebrow" style="margin-bottom: 12px;">CREAR ENTRENAMIENTO</div>
-      <button onclick="window.selectRoutine(null)" style="margin: 0 20px 16px; padding: 15px 18px; background: transparent; border: 1.5px solid #EDE4D8; border-radius: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; width: calc(100% - 40px); text-align: left;">
-        <div style="width: 38px; height: 38px; background: #F5EFE6; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">⚡</div>
+      <button onclick="window.selectRoutine(null)" class="free-training-btn" style="margin: 0 20px 16px; padding: 15px 18px; border: 1.5px solid; border-radius: 16px; display: flex; align-items: center; gap: 12px; cursor: pointer; width: calc(100% - 40px); text-align: left;">
+        <div class="free-training-icon" style="width: 38px; height: 38px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px;">⚡</div>
         <div style="flex: 1;">
-          <div style="font-size: 14px; font-weight: 600; color: #1c1b1b;">Entrenamiento Libre</div>
-          <div style="font-size: 11.5px; color: #A8998C; margin-top: 1px;">Crea tus ejercicios</div>
+          <div class="free-training-text" style="font-size: 14px; font-weight: 600;">Entrenamiento Libre</div>
+          <div class="free-training-subtext" style="font-size: 11.5px; margin-top: 1px;">Crea tus ejercicios</div>
         </div>
         <svg style="width: 14px; height: 14px; stroke: #A8998C; fill: none; stroke-width: 2;" viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
@@ -444,7 +444,7 @@ function renderExercises() {
                   <div class="flex items-center gap-2">
                     ${(ex.setsArr || []).map((done, i) => `
                       <button onclick="window.completeSet(${idx}, ${i})" 
-                        class="flex-1 py-2 rounded-lg text-xs font-medium transition ${done ? 'signature-gradient text-white' : 'bg-surface-container text-on-surface-variant'}">
+                        class="flex-1 py-2 rounded-lg text-xs font-medium transition ${done ? 'signature-gradient text-white' : 'bg-surface-container dark:bg-[#383838] text-on-surface-variant'}">
                         ${i + 1}
                       </button>
                     `).join('')}

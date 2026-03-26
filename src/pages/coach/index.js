@@ -14,6 +14,9 @@ export async function render(cont) {
   container = cont;
   messages = getChatHistory();
   
+  renderChat();
+  setupVoiceInput();
+  
   const contextStr = localStorage.getItem('wepai_coach_context');
   if (contextStr) {
     localStorage.removeItem('wepai_coach_context');
@@ -25,13 +28,12 @@ export async function render(cont) {
       const prompt = `Analiza mi rutina "${routine.name}" que tiene los siguientes ejercicios:\n${exercisesList}\n\nDime qué grupos musculares están trabajando, si hay desequilibrios, y sugerencias de mejora.`;
       
       setTimeout(() => {
-        window.sendMessage(prompt);
-      }, 500);
+        if (window.sendMessage) {
+          window.sendMessage(prompt);
+        }
+      }, 800);
     }
   }
-  
-  renderChat();
-  setupVoiceInput();
 }
 
 function renderChat() {
