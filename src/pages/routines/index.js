@@ -127,17 +127,21 @@ function renderRoutinesList() {
           </div>
         </section>
 
-        <!-- Mark Today as Rest -->
+        <!-- Rest Days Configuration -->
         <section class="space-y-4">
-          <h3 class="text-xl font-headline font-bold">Hoy</h3>
-          <button type="button" onclick="window.markTodayAsRest()" class="w-full p-4 rounded-xl bg-blue-50 dark:bg-blue-900/30 border-2 border-blue-200 dark:border-blue-700 hover:border-blue-400 transition text-left">
-            <div class="flex items-center gap-4">
-              <span class="material-symbols-outlined text-3xl text-blue-500">bedtime</span>
-              <div>
-                <span class="font-headline font-bold text-lg text-on-surface">Marcar hoy como descanso</span>
-              </div>
-            </div>
-          </button>
+          <h3 class="text-xl font-headline font-bold">Días de Descanso</h3>
+          <p class="text-sm text-on-surface-variant">Selecciona los días固定的 de descanso semanal</p>
+          <div class="flex flex-wrap gap-3">
+            ${['Lunes', 'Martes', 'Miércoles', 'Jueves', 'Viernes', 'Sábado', 'Domingo'].map(day => {
+              const isRestDay = state.restDays?.includes(day);
+              return `
+                <button type="button" onclick="window.toggleRestDay('${day}')" 
+                  class="rest-day-btn px-4 py-3 rounded-xl font-medium transition ${isRestDay ? 'bg-blue-500 text-white' : 'bg-surface-container-low text-on-surface-variant hover:bg-surface-container'}">
+                  ${day}
+                </button>
+              `;
+            }).join('')}
+          </div>
         </section>
       </main>
     </div>
@@ -161,6 +165,21 @@ function renderRoutinesList() {
 
   window.startRoutine = (id) => {
     window.location.href = '/log?routine=' + id;
+  };
+
+  window.toggleRestDay = (day) => {
+    const state = getState();
+    if (!state.restDays) {
+      state.restDays = [];
+    }
+    const idx = state.restDays.indexOf(day);
+    if (idx > -1) {
+      state.restDays.splice(idx, 1);
+    } else {
+      state.restDays.push(day);
+    }
+    saveState();
+    renderRoutinesList();
   };
 
   window.markTodayAsRest = () => {

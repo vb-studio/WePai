@@ -28,6 +28,7 @@ const DEFAULT_STATE = {
   rutinas: [],
   records: {},
   goals: [],
+  restDays: [],
   selectedDate: new Date().toISOString().split('T')[0],
   currentDayExercises: [],
   settings: { ...DEFAULT_SETTINGS }

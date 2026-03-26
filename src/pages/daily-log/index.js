@@ -59,6 +59,7 @@ function renderDateCarousel() {
         const isRest = registro && registro.isRest === true;
         const dayOfWeek = dayNames[date.getDay()];
         const hasRoutine = state.rutinas.some(r => r.days.includes(dayOfWeek));
+        const isGlobalRestDay = state.restDays && state.restDays.includes(dayOfWeek);
         const today = new Date();
         today.setHours(0, 0, 0, 0);
         const compareDate = new Date(date);
@@ -67,31 +68,33 @@ function renderDateCarousel() {
         const isFuture = compareDate > today;
         const isWeekend = date.getDay() === 0 || date.getDay() === 6;
         let dayStyle = '';
+        let dayIcon = '';
         if (isSelected) {
           dayStyle = 'signature-gradient text-white shadow-lg scale-105';
         } else if (isTodayDate) {
           dayStyle = 'bg-primary-container/20 border-2 border-primary';
-        } else if (isRest) {
+        } else if (isRest || isGlobalRestDay) {
           dayStyle = 'bg-blue-100 border-2 border-blue-300 text-blue-700';
+          dayIcon = 'bedtime';
         } else if (hasWorkout) {
           dayStyle = 'bg-green-100 border-2 border-green-300 text-green-700';
+          dayIcon = 'fitness_center';
         } else if (hasRoutine) {
           dayStyle = 'bg-orange-100 dark:bg-orange-900/40 border-2 border-orange-300 dark:border-orange-600 text-orange-700 dark:text-orange-300';
-        } else if (isFuture) {
-          dayStyle = isWeekend ? 'bg-surface-container border-2 border-gray-400 text-on-surface hover:border-primary' : 'bg-surface-container text-on-surface hover:bg-primary-container/10';
-        } else if (isPast) {
-          dayStyle = 'bg-surface-container-highest opacity-40 text-on-surface-variant';
+          dayIcon = 'event_note';
+        } else if (isFuture || isPast) {
+          dayStyle = 'bg-gray-100 border-2 border-gray-200 text-gray-400';
+          dayIcon = '';
         } else {
-          dayStyle = 'bg-surface-container-low opacity-50';
+          dayStyle = 'bg-gray-100 border-2 border-gray-200 text-gray-400';
+          dayIcon = '';
         }
         return `
           <div role="button" tabindex="-1" id="date-btn-${dateStr}" data-date="${dateStr}" 
             class="date-btn flex-shrink-0 flex flex-col items-center gap-1 p-3 rounded-xl transition-all duration-200 cursor-pointer ${dayStyle}" style="min-width: 60px;">
             <span class="font-label text-[8px] uppercase font-bold ${isSelected ? 'text-white' : ''}">${formatDate(date, { weekday: 'short' }).slice(0,3)}</span>
             <span class="font-headline text-xl font-bold ${isSelected ? 'text-white' : ''}">${date.getDate()}</span>
-            ${isRest ? '<span class="material-symbols-outlined text-xs">bedtime</span>' : ''}
-            ${hasWorkout && !isRest ? '<span class="material-symbols-outlined text-xs">fitness_center</span>' : ''}
-            ${hasRoutine && !hasWorkout && !isRest ? '<span class="material-symbols-outlined text-xs">event_note</span>' : ''}
+            ${dayIcon ? `<span class="material-symbols-outlined text-xs">${dayIcon}</span>` : ''}
             ${isSelected ? '<div class="w-1.5 h-1.5 bg-white rounded-full"></div>' : ''}
           </div>
         `;
