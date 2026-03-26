@@ -735,7 +735,7 @@
 
     .chat-input-bar {
       position: fixed;
-      bottom: 100px;
+      bottom: 110px;
       left: 0;
       right: 0;
       padding: 10px 14px 14px;
@@ -745,6 +745,11 @@
       align-items: center;
       gap: 10px;
       z-index: 40;
+    }
+    
+    .dark .chat-input-bar {
+      background: #1c1b1b;
+      border-top-color: #49454f;
     }
 
     .chat-input-wrap {
@@ -757,6 +762,11 @@
       padding: 10px 14px;
       gap: 8px;
     }
+    
+    .dark .chat-input-wrap {
+      background: #2d2d2d;
+      border-color: #49454f;
+    }
 
     .chat-input {
       flex: 1;
@@ -766,6 +776,10 @@
       font-size: 13.5px;
       color: #1C1410;
       outline: none;
+    }
+    
+    .dark .chat-input {
+      color: #e6e1e5;
     }
 
     .chat-input::placeholder {
