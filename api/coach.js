@@ -15,17 +15,14 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'API key not configured on server' });
   }
 
-  const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
+  const GEMINI_API_URL = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-flash-latest:generateContent';
 
   const systemPrompt = context || 'Eres WePai Coach, un asistente de fitness personalizado. Responde siempre en español, de manera amigable y motivadora.';
   
-  const contents = [
-    { role: 'model', parts: [{ text: 'Entendido, estoy listo para ayudarte.' }] },
-    ...messages.map(msg => ({
-      role: msg.role === 'user' ? 'user' : 'model',
-      parts: [{ text: msg.content }]
-    }))
-  ];
+  const contents = messages.map(msg => ({
+    role: msg.role === 'user' ? 'user' : 'model',
+    parts: [{ text: msg.content }]
+  }));
 
   const requestBody = {
     contents,
