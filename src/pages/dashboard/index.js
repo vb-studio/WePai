@@ -8,6 +8,139 @@ import { calculateCurrentStreak, getStreakMessage } from '../../features/calcula
 import { calculateMuscleLevels } from '../../features/calculations/muscle-group.js';
 import { calculateTotalVolume, aggregateByMuscleGroup } from '../../features/calculations/volume.js';
 
+let progressionChart = null;
+
+function getWeightProgression(registros) {
+  if (!registros || registros.length === 0) return { labels: [], data: [] };
+  
+  const sorted = [...registros]
+    .filter(r => !r.isRest && r.exercises && r.exercises.length > 0)
+    .sort((a, b) => new Date(a.date) - new Date(b.date));
+  
+  const last14 = sorted.slice(-14);
+  
+  const labels = last14.map(r => {
+    const d = new Date(r.date);
+    return d.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+  });
+  
+  const data = last14.map(r => {
+    const totalWeight = r.exercises.reduce((sum, ex) => sum + (ex.weight || 0) * (ex.sets || 1), 0);
+    return Math.round(totalWeight);
+  });
+  
+  return { labels, data };
+}
+
+function initProgressionChart(state) {
+  const { labels, data } = getWeightProgression(state.registros);
+  if (labels.length === 0) return;
+  
+  const canvas = document.getElementById('progression-chart');
+  if (!canvas) return;
+  
+  if (progressionChart) {
+    progressionChart.destroy();
+  }
+  
+  const ctx = canvas.getContext('2d');
+  const isDark = document.body.classList.contains('dark');
+  
+  progressionChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+      labels: labels,
+      datasets: [{
+        label: 'Volumen (kg)',
+        data: data,
+        borderColor: '#ff6b00',
+        backgroundColor: 'rgba(255, 107, 0, 0.1)',
+        borderWidth: 3,
+        fill: true,
+        tension: 0.4,
+        pointBackgroundColor: '#ff6b00',
+        pointBorderColor: '#fff',
+        pointBorderWidth: 2,
+        pointRadius: 4,
+        pointHoverRadius: 6
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: false
+        },
+        tooltip: {
+          backgroundColor: isDark ? '#383838' : '#1c1b1b',
+          titleColor: '#fff',
+          bodyColor: '#fff',
+          padding: 12,
+          cornerRadius: 8,
+          displayColors: false,
+          callbacks: {
+            label: function(context) {
+              return context.parsed.y + ' kg';
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: {
+            display: false
+          },
+          ticks: {
+            color: isDark ? '#c7c5cb' : '#8e7164',
+            font: {
+              size: 11
+            }
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: {
+            color: isDark ? '#383838' : '#ebe7e7'
+          },
+          ticks: {
+            color: isDark ? '#c7c5cb' : '#8e7164',
+            font: {
+              size: 11
+            },
+            callback: function(value) {
+              return value + ' kg';
+            }
+          }
+        }
+      },
+      interaction: {
+        intersect: false,
+        mode: 'index'
+      }
+    }
+  });
+}
+
+function renderProgressionChart(state) {
+  const { labels, data } = getWeightProgression(state.registros);
+  
+  if (labels.length === 0) {
+    return `
+      <div id="chart-empty" class="flex flex-col items-center justify-center py-12">
+        <span class="material-symbols-outlined text-6xl text-outline opacity-20 mb-4">show_chart</span>
+        <p class="text-sm text-on-surface-variant text-center">Aún no hay registros.<br>Empieza tu primer entrenamiento.</p>
+      </div>
+    `;
+  }
+  
+  return `
+    <div id="chart-container" class="relative h-64 w-full">
+      <canvas id="progression-chart"></canvas>
+    </div>
+  `;
+}
+
 export async function render(container) {
   const state = getState();
   
@@ -57,16 +190,13 @@ export async function render(container) {
         <div class="grid grid-cols-1 md:grid-cols-12 gap-8">
           <!-- Progression Chart -->
           <div class="md:col-span-8 bg-surface-container-lowest rounded-xl p-8 relative overflow-hidden border border-outline-variant/10">
-            <div class="flex justify-between items-start mb-10">
+            <div class="flex justify-between items-start mb-6">
               <div>
                 <h3 class="text-2xl font-bold tracking-tight mb-1">Progresión de Peso</h3>
-                <p class="text-sm text-on-surface-variant font-medium">Registra tu primer entrenamiento</p>
+                <p class="text-sm text-on-surface-variant font-medium">Volumen total por sesión (kg)</p>
               </div>
             </div>
-            <div id="chart-empty" class="flex flex-col items-center justify-center py-12">
-              <span class="material-symbols-outlined text-6xl text-outline opacity-20 mb-4">show_chart</span>
-              <p class="text-sm text-on-surface-variant text-center">Aún no hay registros.<br>Empieza tu primer entrenamiento.</p>
-            </div>
+            ${renderProgressionChart(state)}
           </div>
 
           <!-- Goals & Streak -->
@@ -138,6 +268,8 @@ export async function render(container) {
       </main>
     </div>
   `;
+  
+  initProgressionChart(state);
 }
 
 function renderGoals(state) {

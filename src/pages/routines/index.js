@@ -185,6 +185,9 @@ function renderRoutinesList() {
     const today = new Date();
     const todayName = days[today.getDay()];
     
+    // Store initial state
+    const initialRestDays = [...(state.restDays || [])];
+    
     let buttons = days.map(day => {
       const isRest = state.restDays?.includes(day);
       return `<button data-day="${day}" onclick="window.selectRestDay('${day}')" class="w-full p-4 rounded-xl text-left transition ${isRest ? 'bg-blue-500 text-white' : 'bg-surface-container-low hover:bg-surface-container'}">
@@ -199,8 +202,7 @@ function renderRoutinesList() {
       <div id="rest-day-modal" style="position:fixed;inset:0;background:rgba(0,0,0,0.5);z-index:9999;display:flex;align-items:center;justify-content:center;padding:1rem;" onclick="if(event.target.id==='rest-day-modal')window.closeRestDayModal()">
         <div style="background:var(--surface-container-low, #fff);border-radius:24px;padding:1.5rem;width:100%;max-width:350px;">
           <h3 class="font-headline font-bold text-xl mb-4">Seleccionar día de descanso</h3>
-          <div class="space-y-2">${buttons}</div>
-          <button onclick="window.closeRestDayModal()" class="w-full mt-4 p-3 rounded-xl signature-gradient text-white font-medium">Hecho</button>
+          <div id="rest-days-list" class="space-y-2">${buttons}</div>
         </div>
       </div>
     `;
@@ -208,6 +210,10 @@ function renderRoutinesList() {
     const existing = document.getElementById('rest-day-modal');
     if (existing) existing.remove();
     document.body.insertAdjacentHTML('beforeend', modalHtml);
+    
+    // Store initial state globally for this modal
+    window._initialRestDays = initialRestDays;
+    window._restDaysChanged = false;
   };
 
   window.selectRestDay = (day) => {
@@ -221,12 +227,28 @@ function renderRoutinesList() {
     }
     saveState();
     
+    // Mark that changes have been made
+    window._restDaysChanged = true;
+    
     // Update button styles without closing modal
     const btn = document.querySelector(`[data-day="${day}"]`);
     if (btn) {
       const isRest = state.restDays.includes(day);
       btn.className = isRest ? 'w-full p-4 rounded-xl text-left transition bg-blue-500 text-white' : 'w-full p-4 rounded-xl text-left transition bg-surface-container-low hover:bg-surface-container';
       btn.innerHTML = `<div class="flex items-center justify-between"><span class="font-medium">${day}</span>${isRest ? '<span class="material-symbols-outlined">check</span>' : ''}</div>`;
+    }
+    
+    // Show button if changes were made
+    const listContainer = document.getElementById('rest-days-list');
+    let btnConfirm = document.getElementById('rest-day-btn');
+    
+    if (window._restDaysChanged && !btnConfirm) {
+      btnConfirm = document.createElement('button');
+      btnConfirm.id = 'rest-day-btn';
+      btnConfirm.onclick = window.closeRestDayModal;
+      btnConfirm.className = 'w-full mt-4 p-3 rounded-xl signature-gradient text-white font-medium';
+      btnConfirm.textContent = 'Hecho';
+      listContainer.parentNode.appendChild(btnConfirm);
     }
   };
 
