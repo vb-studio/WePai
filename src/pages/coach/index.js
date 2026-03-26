@@ -136,7 +136,9 @@ function renderMessage(msg) {
       </div>
     `;
   } else {
-    const formatted = msg.content.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+    const formatted = msg.content
+      .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+      .replace(/\n/g, '<br>');
     return `
       <div class="msg-ai">
         <div class="msg-ai-avatar">🤖</div>
