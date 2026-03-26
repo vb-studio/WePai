@@ -50,8 +50,11 @@ function buildContextPrompt() {
   
   const todayRoutine = rutinas.find(r => r.days.includes(todayDayName));
 
-  let context = `Eres WePai Coach, un asistente de fitness personalizado.\n\n`;
+  const userName = state.perfil?.nombre || 'Usuario';
+  
+  let context = `Eres WePai Coach, un asistente de fitness personalizado. NO uses emojis en tus respuestas.\n\n`;
   context += `Información del usuario:\n`;
+  context += `- Nombre: ${userName}\n`;
   context += `- Día actual: ${todayDayName} ${today.getDate()}\n`;
   
   if (isRest) {
