@@ -552,10 +552,12 @@ function renderExercises() {
   };
   
   window.analyzeRoutine = (routineName) => {
+    console.log('analyzeRoutine clicked:', routineName);
     const state = getState();
     const routine = state.rutinas.find(r => r.name === routineName);
+    console.log('Found routine:', routine);
     if (!routine) {
-      window.showToast('Rutina no encontrada');
+      window.showToast('Rutina no encontrada: ' + routineName);
       return;
     }
     const context = {
