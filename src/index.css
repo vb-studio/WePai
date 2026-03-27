@@ -1,72 +1,77 @@
 @import "tailwindcss";
 
+@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap');
+
+@theme {
+  --font-headline: "Syne", sans-serif;
+  --font-body: "DM Sans", sans-serif;
+
+  /* Colores Originales WePai */
+  --color-primary: #C45A0A;
+  --color-primary-light: #E8834A;
+  --color-primary-bg: #FFF0E6;
+  --color-primary-mid: #F26D1E;
+  
+  --color-beige: #F5EFE6;
+  --color-beige-card: #FDF9F5;
+  --color-cream: #FAFAF7;
+  
+  --color-text-dark: #1C1410;
+  --color-text-mid: #6B5B4E;
+  --color-text-soft: #A8998C;
+  
+  --color-border: #EDE4D8;
+  
+  --color-surface: var(--color-beige);
+}
+
 @layer base {
   :root {
-    --primary: #a04100;
-    --primary-container: #ff6b00;
+    --primary: #C45A0A;
+    --primary-container: #FFF0E6;
     --on-primary: #ffffff;
-    --surface: #fcf9f8;
-    --surface-container-low: #f6f3f2;
-    --surface-container: #f0edec;
-    --surface-container-high: #ebe7e7;
-    --surface-container-highest: #e5e2e1;
-    --surface-container-lowest: #ffffff;
-    --on-surface: #1c1b1b;
-    --on-surface-variant: #5a4136;
-    --outline: #8e7164;
-    --outline-variant: #e2bfb0;
-    --inverse-surface: #313030;
-  }
-
-  @media (prefers-color-scheme: dark) {
-    :root:not(.light) {
-      --primary: #ff6b00;
-      --primary-container: #a04100;
-      --on-primary: #ffffff;
-      --surface: #1c1b1b;
-      --surface-container-low: #252525;
-      --surface-container: #2d2d2d;
-      --surface-container-high: #383838;
-      --surface-container-highest: #424242;
-      --surface-container-lowest: #1c1b1b;
-      --on-surface: #e6e1e5;
-      --on-surface-variant: #c7c5cb;
-      --outline: #938f99;
-      --outline-variant: #49454f;
-      --inverse-surface: #e6e1e5;
-    }
+    --surface: #FAFAF7;
+    --on-surface: #1C1410;
+    --on-surface-variant: #6B5B4E;
+    --outline: #EDE4D8;
+    --outline-variant: #A8998C;
   }
 
   .dark {
-    --primary: #ff6b00;
-    --primary-container: #a04100;
+    --primary: #FF8F4D;
+    --primary-container: #4A2408;
     --on-primary: #ffffff;
-    --surface: #1c1b1b;
-    --surface-container-low: #252525;
-    --surface-container: #2d2d2d;
-    --surface-container-high: #383838;
-    --surface-container-highest: #424242;
-    --surface-container-lowest: #1c1b1b;
-    --on-surface: #e6e1e5;
-    --on-surface-variant: #c7c5cb;
-    --outline: #938f99;
-    --outline-variant: #49454f;
-    --inverse-surface: #e6e1e5;
+    --surface: #1C1410;
+    --on-surface: #FAFAF7;
+    --on-surface-variant: #A8998C;
+    --outline: #3D2F27;
+    --outline-variant: #6B5B4E;
   }
 
   body {
-    font-family: 'Inter', sans-serif;
+    @apply font-body bg-beige text-text-dark antialiased transition-colors duration-300;
     background-color: var(--surface);
-    color: var(--on-surface);
-    min-height: max(884px, 100dvh);
   }
 
-  h1, h2, h3, .headline {
-    font-family: 'Manrope', sans-serif;
+  h1, h2, h3, h4, .font-headline {
+    @apply font-headline;
   }
 }
 
-@layer utilities {
+@layer components {
+  .phone-container {
+    @apply max-w-[430px] mx-auto min-h-screen bg-cream shadow-2xl relative overflow-hidden flex flex-col;
+    /* Optional: add phone frame look on desktop */
+  }
+
+  .card-premium {
+    @apply bg-beige-card border-[1.5px] border-border rounded-[28px] p-6 transition-all active:scale-[0.98];
+  }
+
+  .signature-gradient {
+    @apply bg-linear-to-br from-[#C45A0A] to-[#E8834A];
+  }
+
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }

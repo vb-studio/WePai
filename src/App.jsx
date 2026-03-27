@@ -45,10 +45,27 @@ export default function App() {
 
   return (
     <BrowserRouter>
-      <div className="app-container bg-surface min-h-screen">
-        <React.Suspense fallback={<div className="page-loading"><span className="material-symbols-outlined text-4xl animate-spin">sync</span></div>}>
-          <AnimatedRoutes />
-        </React.Suspense>
+      <div className="phone-container shadow-none md:shadow-2xl md:my-8 md:rounded-[44px]">
+        {/* Status Bar Placeholder */}
+        <div className="flex justify-between items-center px-8 py-4 shrink-0">
+          <span className="text-xs font-bold font-headline">17:39</span>
+          <div className="flex gap-1">
+            <span className="material-symbols-outlined text-xs">signal_cellular_alt</span>
+            <span className="material-symbols-outlined text-xs">wifi</span>
+            <span className="material-symbols-outlined text-xs">battery_full</span>
+          </div>
+        </div>
+
+        <div className="flex-1 overflow-y-auto no-scrollbar pb-32">
+          <React.Suspense fallback={
+            <div className="flex items-center justify-center h-full">
+              <span className="material-symbols-outlined text-4xl animate-spin text-primary">sync</span>
+            </div>
+          }>
+            <AnimatedRoutes />
+          </React.Suspense>
+        </div>
+        
         <BottomNav />
         <Modal />
       </div>
