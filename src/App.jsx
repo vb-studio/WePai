@@ -4,6 +4,8 @@ import { AnimatePresence } from 'framer-motion';
 import BottomNav from './components/BottomNav';
 import AnimatedPage from './components/AnimatedPage';
 import Modal from './components/Modal';
+import { useStore } from './store/useStore';
+import { useEffect } from 'react';
 
 // Placholders
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -31,9 +33,19 @@ function AnimatedRoutes() {
 }
 
 export default function App() {
+  const isDarkMode = useStore(state => state.settings.modoOscuro);
+
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [isDarkMode]);
+
   return (
     <BrowserRouter>
-      <div className="app-container">
+      <div className="app-container bg-surface min-h-screen">
         <React.Suspense fallback={<div className="page-loading"><span className="material-symbols-outlined text-4xl animate-spin">sync</span></div>}>
           <AnimatedRoutes />
         </React.Suspense>
