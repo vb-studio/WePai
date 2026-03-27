@@ -14,16 +14,41 @@ const DEFAULT_SETTINGS = {
 
 const DEFAULT_STATE = {
   perfil: {
-    nombre: '',
-    peso: 0,
-    altura: 0,
-    objetivo: ''
+    nombre: 'Atleta WePai',
+    peso: 75.0,
+    altura: 180,
+    objetivo: 'Ganar masa muscular'
   },
-  registros: [],
-  rutinas: [],
-  records: {},
-  goals: [],
-  restDays: [],
+  registros: [
+    {
+      date: '2026-03-26',
+      datetime: '2026-03-26T18:00:00.000Z',
+      exercises: [
+        { name: 'Press de Banca', sets: 4, reps: 10, weight: 60 },
+        { name: 'Sentadilla', sets: 4, reps: 10, weight: 80 }
+      ]
+    }
+  ],
+  rutinas: [
+    {
+      id: '1',
+      name: 'Empuje (Push)',
+      exercises: ['Press de Banca', 'Press Militar', 'Fondos']
+    },
+    {
+      id: '2',
+      name: 'Tracción (Pull)',
+      exercises: ['Dominadas', 'Remo con Barra', 'Curl de Bíceps']
+    }
+  ],
+  records: {
+    'press de banca': { weight: 70, date: '2026-03-20T10:00:00.000Z' },
+    'sentadilla': { weight: 100, date: '2026-03-22T10:00:00.000Z' }
+  },
+  goals: [
+    { id: '1', title: 'Completar 4 entrenos esta semana', progress: 75, completed: false }
+  ],
+  restDays: ['Sábado', 'Domingo'],
   selectedDate: new Date().toISOString().split('T')[0],
   currentDayExercises: [],
   workoutDraft: null,
