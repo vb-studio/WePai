@@ -179,7 +179,11 @@ export const useStore = create(
       importData: (data) => set(() => ({ ...DEFAULT_STATE, ...data }))
     }),
     {
-      name: 'wepai_state', // Key in localStorage
+      name: 'wepai_state',
+      version: 2,
+      onRehydrateStorage: () => (state) => {
+        console.log('WePai: Estado hidratado desde el almacenamiento local');
+      }
     }
   )
 );

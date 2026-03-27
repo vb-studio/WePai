@@ -4,12 +4,12 @@ import { useStore } from '../store/useStore';
 import { showConfirm, showAlert } from '../store/useModalStore';
 
 export default function Settings() {
-  const { settings, toggleDarkMode, updateSetting, toggleSetting, resetData } = useStore();
+  const { settings, resetData, updateSetting, toggleSetting, toggleDarkMode } = useStore();
 
-  const handleResetData = async () => {
+  const handleReset = async () => {
     const confirm = await showConfirm(
-      '¿Borrar todos los datos?', 
-      'Esta acción eliminará tus rutinas, historial de entrenamientos, perfil y todos los récords de forma permanente. No se puede deshacer.'
+      '¿Reiniciar aplicación?', 
+      'Se borrarán todos tus registros, rutinas y datos personales. Esta acción es irreversible.'
     );
     if (confirm) {
       resetData();
@@ -116,7 +116,7 @@ export default function Settings() {
                 <span className="font-semibold text-on-surface">Importar Datos</span>
               </div>
             </button>
-            <button onClick={handleResetData} className="w-full p-4 flex justify-between items-center active:bg-red-50/50 dark:active:bg-red-900/10 transition-colors text-left">
+            <button onClick={handleReset} className="w-full p-4 flex justify-between items-center active:bg-red-50/50 dark:active:bg-red-900/10 transition-colors text-left">
               <div className="flex items-center gap-3 text-red-500">
                 <span className="material-symbols-outlined">delete_forever</span>
                 <span className="font-semibold">Borrar todos los datos</span>
