@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence } from 'framer-motion';
 import BottomNav from './components/BottomNav';
 import AnimatedPage from './components/AnimatedPage';
+import Modal from './components/Modal';
 
 // Placholders
 const Dashboard = React.lazy(() => import('./pages/Dashboard'));
@@ -23,6 +24,7 @@ function AnimatedRoutes() {
         <Route path="/log" element={<Log />} />
         <Route path="/settings" element={<Settings />} />
         <Route path="/coach" element={<Coach />} />
+        <Route path="*" element={<Dashboard />} />
       </Routes>
     </AnimatePresence>
   );
