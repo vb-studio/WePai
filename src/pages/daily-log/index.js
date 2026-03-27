@@ -315,7 +315,10 @@ function renderSelectRoutine() {
       <header class="lg:hidden bg-[#fcf9f8]/80 dark:bg-[#1c1b1b]/80 backdrop-blur-xl fixed top-0 w-full z-50">
         <div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
           <div class="flex items-center gap-3">
-            <span class="text-2xl font-black tracking-tighter text-[#1c1b1b] dark:text-white font-['Manrope']">WePai</span>
+            <button data-link href="/" class="text-[#FF6B00]">
+              <span class="material-symbols-outlined text-2xl">arrow_back</span>
+            </button>
+            <span class="text-xl font-black tracking-tighter text-[#1c1b1b] dark:text-white font-['Manrope']">WePai</span>
           </div>
           <div class="flex items-center gap-3">
             <button data-link href="/profile" class="text-[#FF6B00]">
@@ -364,7 +367,10 @@ function renderExercises() {
       <header class="lg:hidden bg-[#fcf9f8]/80 dark:bg-[#1c1b1b]/80 backdrop-blur-xl fixed top-0 w-full z-50">
         <div class="flex justify-between items-center px-6 py-4 w-full max-w-7xl mx-auto">
           <div class="flex items-center gap-3">
-            <span class="text-2xl font-black tracking-tighter text-[#1c1b1b] dark:text-white font-['Manrope']">WePai</span>
+            <button onclick="window.cancelSummary()" class="text-[#FF6B00]">
+              <span class="material-symbols-outlined text-2xl">arrow_back</span>
+            </button>
+            <span class="text-xl font-black tracking-tighter text-[#1c1b1b] dark:text-white font-['Manrope']">WePai</span>
           </div>
           <div class="flex items-center gap-3">
             <button data-link href="/profile" class="text-[#FF6B00]">
@@ -568,6 +574,11 @@ function renderExercises() {
     }
     
     renderSummary(result.summary);
+  };
+  
+  window.cancelSummary = () => {
+    saveDraft();
+    renderExercises();
   };
 }
 

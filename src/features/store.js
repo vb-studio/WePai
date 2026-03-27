@@ -31,6 +31,7 @@ const DEFAULT_STATE = {
   restDays: [],
   selectedDate: new Date().toISOString().split('T')[0],
   currentDayExercises: [],
+  workoutDraft: null,
   settings: { ...DEFAULT_SETTINGS }
 };
 
@@ -436,5 +437,23 @@ export function removeCurrentDayExercise(index) {
 
 export function clearCurrentDayExercises() {
   state.currentDayExercises = [];
+  saveState();
+}
+
+// Workout draft persistence
+export function saveWorkoutDraft(draft) {
+  state.workoutDraft = {
+    ...draft,
+    savedAt: new Date().toISOString()
+  };
+  saveState();
+}
+
+export function getWorkoutDraft() {
+  return state.workoutDraft;
+}
+
+export function clearWorkoutDraft() {
+  state.workoutDraft = null;
   saveState();
 }

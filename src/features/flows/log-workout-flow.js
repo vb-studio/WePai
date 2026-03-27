@@ -11,7 +11,10 @@ import {
   clearCurrentDayExercises,
   saveState,
   playBeep,
-  vibrate
+  vibrate,
+  saveWorkoutDraft,
+  getWorkoutDraft,
+  clearWorkoutDraft
 } from '../store.js';
 import { calculateSetVolume, calculateTotalVolume } from '../calculations/volume.js';
 import { calculateCurrentStreak } from '../calculations/streak.js';
@@ -44,17 +47,45 @@ export function resetFlow() {
     clearInterval(flowState.timerInterval);
   }
   
-  flowState = {
-    currentStep: FLOW_STEPS.SELECT_ROUTINE,
-    selectedRoutineId: null,
-    isFreeTraining: false,
-    date: new Date().toISOString().split('T')[0],
-    exercises: [],
-    currentExerciseIndex: 0,
-    timerRunning: false,
-    timerSeconds: 0,
-    timerInterval: null
-  };
+  const savedDraft = getWorkoutDraft();
+  
+  if (savedDraft && savedDraft.exercises && savedDraft.exercises.length > 0) {
+    flowState = {
+      currentStep: savedDraft.currentStep || FLOW_STEPS.EXERCISES,
+      selectedRoutineId: savedDraft.selectedRoutineId,
+      isFreeTraining: savedDraft.isFreeTraining || false,
+      date: savedDraft.date || new Date().toISOString().split('T')[0],
+      exercises: savedDraft.exercises,
+      currentExerciseIndex: savedDraft.currentExerciseIndex || 0,
+      timerRunning: false,
+      timerSeconds: 0,
+      timerInterval: null
+    };
+  } else {
+    flowState = {
+      currentStep: FLOW_STEPS.SELECT_ROUTINE,
+      selectedRoutineId: null,
+      isFreeTraining: false,
+      date: new Date().toISOString().split('T')[0],
+      exercises: [],
+      currentExerciseIndex: 0,
+      timerRunning: false,
+      timerSeconds: 0,
+      timerInterval: null
+    };
+    clearWorkoutDraft();
+  }
+}
+
+function saveDraft() {
+  saveWorkoutDraft({
+    currentStep: flowState.currentStep,
+    selectedRoutineId: flowState.selectedRoutineId,
+    isFreeTraining: flowState.isFreeTraining,
+    date: flowState.date,
+    exercises: flowState.exercises,
+    currentExerciseIndex: flowState.currentExerciseIndex
+  });
 }
 
 /**
@@ -148,6 +179,7 @@ export function stepAddExercise(exercise) {
   });
   
   setCurrentDayExercises(flowState.exercises);
+  saveDraft();
   return { success: true };
 }
 
@@ -170,6 +202,7 @@ export function stepUpdateExercise(index, updates) {
   
   flowState.exercises[index] = { ...exercise, ...updates };
   setCurrentDayExercises(flowState.exercises);
+  saveDraft();
   
   return { success: true };
 }
@@ -191,6 +224,7 @@ export function stepRemoveExercise(index) {
   }
   
   setCurrentDayExercises(flowState.exercises);
+  saveDraft();
   return { success: true };
 }
 
@@ -219,6 +253,7 @@ export function stepCompleteSet(exerciseIndex, setIndex) {
   vibrate(50);
   
   setCurrentDayExercises(flowState.exercises);
+  saveDraft();
   
   return { 
     success: true, 
@@ -387,6 +422,7 @@ export function finalizeWorkout() {
   };
   
   clearCurrentDayExercises();
+  clearWorkoutDraft();
   flowState.currentStep = FLOW_STEPS.SUMMARY;
   
   return { success: true, summary };
