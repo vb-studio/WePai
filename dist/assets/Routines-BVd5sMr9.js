@@ -1,1 +1,0 @@
-import{d as e,t,u as n}from"./AnimatedPage-HP5x1i0q.js";e();var r=n();function i(){return(0,r.jsx)(t,{children:(0,r.jsxs)(`div`,{className:`p-8 pt-24 text-center`,children:[(0,r.jsx)(`h1`,{className:`text-2xl font-bold`,children:`Rutinas`}),(0,r.jsx)(`p`,{children:`En proceso de migración a React.`})]})})}export{i as default};
