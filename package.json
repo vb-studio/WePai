@@ -1,9 +1,7 @@
 {
   "name": "wepai",
   "version": "1.0.0",
-  "scripts": {
-    "build": "echo 'No build needed'"
-  },
+  "scripts": {},
   "dependencies": {},
   "devDependencies": {}
 }
